@@ -1,0 +1,66 @@
+@extends('layouts.app')
+
+@section('title', 'Ubah Tarif')
+
+@push('style')
+@endpush
+
+@section('main')
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title fw-semibold">@yield('title')</h5>
+    </div>
+    <div class="card-body">
+        <form id="updateData">
+            <div class="form-group mb-3">
+                <label for="tarif" class="form-label">Tarif Per Jam <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" name="tarif" id="tarif" placeholder="Masukkan jumlah tarif per jam" value="{{ $pengaturan->tarif ?? ""}}">
+                <small class="invalid-feedback" id="errortarif"></small>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Ubah Tarif</button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    $("#updateData").submit(function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: "Konfirmasi",
+            text: "Jika Setuju Merubah. Apakah Anda yakin?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, Ubah Tarif!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setButtonLoadingState("#updateData .btn.btn-primary", true, 'Ubah Tarif');
+                const url = `{{ route('ubahTarif')}}`;
+                const data = new FormData(this);
+
+                const successCallback = function (response) {
+                    $('#updateData .form-control').removeClass("is-invalid");
+                    $('#updateData .invalid-feedback').html("");
+                    setButtonLoadingState("#updateData .btn.btn-primary", false, 'Ubah Tarif');
+                    handleSuccess(response, null, null, "no");  
+                };
+
+                const errorCallback = function (error) {
+                    setButtonLoadingState("#updateData .btn.btn-primary", false, 'Ubah Tarif');
+                    handleValidationErrors(error, "updateData", ["tarif"]);
+                };
+
+                ajaxCall(url, "POST", data, successCallback, errorCallback);
+            }
+        });
+    });
+});
+</script>
+@endpush
