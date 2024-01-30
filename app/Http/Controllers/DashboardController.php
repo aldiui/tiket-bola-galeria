@@ -12,8 +12,6 @@ class DashboardController extends Controller
     {
         $countDayPengunjungMasuk = PengunjungMasuk::whereDate('created_at', date('Y-m-d'))->count();
         $countDayPengunjungKeluar = PengunjungKeluar::whereDate('created_at', date('Y-m-d'))->count();
-        $countMounthPengungjungMasuk = PengunjungMasuk::whereMonth('created_at', date('m'))->count();
-        $countMounthPengungjungKeluar = PengunjungKeluar::whereMonth('created_at', date('m'))->count();
-        return view('admin.dashboard.index', compact('countDayPengunjungMasuk', 'countDayPengunjungKeluar', 'countMounthPengungjungMasuk', 'countMounthPengungjungKeluar'));
+        return view('admin.dashboard.index', compact('countDayPengunjungMasuk', 'countDayPengunjungKeluar'));
     }
 }

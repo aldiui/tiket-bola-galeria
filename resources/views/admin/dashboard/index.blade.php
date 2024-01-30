@@ -22,28 +22,19 @@
                 <div class="row align-items-center">
                     <div class="col-8">
                         <h5 class="card-title mb-3 fw-semibold">Pengunjung Masuk</h5>
-                        <h4 class="fw-semibold mb-3">{{ $countMounthPengungjungMasuk }} Anak</h4>
-                        <div class="d-flex align-items-center mb-3">
-                            <span class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+                        <h4 class="fw-semibold mb-3">{{ $countDayPengunjungMasuk }} Anak</h4>
+                        <div class="d-flex align-items-center">
+                            <span class="me-2 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
                                 <i class="ti ti-arrow-up-left text-success"></i>
                             </span>
-                            <p class="text-dark me-1 fs-3 mb-0">+ {{ $countDayPengunjungMasuk }} Anak</p>
-                            <p class="fs-3 mb-0">Hari ini</p>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="me-4">
-                                <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
-                                <span class="fs-2 active-anak">Laki-Laki</span>
-                            </div>
-                            <div>
-                                <span class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"></span>
-                                <span class="fs-2">Perempuan</span>
-                            </div>
+                            <p class="fs-3 mb-0">{{ formatTanggal() }}</p>
                         </div>
                     </div>
                     <div class="col-4">
-                        <div class="d-flex justify-content-center">
-                            <div id="breakup"></div>
+                        <div class="d-flex justify-content-end">
+                            <div class="text-white bg-success rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-user-check fs-6"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -51,28 +42,26 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <div class="row align-items-start">
+                <div class="row align-items-center">
                     <div class="col-8">
                         <h5 class="card-title mb-3 fw-semibold"> Pengunjung Keluar </h5>
-                        <h4 class="fw-semibold mb-3">{{ $countMounthPengungjungKeluar }} Anak</h4>
-                        <div class="d-flex align-items-center pb-1">
+                        <h4 class="fw-semibold mb-3">{{ $countDayPengunjungKeluar }} Anak</h4>
+                        <div class="d-flex align-items-center">
                             <span class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
                                 <i class="ti ti-arrow-down-right text-danger"></i>
                             </span>
-                            <p class="text-dark me-1 fs-3 mb-0">{{ $countDayPengunjungKeluar }} Anak</p>
-                            <p class="fs-3 mb-0">Hari ini</p>
+                            <p class="fs-3 mb-0">{{ formatTanggal() }}</p>
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="d-flex justify-content-end">
-                            <div class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                <i class="ti ti-user fs-6"></i>
+                            <div class="text-white bg-danger rounded-circle p-6 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-user-minus fs-6"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="earning"></div>
         </div>
     </div>
 </div>
@@ -148,6 +137,8 @@ $(document).ready(function() {
         { data: 'nama_panggilan', name: 'nama_panggilan' },
         { data: 'nama_orang_tua', name: 'nama_orang_tua' },
     ]);
+
+    
 });
 </script>
 @endpush
