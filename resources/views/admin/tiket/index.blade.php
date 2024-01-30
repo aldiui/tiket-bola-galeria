@@ -77,9 +77,8 @@
         var now = new Date();
 
         if (endTime > now) {
-            var secondsRemaining = Math.floor((endTime - now) / 1000);
-            $('#countdown').text(formatTime(secondsRemaining));
-            setTimeout(updateCountdown, 1000);
+            var durationInSeconds = Math.floor((endTime - now) / 1000);
+            $('#countdown').text(formatTime(durationInSeconds));
         } else {
             $('#countdown').text('00:00:00');
         }
@@ -101,5 +100,5 @@
         updateCountdown();
     });
 </script>
-
 @endpush
+

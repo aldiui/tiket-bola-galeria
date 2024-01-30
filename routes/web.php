@@ -33,3 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::get('e-tiket/{uuid}', [TiketController::class, 'show'])->name('eTiket');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+Route::get('/storage-link', function () {
+    Artisan::call('storage:link');
+});
