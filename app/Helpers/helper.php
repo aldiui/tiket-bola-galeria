@@ -29,10 +29,8 @@ if (!function_exists('getPermission')) {
     {
         $admin = getAdmin();
 
-        if (!$admin || !$admin->$value) {
+        if (!$admin || $admin->$value == 0) {
             return redirect('/');
         }
-
-        return true;
     }
 }

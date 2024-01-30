@@ -14,10 +14,7 @@
 </head>
 
 <body>
-	<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-    data-sidebar-position="fixed" data-header-position="fixed">
-		@yield('main')
-	</div>
+	@yield('main')
 	<script src="{{ asset('libs/jquery/dist/jquery.min.js') }}"></script>
 	<script src="{{ asset('libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ asset('js/setup.js') }}"></script>

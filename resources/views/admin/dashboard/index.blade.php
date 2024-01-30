@@ -81,6 +81,7 @@
                                 <th>Nama Panggilan</th>
                                 <th>Sisa Waktu</th>
                                 <th>Nama Orang Tua</th>
+                                <th>Tiket</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,6 +129,7 @@ $(document).ready(function() {
         { data: 'nama_panggilan', name: 'nama_panggilan' },
         { data: 'durasi', name: 'durasi' },
         { data: 'nama_orang_tua', name: 'nama_orang_tua' },
+        { data: 'tiket', name: 'tiket' },
     ]);
     
     datatableCall('pengunjung-keluar-table', '{{ route('riwayatPengunjungKeluar') }}', [

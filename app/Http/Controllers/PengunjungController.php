@@ -80,7 +80,10 @@ class PengunjungController extends Controller
                     ->addColumn('durasi', function ($pengunjungMasuk) {
                         return '<span class="badge bg-primary rounded-3 fw-semibold">' . $pengunjungMasuk->durasi_bermain . ' Jam</span>';
                     })
-                    ->rawColumns(['durasi'])
+                    ->addColumn('tiket', function ($pengunjungMasuk) {
+                        return '<a class="btn btn-warning" href="/e-tiket/' . $pengunjungMasuk->uuid . '"> Tiket </a>';
+                    })
+                    ->rawColumns(['durasi', 'tiket'])
                     ->addIndexColumn()
                     ->make(true);
             } elseif ($request->input("mode") == "pie") {
@@ -170,7 +173,7 @@ class PengunjungController extends Controller
                 $countPengunjungKeluarPerempuan = PengunjungKeluar::whereHas('pengunjungMasuk', function ($query) {
                     $query->where('jenis_kelamin', 'Perempuan');
                 })->whereDate('created_at', $tanggal)->count();
-                
+
                 return $this->successResponse([$countPengunjungKeluarLakiLaki, $countPengunjungKeluarPerempuan], 'Data pengunjung keluar ditemukan.');
             }
         }

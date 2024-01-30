@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PengunjungController;
+use App\Http\Controllers\TiketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,5 +30,6 @@ Route::middleware('auth')->group(function () {
     Route::get('riwayat-pengunjung-keluar', [PengunjungController::class, 'riwayatPengunjungKeluar'])->name('riwayatPengunjungKeluar');
     Route::get('laporan-keuangan', [KeuanganController::class, 'index'])->name('laporanKeuangan');
     Route::resource('user-management', PengaturanController::class)->names('userManagement');
+    Route::get('e-tiket/{uuid}', [TiketController::class, 'show'])->name('eTiket');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
