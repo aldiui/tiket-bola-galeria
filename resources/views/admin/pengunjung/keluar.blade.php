@@ -13,11 +13,10 @@
         <h5 class="card-title fw-semibold">Tambah Data @yield('title')</h5>
     </div>
     <div class="card-body">
-        <form id="saveData">
+        <form id="saveData" autocomplete="off">
             <div class="form-group mb-3">
                 <label for="pengunjung_masuk_id" class="form-label">Pengunjung Masuk <span class="text-danger">*</span></label>
-                <select class="form-control border" name="pengunjung_masuk_id" id="pengunjung_masuk_id">
-                </select>
+                <select class="form-control border" name="pengunjung_masuk_id" id="pengunjung_masuk_id"></select>
                 <small class="invalid-feedback" id="errorpengunjung_masuk_id"></small>
             </div>
             <div class="form-group">

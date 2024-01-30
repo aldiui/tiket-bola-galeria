@@ -234,3 +234,104 @@ const select2ToJsonPengunjungMasuk = () => {
         errorCallback
     );
 };
+
+let chart = null;
+
+const renderSingleChart = (data, labels, chartType = "Laporan Keuangan") => {
+    if (chart) {
+        chart.destroy();
+    }
+
+    const options = {
+        series: [
+            {
+                name: chartType,
+                data: data,
+            },
+        ],
+        chart: {
+            height: 350,
+            type: "area",
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            curve: "smooth",
+        },
+        xaxis: {
+            type: "string",
+            categories: labels,
+        },
+    };
+
+    chart = new ApexCharts($("#chart")[0], options);
+    chart.render();
+};
+
+const renderMultipleChart = (dataMasuk, dataKeluar, labels) => {
+    if (chart) {
+        chart.destroy();
+    }
+
+    const options = {
+        series: [
+            {
+                name: "Pengunjung Masuk",
+                data: dataMasuk,
+            },
+            {
+                name: "Pengunjung Keluar",
+                data: dataKeluar,
+            },
+        ],
+        chart: {
+            height: 350,
+            type: "area",
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            curve: "smooth",
+        },
+        xaxis: {
+            type: "string",
+            categories: labels,
+        },
+    };
+
+    chart = new ApexCharts($("#chart")[0], options);
+    chart.render();
+};
+
+const renderPieChart = (seriesData) => {
+    if (chart) {
+        chart.destroy();
+    }
+
+    var options = {
+        series: seriesData,
+        chart: {
+            width: 350,
+            type: "pie",
+        },
+        labels: ["Laki-laki", "Perempuan"],
+        responsive: [
+            {
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200,
+                    },
+                    legend: {
+                        position: "bottom",
+                    },
+                },
+            },
+        ],
+    };
+
+    chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+};

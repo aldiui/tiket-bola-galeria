@@ -19,6 +19,9 @@
                     <input type="date" name="tanggal_filter" id="tanggal_filter" value="{{ date('Y-m-d') }}" class="form-control">
                 </div>
             </div>
+            <div class="col-lg-6">
+                <div id="chart"></div>
+            </div>
         </div>
         <div class="table-responsive">
             <table id="pengunjung-keluar-table" class="table table-bordered table-striped" width="100%">
@@ -40,6 +43,7 @@
 
 @push('scripts')
 <script src="{{ asset('libs/datatables/datatables.min.js') }}"></script>
+<script src="{{ asset('libs/apexcharts/dist/apexcharts.min.js') }}"></script>
 
 <script>
 $(document).ready(function() {
@@ -50,9 +54,25 @@ $(document).ready(function() {
         { data: 'nama_orang_tua', name: 'nama_orang_tua' },
     ]);
 
+    renderData();
+
     $("#tanggal_filter").on("change", function () {
         $("#pengunjung-keluar-table").DataTable().ajax.reload();
+        renderData();
     });
 });
+
+const renderData = () => {
+    const successCallback = function (response) {
+        renderPieChart(response.data);
+    };
+
+    const errorCallback = function (error) {
+        console.error(error);
+    };
+
+    const url = `/riwayat-pengunjung-keluar?mode=pie&tanggal=${$("#tanggal_filter").val()}`;
+    ajaxCall(url, "GET", null, successCallback, errorCallback);
+};
 </script>
 @endpush

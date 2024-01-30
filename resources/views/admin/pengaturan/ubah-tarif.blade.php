@@ -11,7 +11,7 @@
         <h5 class="card-title fw-semibold">@yield('title')</h5>
     </div>
     <div class="card-body">
-        <form id="updateData">
+        <form id="updateData" autocomplete="off">
             <div class="form-group mb-3">
                 <label for="tarif" class="form-label">Tarif Per Jam <span class="text-danger">*</span></label>
                 <input type="number" class="form-control" name="tarif" id="tarif" placeholder="Masukkan jumlah tarif per jam" value="{{ $pengaturan->tarif ?? ""}}">

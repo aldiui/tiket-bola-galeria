@@ -74,6 +74,7 @@ class PengunjungController extends Controller
         if ($request->ajax()) {
             $tanggal = $request->input("tanggal") ?? date('Y-m-d');
             $pengunjungMasuks = PengunjungMasuk::whereDate('created_at', $tanggal)->latest()->get();
+
             if ($request->input("mode") == "datatable") {
                 return DataTables::of($pengunjungMasuks)
                     ->addColumn('durasi', function ($pengunjungMasuk) {
@@ -82,14 +83,22 @@ class PengunjungController extends Controller
                     ->rawColumns(['durasi'])
                     ->addIndexColumn()
                     ->make(true);
+            } elseif ($request->input("mode") == "pie") {
+                $countPengunjungMasukLakiLaki = PengunjungMasuk::whereDate('created_at', $tanggal)->where('jenis_kelamin', 'Laki-laki')->count();
+                $countPengunjungMasukPerempuan = PengunjungMasuk::whereDate('created_at', $tanggal)->where('jenis_kelamin', 'Perempuan')->count();
+
+                return $this->successResponse([
+                    $countPengunjungMasukLakiLaki,
+                    $countPengunjungMasukPerempuan,
+                ], 'Data pengunjung masuk ditemukan.');
+            } else {
+                $pengunjungMasukDay = PengunjungMasuk::whereDate('created_at', date('Y-m-d'))
+                    ->whereNotIn('id', function ($query) {
+                        $query->select('pengunjung_masuk_id')->from('pengunjung_keluars');
+                    })->get();
+
+                return $this->successResponse($pengunjungMasukDay, 'Data admin ditemukan.');
             }
-
-            $pengunjungMasukDay = PengunjungMasuk::whereDate('created_at', date('Y-m-d'))
-                ->whereNotIn('id', function ($query) {
-                    $query->select('pengunjung_masuk_id')->from('pengunjung_keluars');
-                })->get();
-
-            return $this->successResponse($pengunjungMasukDay, 'Data admin ditemukan.');
         }
 
         getPermission('riwayat_pengunjung_masuk');
@@ -154,6 +163,15 @@ class PengunjungController extends Controller
                     ->addIndexColumn()
                     ->rawColumns(['nama_anak', 'nama_panggilan', 'durasi_bermain', 'nama_orang_tua'])
                     ->make(true);
+            } elseif ($request->input("mode") == "pie") {
+                $countPengunjungKeluarLakiLaki = PengunjungKeluar::whereHas('pengunjungMasuk', function ($query) {
+                    $query->where('jenis_kelamin', 'Laki-laki');
+                })->whereDate('created_at', $tanggal)->count();
+                $countPengunjungKeluarPerempuan = PengunjungKeluar::whereHas('pengunjungMasuk', function ($query) {
+                    $query->where('jenis_kelamin', 'Perempuan');
+                })->whereDate('created_at', $tanggal)->count();
+                
+                return $this->successResponse([$countPengunjungKeluarLakiLaki, $countPengunjungKeluarPerempuan], 'Data pengunjung keluar ditemukan.');
             }
         }
 

@@ -11,7 +11,7 @@
         <h5 class="card-title fw-semibold">Tambah Data @yield('title')</h5>
     </div>
     <div class="card-body">
-        <form id="saveData">
+        <form id="saveData" autocomplete="off">
             <div class="form-group mb-3">
                 <label for="nama_anak" class="form-label">Nama Anak <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" name="nama_anak" id="nama_anak">

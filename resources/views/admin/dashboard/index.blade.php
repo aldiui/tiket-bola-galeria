@@ -118,7 +118,6 @@
 
 @push('scripts')
 <script src="{{ asset('libs/apexcharts/dist/apexcharts.min.js') }}"></script>
-<script src="{{ asset('js/dashboard.js') }}"></script>
 <script src="{{ asset('libs/datatables/datatables.min.js') }}"></script>
 
 <script>
@@ -138,7 +137,7 @@ $(document).ready(function() {
         { data: 'nama_orang_tua', name: 'nama_orang_tua' },
     ]);
 
-    
+    renderMultipleChart({!! json_encode($dataMasuk) !!}, {!! json_encode($dataKeluar) !!}, {!! json_encode($labels) !!});
 });
 </script>
 @endpush

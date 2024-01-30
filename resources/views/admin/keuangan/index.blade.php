@@ -36,6 +36,9 @@
                     </select>
                 </div>
             </div>
+            <div class="col-12">
+                <div id="chart"></div>
+            </div>
         </div>
         <div class="table-responsive">
             <table id="laporan-keuangan-table" class="table table-bordered table-striped" width="100%">
@@ -61,6 +64,7 @@
 
 @push('scripts')
 <script src="{{ asset('libs/datatables/datatables.min.js') }}"></script>
+<script src="{{ asset('libs/apexcharts/dist/apexcharts.min.js') }}"></script>
 
 <script>
 $(document).ready(function() {
@@ -75,9 +79,25 @@ $(document).ready(function() {
         { data: 'admin', name: 'admin' },
     ]);
 
+    renderData();
+
     $("#bulan_filter, #tahun_filter").on("change", function () {
         $("#laporan-keuangan-table").DataTable().ajax.reload();
+        renderData();
     });     
 });
+
+const renderData = () => {
+    const successCallback = function (response) {
+        renderSingleChart(response.data.data, response.data.labels);
+    };
+
+    const errorCallback = function (error) {
+        console.error(error);
+    };
+
+    const url = `/laporan-keuangan?mode=single&bulan=${$("#bulan_filter").val()}&tahun=${$("#tahun_filter").val()}`;
+    ajaxCall(url, "GET", null, successCallback, errorCallback);
+};
 </script>
 @endpush
