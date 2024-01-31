@@ -71,7 +71,8 @@ class KeuanganController extends Controller
         }
 
         if ($request->input("mode") == "pdf") {
-            $pdf = PDF::loadView('admin.keuangan.pdf', compact('pengunjungMasuks'));
+            $bulanTahun = Carbon::create($tahun, $bulan, 1)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('F Y');
+            $pdf = PDF::loadView('admin.keuangan.pdf', compact('pengunjungMasuks', 'bulanTahun'));
 
             $options = [
                 'margin_top' => 20,
