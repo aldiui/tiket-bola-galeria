@@ -7,32 +7,30 @@
 @endpush
 
 @section('main')
-<div class="position-relative overflow-hidden radial-gradient min-vh-100">
-    <div class="d-flex align-items-center justify-content-center w-100">
-        <div class="container">
-            <div class="row justify-content-center w-100 py-5">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title fw-semibold text-center">Riwayat Pengunjung Masuk {{ formatTanggal() }}</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="pengunjung-masuk-table" class="table table-bordered table-striped" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th width="5%">#</th>
-                                            <th>Nama Anak</th>
-                                            <th>Nama Panggilan</th>
-                                            <th>Sisa Waktu</th>
-                                            <th>Nama Orang Tua</th>
-                                            <th>Tiket</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+<div class="radial-gradient min-vh-100">
+    <div class="container">
+        <div class="row justify-content-center py-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title fw-semibold text-center">Riwayat Pengunjung Masuk {{ formatTanggal() }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="pengunjung-masuk-table" class="table table-bordered table-striped" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">#</th>
+                                        <th>Nama Anak</th>
+                                        <th>Nama Panggilan</th>
+                                        <th>Sisa Waktu</th>
+                                        <th>Nama Orang Tua</th>
+                                        <th>Tiket</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
