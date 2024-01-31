@@ -36,7 +36,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5" align="center">Total</td>
+                    <td colspan="5" align="center">Total Pembayaran</td>
                     <td>{{ formatRupiah($pengunjungMasuks->sum('tarif')) }}</td>
                     <td></td>
                     <td></td>
