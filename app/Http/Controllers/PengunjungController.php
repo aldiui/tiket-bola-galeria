@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use Carbon\Carbon;
-use Ramsey\Uuid\Uuid;
-use App\Models\Pengaturan;
-use App\Traits\ApiResponder;
-use Illuminate\Http\Request;
-use App\Models\PengunjungMasuk;
-use App\Models\PengunjungKeluar;
 use App\Http\Controllers\Controller;
+use App\Models\Pengaturan;
+use App\Models\PengunjungKeluar;
+use App\Models\PengunjungMasuk;
+use App\Traits\ApiResponder;
+use Carbon\Carbon;
+use DataTables;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Ramsey\Uuid\Uuid;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PengunjungController extends Controller
