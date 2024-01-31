@@ -17,7 +17,8 @@ class PengaturanController extends Controller
 
     public function ubahTarif(Request $request)
     {
-        getPermission('ubah_tarif');
+        if (!getPermission('ubah_tarif')) {return redirect()->route('dashboard');}
+
         $pengaturan = Pengaturan::find(1);
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
@@ -42,7 +43,8 @@ class PengaturanController extends Controller
 
     public function index(Request $request)
     {
-        getPermission('user_management');
+        if (!getPermission('user_management')) {return redirect()->route('dashboard');}
+
         if ($request->ajax()) {
             $admins = User::all();
             if ($request->input("mode") == "datatable") {
@@ -65,7 +67,8 @@ class PengaturanController extends Controller
 
     public function show($id)
     {
-        getPermission('user_management');
+        if (!getPermission('user_management')) {return redirect()->route('dashboard');}
+
         $admin = User::with('hakAkses')->find($id);
 
         if (!$admin) {
@@ -77,7 +80,8 @@ class PengaturanController extends Controller
 
     public function store(Request $request)
     {
-        getPermission('user_management');
+        if (!getPermission('user_management')) {return redirect()->route('dashboard');}
+
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
             'email' => 'required|email|unique:users',
@@ -110,7 +114,8 @@ class PengaturanController extends Controller
 
     public function update(Request $request, $id)
     {
-        getPermission('user_management');
+        if (!getPermission('user_management')) {return redirect()->route('dashboard');}
+
         $dataValidator = [
             'nama' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
@@ -158,7 +163,8 @@ class PengaturanController extends Controller
 
     public function destroy($id)
     {
-        getPermission('user_management');
+        if (!getPermission('user_management')) {return redirect()->route('dashboard');}
+
         $admin = User::find($id);
 
         if (!$admin) {

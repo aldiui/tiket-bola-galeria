@@ -21,7 +21,8 @@ class PengunjungController extends Controller
 
     public function pengunjungMasuk(Request $request)
     {
-        getPermission('tambah_pengunjung_masuk');
+        if (!getPermission('tambah_pengunjung_masuk')) {return redirect()->route('dashboard');}
+
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
                 'nama_anak' => 'required',
@@ -104,13 +105,15 @@ class PengunjungController extends Controller
             }
         }
 
-        getPermission('riwayat_pengunjung_masuk');
+        if (!getPermission('riwayat_pengunjung_masuk')) {return redirect()->route('dashboard');}
+
         return view('admin.pengunjung.riwayat-masuk');
     }
 
     public function pengunjungKeluar(Request $request)
     {
-        getPermission('tambah_pengunjung_keluar');
+        if (!getPermission('tambah_pengunjung_keluar')) {return redirect()->route('dashboard');}
+
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
                 'pengunjung_masuk_id' => 'required',
@@ -178,7 +181,8 @@ class PengunjungController extends Controller
             }
         }
 
-        getPermission('riwayat_pengunjung_masuk');
+        if (!getPermission('riwayat_pengunjung_keluar')) {return redirect()->route('dashboard');}
+
         return view('admin.pengunjung.riwayat-keluar');
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('formatTanggal')) {
     function formatTanggal($tanggal = null, $format = 'l, j F Y')
@@ -20,17 +21,17 @@ if (!function_exists('formatRupiah')) {
 if (!function_exists('getAdmin')) {
     function getAdmin()
     {
-        return auth()->user()->hakAkses()->first();
+        return Auth::user()->hakAkses()->first();
     }
 }
 
-if (!function_exists('getPermission')) {
-    function getPermission($value)
-    {
-        $admin = getAdmin();
+function getPermission($value)
+{
+    $administrator = getAdmin();
 
-        if (!$admin || $admin->$value == 0) {
-            return redirect('/');
-        }
+    if (!$administrator || $administrator->$value == 0) {
+        return false;
     }
+
+    return true;
 }

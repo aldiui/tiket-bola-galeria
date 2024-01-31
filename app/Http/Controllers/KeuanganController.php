@@ -69,7 +69,8 @@ class KeuanganController extends Controller
             }
         }
 
-        getPermission('laporan_keuangan');
+        if (!getPermission('laporan_keuangan')) {return redirect()->route('dashboard');}
+
         return view('admin.keuangan.index');
     }
 }
