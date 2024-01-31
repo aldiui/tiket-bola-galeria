@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
+Route::get('e-tiket', [TiketController::class, 'index'])->name('eTiket.index');
+Route::get('e-tiket/{uuid}', [TiketController::class, 'show'])->name('eTiket.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -30,7 +32,6 @@ Route::middleware('auth')->group(function () {
     Route::get('riwayat-pengunjung-keluar', [PengunjungController::class, 'riwayatPengunjungKeluar'])->name('riwayatPengunjungKeluar');
     Route::get('laporan-keuangan', [KeuanganController::class, 'index'])->name('laporanKeuangan');
     Route::resource('user-management', PengaturanController::class)->names('userManagement');
-    Route::get('e-tiket/{uuid}', [TiketController::class, 'show'])->name('eTiket');
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
 

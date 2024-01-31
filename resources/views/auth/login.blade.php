@@ -14,10 +14,10 @@ data-sidebar-position="fixed" data-header-position="fixed">
                 <div class="col-md-6 col-lg-6 col-xxl-3">
                     <div class="card mb-0">
                         <div class="card-body">
-                            <a href="./index.html" class="text-nowrap logo-img mb-3 d-flex justify-content-center">
+                            <a href="./" class="text-nowrap logo-img mb-3 d-flex justify-content-center">
                                 <img src="{{ asset('images/logos/logo1.PNG') }}" width="180" class="" alt="" />
                             </a>
-                            <form id="login" autocomplete="off">
+                            <form id="login"  autocomplete="off">
                                 <div class="form-group mb-3">
                                     <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                                     <input id="email" type="email" class="form-control" name="email">
@@ -28,10 +28,13 @@ data-sidebar-position="fixed" data-header-position="fixed">
                                     <input id="password" type="password" class="form-control" name="password">
                                     <small class="invalid-feedback" id="errorpassword"></small>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <button type="submit" class="btn d-block w-100 btn-primary">Login</button>
                                 </div>
                             </form>
+                            <a href="{{ route('eTiket.index') }}" class="btn d-block w-100 btn-secondary">
+                                Monitoring Tiket
+                            </a>
                         </div>
                     </div>
                 </div>

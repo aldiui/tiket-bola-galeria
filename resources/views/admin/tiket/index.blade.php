@@ -3,57 +3,36 @@
 @section('title', 'E-Tiket')
 
 @push('style')
+<link rel="stylesheet" href="{{ asset('libs/datatables/datatables.min.css') }}" />
 @endpush
 
 @section('main')
-<div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+<div class="position-relative overflow-hidden radial-gradient min-vh-100">
     <div class="d-flex align-items-center justify-content-center w-100">
-        <div class="row justify-content-center w-100 py-5">
-            <div class="col-md-8 col-lg-5 col-xl-4">
-                <div class="card mb-0 border border-primary border-5">
-                    <div class="card-body">
-                        <h5 class="fw-semibold text-center mb-3">E-Drop Ticket Pengunjung</h5>
-                        <div class="text-center">
-                            <img src="{{ asset('images/check.png') }}">
+        <div class="container">
+            <div class="row justify-content-center w-100 py-5">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title fw-semibold text-center">Riwayat Pengunjung Masuk {{ formatTanggal() }}</h5>
                         </div>
-                        <ul class="timeline-widget mb-0 position-relative mb-3">
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc text-dark mt-n1">{{ $cekTiket->nama_anak }} ({{ $cekTiket->nama_panggilan }})</div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc text-dark mt-n1">{{ $cekTiket->jenis_kelamin }}</div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc text-dark mt-n1">Metode Pembayaran : {{ $cekTiket->metode_pembayaran }}</div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc text-dark mt-n1">Durasi Bermain : {{ $cekTiket->durasi_bermain }} Jam (<span id="countdown"></span>)</div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                </div>
-                                <div class="timeline-desc text-dark mt-n1">Tanggal : {{ formatTanggal($cekTiket->created_at, 'j M Y H:i:s') }}</div>
-                            </li>
-                        </ul>
-                        <div class="text-center">
-                            <img src="{{ asset('/storage/pengunjung_masuk/'.$cekTiket->qr_code) }}" width="150px">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="pengunjung-masuk-table" class="table table-bordered table-striped" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%">#</th>
+                                            <th>Nama Anak</th>
+                                            <th>Nama Panggilan</th>
+                                            <th>Sisa Waktu</th>
+                                            <th>Nama Orang Tua</th>
+                                            <th>Tiket</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -64,40 +43,21 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('libs/datatables/datatables.min.js') }}"></script>
 <script>
-    function calculateEndTime() {
-        var createdAt = new Date('{{ $cekTiket->created_at }}');
-        var duration = {{ $cekTiket->durasi_bermain }};
-        var endTime = new Date(createdAt.getTime() + (duration * 60 * 1000));
-        return endTime;
-    }
-
-    function updateCountdown() {
-        var endTime = calculateEndTime();
-        var now = new Date();
-
-        if (endTime > now) {
-            var durationInSeconds = Math.floor((endTime - now) / 1000);
-            $('#countdown').text(formatTime(durationInSeconds));
-        } else {
-            $('#countdown').text('00:00:00');
-        }
-    }
-
-    function formatTime(seconds) {
-        var hours = Math.floor(seconds / 3600);
-        var minutes = Math.floor((seconds % 3600) / 60);
-        var remainingSeconds = seconds % 60;
-
-        return pad(hours) + ':' + pad(minutes) + ':' + pad(remainingSeconds);
-    }
-
-    function pad(num) {
-        return num < 10 ? '0' + num : num;
-    }
-
     $(document).ready(function () {
-        updateCountdown();
+        datatableCall('pengunjung-masuk-table', '{{ route('eTiket.index') }}', [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            { data: 'nama_anak', name: 'nama_anak' },
+            { data: 'nama_panggilan', name: 'nama_panggilan' },
+            { data: 'durasi', name: 'durasi' },
+            { data: 'nama_orang_tua', name: 'nama_orang_tua' },
+            { data: 'tiket', name: 'tiket' },
+        ]);
+
+        setInterval(function() {
+            $("#pengunjung-masuk-table").DataTable().ajax.reload();
+        }, 60000);
     });
 </script>
 @endpush
