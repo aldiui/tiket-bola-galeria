@@ -53,7 +53,7 @@
                             </li>
                         </ul>
                         <div class="text-center">
-                            <img src="storage/pengunjung_masuk/{{ $pengunjungMasuk->qr_code }}" width="150px">
+                            <img src="{{ asset('/storage/pengunjung_masuk/'.$pengunjungMasuk->qr_code) }}" width="150px">
                         </div>
                     </div>
                 </div>
