@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\PengunjungMasuk;
 use App\Traits\ApiResponder;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
@@ -16,11 +17,11 @@ class KeuanganController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $bulan = $request->input("bulan");
-            $tahun = $request->input("tahun");
+        $bulan = $request->input("bulan");
+        $tahun = $request->input("tahun");
 
-            $pengunjungMasuks = PengunjungMasuk::with('user')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->latest()->get();
+        $pengunjungMasuks = PengunjungMasuk::with('user')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->latest()->get();
+        if ($request->ajax()) {
             if ($request->input("mode") == "datatable") {
                 return DataTables::of($pengunjungMasuks)
                     ->addColumn('admin', function ($pengunjungMasuk) {
@@ -67,6 +68,26 @@ class KeuanganController extends Controller
                     'data' => $dataKeuangan,
                 ], 'Data laporan keuangan ditemukan.');
             }
+        }
+
+        if ($request->input("mode") == "pdf") {
+            $pdf = PDF::loadView('admin.keuangan.pdf', compact('pengunjungMasuks'));
+
+            $options = [
+                'margin_top' => 20,
+                'margin_right' => 20,
+                'margin_bottom' => 20,
+                'margin_left' => 20,
+            ];
+
+            $pdf->setOptions($options);
+            $pdf->setPaper('legal', 'landscape');
+
+            $namaFile = 'laporan_keuangan.pdf';
+
+            ob_end_clean();
+            ob_start();
+            return $pdf->stream($namaFile);
         }
 
         if (!getPermission('laporan_keuangan')) {return redirect()->route('dashboard');}
