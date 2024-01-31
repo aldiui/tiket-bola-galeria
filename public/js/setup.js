@@ -335,3 +335,58 @@ const renderPieChart = (seriesData) => {
     chart = new ApexCharts(document.querySelector("#chart"), options);
     chart.render();
 };
+
+const updateCountdown = (targetElement, duration) => {
+    const countdownElement = $(targetElement);
+    let durationDifference = parseDuration(duration);
+
+    function parseDuration(duration) {
+        const parts = duration.split(":");
+        return {
+            hours: parseInt(parts[0]),
+            minutes: parseInt(parts[1]),
+            seconds: parseInt(parts[2]),
+        };
+    }
+
+    const formatTime = (hours, minutes, seconds) => {
+        return pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
+    };
+
+    const pad = (num) => {
+        return num < 10 ? "0" + num : num;
+    };
+
+    const updateTimer = () => {
+        if (
+            durationDifference.hours === 0 &&
+            durationDifference.minutes === 0 &&
+            durationDifference.seconds === 0
+        ) {
+            countdownElement.text("00:00:00");
+        } else {
+            durationDifference.seconds--;
+            if (durationDifference.seconds < 0) {
+                durationDifference.seconds = 59;
+                durationDifference.minutes--;
+                if (durationDifference.minutes < 0) {
+                    durationDifference.minutes = 59;
+                    durationDifference.hours--;
+                    if (durationDifference.hours < 0) {
+                        durationDifference.hours = 0;
+                    }
+                }
+            }
+            countdownElement.text(
+                formatTime(
+                    durationDifference.hours,
+                    durationDifference.minutes,
+                    durationDifference.seconds
+                )
+            );
+            setTimeout(updateTimer, 1000);
+        }
+    };
+
+    updateTimer();
+};

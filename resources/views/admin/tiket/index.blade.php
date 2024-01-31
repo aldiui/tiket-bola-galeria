@@ -55,6 +55,7 @@
 
         setInterval(function() {
             $("#pengunjung-masuk-table").DataTable().ajax.reload();
+
         }, 60000);
     });
 </script>

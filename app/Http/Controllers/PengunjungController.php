@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Pengaturan;
-use App\Models\PengunjungKeluar;
-use App\Models\PengunjungMasuk;
-use App\Traits\ApiResponder;
 use DataTables;
+use Carbon\Carbon;
+use Ramsey\Uuid\Uuid;
+use App\Models\Pengaturan;
+use App\Traits\ApiResponder;
 use Illuminate\Http\Request;
+use App\Models\PengunjungMasuk;
+use App\Models\PengunjungKeluar;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Ramsey\Uuid\Uuid;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PengunjungController extends Controller
@@ -79,7 +80,26 @@ class PengunjungController extends Controller
             if ($request->input("mode") == "datatable") {
                 return DataTables::of($pengunjungMasuks)
                     ->addColumn('durasi', function ($pengunjungMasuk) {
-                        return '<span class="badge bg-primary rounded-3 fw-semibold">' . $pengunjungMasuk->durasi_bermain . ' Jam</span>';
+                        $today = Carbon::now()->format('Y-m-d');
+                        $ticketDate = $pengunjungMasuk->created_at->format('Y-m-d');
+
+                        if ($today !== $ticketDate) {
+                            $pengunjungMasuk->created_at = Carbon::parse($ticketDate)->startOfDay();
+                        }
+
+                        $endTime = $pengunjungMasuk->created_at->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
+
+                        $now = Carbon::now();
+                        $now = $now->isAfter($endTime) ? $endTime : $now;
+
+                        $durationDiff = $now->diff($endTime);
+
+                        $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
+                        $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
+
+                        $spanId = 'countdown_' . $pengunjungMasuk->uuid;
+
+                        return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '">' . $pengunjungMasuk->duration_difference . '</span>';
                     })
                     ->addColumn('tiket', function ($pengunjungMasuk) {
                         return '<a class="btn btn-warning" href="/e-tiket/' . $pengunjungMasuk->uuid . '"> Tiket </a>';
