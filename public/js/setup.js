@@ -192,7 +192,9 @@ const confirmDelete = (url, tableId) => {
 
 const setButtonLoadingState = (buttonSelector, isLoading, title = "Simpan") => {
     const buttonText = isLoading
-        ? `<i class="ti ti-loop me-1"></i> ${title}`
+        ? `<div class="spinner-border spinner-border-sm me-2" role="status">
+            </div>
+         ${title}`
         : title;
     $(buttonSelector).prop("disabled", isLoading).html(buttonText);
 };
