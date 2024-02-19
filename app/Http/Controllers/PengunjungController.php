@@ -104,7 +104,10 @@ class PengunjungController extends Controller
                     ->addColumn('tiket', function ($pengunjungMasuk) {
                         return '<a class="btn btn-warning" href="/e-tiket/' . $pengunjungMasuk->uuid . '"> Tiket </a>';
                     })
-                    ->rawColumns(['durasi', 'tiket'])
+                    ->addColumn('qrcode', function ($pengunjungMasuk) {
+                        return '<img src="' . asset('/storage/pengunjung_masuk/' . $pengunjungMasuk->qr_code) . '" alt="qrcode" width="100px" height="100px">';
+                    })
+                    ->rawColumns(['durasi', 'tiket', 'qrcode'])
                     ->addIndexColumn()
                     ->make(true);
             } elseif ($request->input("mode") == "pie") {

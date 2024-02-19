@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('nomor_telepon');
             $table->integer('tarif');
             $table->string('qr_code');
+            $table->datetime('start_tiket')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
