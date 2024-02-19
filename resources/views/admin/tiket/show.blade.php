@@ -60,8 +60,7 @@
                                             <span class="timeline-badge-border d-block flex-shrink-0"></span>
                                         </div>
                                         <div class="timeline-desc text-dark mt-n1">Durasi Bermain :
-                                            {{ $pengunjungMasuk->durasi_bermain }} Jam <span id="countdown"
-                                                class="badge bg-primary rounded-3"></span></div>
+                                            {{ $pengunjungMasuk->durasi_bermain }} Jam </div>
                                     </li>
                                     <li class="timeline-item d-flex position-relative overflow-hidden">
                                         <div class="timeline-badge-wrap d-flex flex-column align-items-center">
