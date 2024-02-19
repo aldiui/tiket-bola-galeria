@@ -80,29 +80,40 @@ class PengunjungController extends Controller
             if ($request->input("mode") == "datatable") {
                 return DataTables::of($pengunjungMasuks)
                     ->addColumn('durasi', function ($pengunjungMasuk) {
-                        $today = Carbon::now()->format('Y-m-d');
-                        $ticketDate = $pengunjungMasuk->created_at->format('Y-m-d');
+                        if ($pengunjungMasuk->start_tiket) {
+                            $startTicket = Carbon::parse($pengunjungMasuk->start_tiket);
+                            $today = Carbon::now()->format('Y-m-d');
+                            $ticketDate = $startTicket->format('Y-m-d');
 
-                        if ($today !== $ticketDate) {
-                            $pengunjungMasuk->created_at = Carbon::parse($ticketDate)->startOfDay();
+                            if ($today !== $ticketDate) {
+                                $startTicket->startOfDay();
+                                $pengunjungMasuk->created_at = $startTicket;
+                            }
+
+                            $endTime = $startTicket->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
+
+                            $now = Carbon::now();
+                            $now = $now->isAfter($endTime) ? $endTime : $now;
+
+                            $durationDiff = $now->diff($endTime);
+
+                            $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
+                            $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
+
+                            $spanId = 'countdown_' . $pengunjungMasuk->uuid;
+
+                            return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '">' . $pengunjungMasuk->duration_difference . '</span>';
+                        } else {
+                            return '<span class="badge bg-danger">Belum Mulai</span>';
                         }
-
-                        $endTime = $pengunjungMasuk->created_at->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
-
-                        $now = Carbon::now();
-                        $now = $now->isAfter($endTime) ? $endTime : $now;
-
-                        $durationDiff = $now->diff($endTime);
-
-                        $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
-                        $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
-
-                        $spanId = 'countdown_' . $pengunjungMasuk->uuid;
-
-                        return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '">' . $pengunjungMasuk->duration_difference . '</span>';
                     })
                     ->addColumn('tiket', function ($pengunjungMasuk) {
-                        return '<a class="btn btn-warning" href="/e-tiket/' . $pengunjungMasuk->uuid . '"> Tiket </a>';
+                        if ($pengunjungMasuk->start_tiket) {
+                            return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"> Tiket </a>';
+                        } else {
+                            return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"> Tiket </a> <button class="btn btn-sm btn-success" onclick="confirmStart(`/konfirmasi-pengunjung/' . $pengunjungMasuk->id . '`, `pengunjung-masuk-table`)">Konfirmasi</button>';
+                        }
+
                     })
                     ->addColumn('qrcode', function ($pengunjungMasuk) {
                         return '<img src="' . asset('/storage/pengunjung_masuk/' . $pengunjungMasuk->qr_code) . '" alt="qrcode" width="100px" height="100px">';
@@ -207,5 +218,20 @@ class PengunjungController extends Controller
         if (!getPermission('riwayat_pengunjung_keluar')) {return redirect()->route('dashboard');}
 
         return view('admin.pengunjung.riwayat-keluar');
+    }
+
+    public function konfirmasiPengunjung(Request $request, $id)
+    {
+        $pengunjung = PengunjungMasuk::find($id);
+
+        if (!$pengunjung) {
+            return $this->errorResponse(null, 'Data pengunjung tidak ditemukan.', 404);
+        }
+
+        $pengunjung->update([
+            "start_tiket" => now(),
+        ]);
+
+        return $this->successResponse($pengunjung, 'Data pengunjung dikonfirmasi.', 200);
     }
 }

@@ -19,7 +19,7 @@
                     <th>Tanggal dan Waktu</th>
                     <th>Admin</th>
                 </tr>
-            </thead> 
+            </thead>
             <tbody valign="top">
                 @foreach ($pengunjungMasuks as $pengunjungMasuk)
                     <tr>
@@ -29,7 +29,7 @@
                         <td>{{ $pengunjungMasuk->nama_orang_tua }}</td>
                         <td>{{ $pengunjungMasuk->metode_pembayaran }}</td>
                         <td>{{ formatRupiah($pengunjungMasuk->tarif) }}</td>
-                        <td>{{ formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s'); }}</td>
+                        <td>{{ formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s') }}</td>
                         <td>{{ $pengunjungMasuk->user->nama }}</td>
                     </tr>
                 @endforeach

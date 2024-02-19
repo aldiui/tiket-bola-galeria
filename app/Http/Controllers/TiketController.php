@@ -19,29 +19,35 @@ class TiketController extends Controller
             if ($request->input("mode") == "datatable") {
                 return DataTables::of($pengunjungMasuks)
                     ->addColumn('durasi', function ($pengunjungMasuk) {
-                        $today = Carbon::now()->format('Y-m-d');
-                        $ticketDate = $pengunjungMasuk->created_at->format('Y-m-d');
+                        if ($pengunjungMasuk->start_tiket) {
+                            $startTicket = Carbon::parse($pengunjungMasuk->start_tiket);
+                            $today = Carbon::now()->format('Y-m-d');
+                            $ticketDate = $startTicket->format('Y-m-d');
 
-                        if ($today !== $ticketDate) {
-                            $pengunjungMasuk->created_at = Carbon::parse($ticketDate)->startOfDay();
+                            if ($today !== $ticketDate) {
+                                $startTicket->startOfDay();
+                                $pengunjungMasuk->created_at = $startTicket;
+                            }
+
+                            $endTime = $startTicket->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
+
+                            $now = Carbon::now();
+                            $now = $now->isAfter($endTime) ? $endTime : $now;
+
+                            $durationDiff = $now->diff($endTime);
+
+                            $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
+                            $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
+
+                            $spanId = 'countdown_' . $pengunjungMasuk->uuid;
+
+                            return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '">' . $pengunjungMasuk->duration_difference . '</span>';
+                        } else {
+                            return '<span class="badge bg-danger">Belum Mulai</span>';
                         }
-
-                        $endTime = $pengunjungMasuk->created_at->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
-
-                        $now = Carbon::now();
-                        $now = $now->isAfter($endTime) ? $endTime : $now;
-
-                        $durationDiff = $now->diff($endTime);
-
-                        $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
-                        $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
-
-                        $spanId = 'countdown_' . $pengunjungMasuk->uuid;
-
-                        return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '">' . $pengunjungMasuk->duration_difference . '</span>';
                     })
                     ->addColumn('tiket', function ($pengunjungMasuk) {
-                        return '<a class="btn btn-warning" href="/e-tiket/' . $pengunjungMasuk->uuid . '"> Tiket </a>';
+                        return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"> Tiket </a>';
                     })
                     ->rawColumns(['durasi', 'tiket'])
                     ->addIndexColumn()
@@ -59,17 +65,17 @@ class TiketController extends Controller
             return redirect()->route('/');
         }
 
+        $startTicket = Carbon::parse($pengunjungMasuk->start_tiket);
         $today = Carbon::now()->format('Y-m-d');
-        $ticketDate = $pengunjungMasuk->created_at->format('Y-m-d');
+        $ticketDate = $startTicket->format('Y-m-d');
 
         if ($today !== $ticketDate) {
-            $pengunjungMasuk->created_at = Carbon::parse($ticketDate)->startOfDay();
+            $pengunjungMasuk->start_tiket = Carbon::parse($ticketDate)->startOfDay();
         }
 
-        $endTime = $pengunjungMasuk->created_at->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
+        $endTime = $startTicket->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
 
         $now = Carbon::now();
-
         $now = $now->isAfter($endTime) ? $endTime : $now;
 
         $durationDiff = $now->diff($endTime);
@@ -79,4 +85,5 @@ class TiketController extends Controller
 
         return view('admin.tiket.show', compact('pengunjungMasuk'));
     }
+
 }

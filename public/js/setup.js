@@ -189,6 +189,31 @@ const confirmDelete = (url, tableId) => {
         }
     });
 };
+const confirmStart = (url, tableId) => {
+    Swal.fire({
+        title: "Apakah Kamu Yakin?",
+        text: "Ingin menjalankan tiket ini!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Jalankan!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const data = null;
+
+            const successCallback = function (response) {
+                handleSuccess(response, tableId, null);
+            };
+
+            const errorCallback = function (error) {
+                console.log(error);
+            };
+
+            ajaxCall(url, "POST", data, successCallback, errorCallback);
+        }
+    });
+};
 
 const setButtonLoadingState = (buttonSelector, isLoading, title = "Simpan") => {
     const buttonText = isLoading
