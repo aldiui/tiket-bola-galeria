@@ -47,6 +47,7 @@ const getModal = (targetId, url = null, fields = null) => {
     $(`#${targetId}`).modal("show");
     $(`#${targetId} .form-control`).removeClass("is-invalid");
     $(`#${targetId} .invalid-feedback`).html("");
+    $(`#${targetId} input[type="checkbox"]`).prop("checked", false).trigger("change");
 
     if (url) {
         const successCallback = function (response) {
