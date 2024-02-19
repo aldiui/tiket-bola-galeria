@@ -85,7 +85,6 @@ class TiketController extends Controller
             $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
         } else {
             $pengunjungMasuk->duration_difference = '00:00:00';
-
         }
 
         return view('admin.tiket.show', compact('pengunjungMasuk'));
