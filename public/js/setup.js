@@ -60,40 +60,16 @@ const getModal = (targetId, url = null, fields = null) => {
             });
 
             if (response.data.hak_akses) {
-                $(`#${targetId} #tambah_pengunjung_masuk_edit`)
-                    .prop(
-                        "checked",
-                        response.data.hak_akses.tambah_pengunjung_masuk
-                    )
-                    .trigger("change");
-                $(`#${targetId} #tambah_pengunjung_keluar_edit`)
-                    .prop(
-                        "checked",
-                        response.data.hak_akses.tambah_pengunjung_keluar
-                    )
-                    .trigger("change");
-                $(`#${targetId} #riwayat_pengunjung_masuk_edit`)
-                    .prop(
-                        "checked",
-                        response.data.hak_akses.riwayat_pengunjung_masuk
-                    )
-                    .trigger("change");
-                $(`#${targetId} #riwayat_pengunjung_keluar_edit`)
-                    .prop(
-                        "checked",
-                        response.data.hak_akses.riwayat_pengunjung_keluar
-                    )
-                    .trigger("change");
-                $(`#${targetId} #laporan_keuangan_edit`)
-                    .prop("checked", response.data.hak_akses.laporan_keuangan)
-                    .trigger("change");
-                $(`#${targetId} #user_management_edit`)
-                    .prop("checked", response.data.hak_akses.user_management)
-                    .trigger("change");
-                $(`#${targetId} #ubah_tarif_edit`)
-                    .prop("checked", response.data.hak_akses.ubah_tarif)
-                    .trigger("change");
+                const hakAkses = response.data.hak_akses;
+                $(`#${targetId} #tambah_pengunjung_masuk_edit`).prop("checked", hakAkses.tambah_pengunjung_masuk == 1).trigger("change");
+                $(`#${targetId} #tambah_pengunjung_keluar_edit`).prop("checked", hakAkses.tambah_pengunjung_keluar == 1).trigger("change");
+                $(`#${targetId} #riwayat_pengunjung_masuk_edit`).prop("checked", hakAkses.riwayat_pengunjung_masuk == 1).trigger("change");
+                $(`#${targetId} #riwayat_pengunjung_keluar_edit`).prop("checked", hakAkses.riwayat_pengunjung_keluar == 1).trigger("change");
+                $(`#${targetId} #laporan_keuangan_edit`).prop("checked", hakAkses.laporan_keuangan == 1).trigger("change");
+                $(`#${targetId} #user_management_edit`).prop("checked", hakAkses.user_management == 1).trigger("change");
+                $(`#${targetId} #ubah_tarif_edit`).prop("checked", hakAkses.ubah_tarif == 1).trigger("change");
             }
+            
         };
 
         const errorCallback = function (error) {
