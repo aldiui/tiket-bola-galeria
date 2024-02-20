@@ -16,6 +16,12 @@ return new class extends Migration
             $table->uuid();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('pengunjung_masuk_id');
+            $table->string('nama_anak');
+            $table->string('nama_panggilan');
+            $table->string('nama_orang_tua');
+            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
+            $table->integer('durasi_bermain');
+            $table->string('nomor_telepon');
             $table->timestamps();
 
             $table->foreign('pengunjung_masuk_id')->references('id')->on('pengunjung_masuks')->onDelete('cascade');

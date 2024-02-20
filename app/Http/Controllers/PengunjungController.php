@@ -151,6 +151,12 @@ class PengunjungController extends Controller
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
                 'pengunjung_masuk_id' => 'required',
+                'nama_anak' => 'required',
+                'nama_panggilan' => 'required',
+                'nama_orang_tua' => 'required',
+                'jenis_kelamin' => 'required',
+                'nomor_telepon' => 'required',
+                'durasi_bermain' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -172,6 +178,12 @@ class PengunjungController extends Controller
             $pengunjungKeluar = PengunjungKeluar::create([
                 'uuid' => $uuid,
                 'pengunjung_masuk_id' => $request->input('pengunjung_masuk_id'),
+                'nama_anak' => $request->input('nama_anak'),
+                'nama_panggilan' => $request->input('nama_panggilan'),
+                'nama_orang_tua' => $request->input('nama_orang_tua'),
+                'jenis_kelamin' => $request->input('jenis_kelamin'),
+                'nomor_telepon' => $request->input('nomor_telepon'),
+                'durasi_bermain' => $request->input('durasi_bermain'),
                 'user_id' => Auth::user()->id,
             ]);
 
@@ -188,20 +200,7 @@ class PengunjungController extends Controller
             $pengunjungKeluars = PengunjungKeluar::with('pengunjungMasuk')->whereDate('created_at', $tanggal)->latest()->get();
             if ($request->input("mode") == "datatable") {
                 return DataTables::of($pengunjungKeluars)
-                    ->addColumn('nama_anak', function ($pengunjungKeluar) {
-                        return $pengunjungKeluar->pengunjungMasuk->nama_anak;
-                    })
-                    ->addColumn('nama_panggilan', function ($pengunjungKeluar) {
-                        return $pengunjungKeluar->pengunjungMasuk->nama_panggilan;
-                    })
-                    ->addColumn('durasi_bermain', function ($pengunjungKeluar) {
-                        return $pengunjungKeluar->pengunjungMasuk->durasi_bermain;
-                    })
-                    ->addColumn('nama_orang_tua', function ($pengunjungKeluar) {
-                        return $pengunjungKeluar->pengunjungMasuk->nama_orang_tua;
-                    })
                     ->addIndexColumn()
-                    ->rawColumns(['nama_anak', 'nama_panggilan', 'durasi_bermain', 'nama_orang_tua'])
                     ->make(true);
             } elseif ($request->input("mode") == "pie") {
                 $countPengunjungKeluarLakiLaki = PengunjungKeluar::whereHas('pengunjungMasuk', function ($query) {
@@ -231,6 +230,17 @@ class PengunjungController extends Controller
         $pengunjung->update([
             "start_tiket" => now(),
         ]);
+
+        return $this->successResponse($pengunjung, 'Data pengunjung dikonfirmasi.', 200);
+    }
+
+    public function getPengunjungMasuk($id)
+    {
+        $pengunjung = PengunjungMasuk::find($id);
+
+        if (!$pengunjung) {
+            return $this->errorResponse(null, 'Data pengunjung tidak ditemukan.', 404);
+        }
 
         return $this->successResponse($pengunjung, 'Data pengunjung dikonfirmasi.', 200);
     }
