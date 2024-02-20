@@ -64,11 +64,11 @@
                                 </li>
                             </ul>
                             <div class="text-center">
+                                <span id="countdown" class="badge bg-primary rounded-3 fs-2"></span>
                                 <div>
                                     <img src="{{ asset('/storage/pengunjung_masuk/' . $pengunjungMasuk->qr_code) }}"
                                         width="150px">
                                 </div>
-                                <span id="countdown" class="badge bg-primary rounded-3 fs-3"></span>
                             </div>
                         </div>
                     </div>
