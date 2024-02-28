@@ -1,17 +1,19 @@
 <?php
 
 return [
+
     /*
-    |---------------------------------------------------------------------------------------
-    | Baris Bahasa untuk Penomoran Halaman
-    |---------------------------------------------------------------------------------------
+    |--------------------------------------------------------------------------
+    | Pagination Language Lines
+    |--------------------------------------------------------------------------
     |
-    | Baris bahasa berikut meggunakan pustaka penomoran untuk membuat
-    | tautan yang sederhana. Anda bebas untuk mengubahnya kapan pun yang Anda
-    | inginkan menyesuaikan dengan pandangan Anda agar lebih cocok ke aplikasi Anda.
+    | Baris bahasa berikut digunakan oleh perpustakaan paginator untuk membangun
+    | tautan pagination sederhana. Anda bebas mengubahnya menjadi apapun
+    | yang Anda inginkan untuk menyesuaikan tampilan Anda agar sesuai dengan aplikasi Anda.
     |
-    */
+     */
 
     'previous' => '&laquo; Sebelumnya',
-    'next'     => 'Berikutnya &raquo;',
+    'next' => 'Berikutnya &raquo;',
+
 ];

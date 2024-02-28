@@ -1,17 +1,20 @@
 <?php
 
 return [
+
     /*
     |--------------------------------------------------------------------------
-    | Baris-baris bahasa untuk autentifikasi
+    | Authentication Language Lines
     |--------------------------------------------------------------------------
     |
-    | Baris bahasa berikut digunakan selama proses autentifikasi untuk beberapa pesan 
-    | yang perlu kita tampilkan ke pengguna. Anda bebas untuk memodifikasi
-    | baris bahasa sesuai dengan keperluan aplikasi anda.
+    | Baris bahasa berikut digunakan selama otentikasi untuk berbagai
+    | pesan yang perlu kami tampilkan kepada pengguna. Anda bebas untuk memodifikasi
+    | baris-baris bahasa ini sesuai dengan kebutuhan aplikasi Anda.
     |
-    */
+     */
 
-    'failed'   => 'Identitas tersebut tidak cocok dengan data kami.',
-    'throttle' => 'Terlalu banyak usaha masuk. Silahkan coba lagi dalam :seconds detik.',
+    'failed' => 'Kredensial ini tidak cocok dengan catatan kami.',
+    'password' => 'Kata sandi yang diberikan salah.',
+    'throttle' => 'Terlalu banyak percobaan login. Silakan coba lagi dalam :seconds detik.',
+
 ];
