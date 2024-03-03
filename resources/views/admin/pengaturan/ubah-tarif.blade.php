@@ -19,7 +19,7 @@
                     <small class="invalid-feedback" id="errortarif"></small>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Ubah Tarif</button>
+                    <button type="submit" class="btn btn-primary"><i class="ti ti-pencil me-1"></i>Ubah Tarif</button>
                 </div>
             </form>
         </div>
@@ -50,13 +50,13 @@
                             $('#updateData .form-control').removeClass("is-invalid");
                             $('#updateData .invalid-feedback').html("");
                             setButtonLoadingState("#updateData .btn.btn-primary", false,
-                                'Ubah Tarif');
+                                `<i class="ti ti-pencil me-1"></i>Ubah Tarif`);
                             handleSuccess(response, null, null, "no");
                         };
 
                         const errorCallback = function(error) {
                             setButtonLoadingState("#updateData .btn.btn-primary", false,
-                                'Ubah Tarif');
+                                `<i class="ti ti-pencil me-1"></i>Ubah Tarif`);
                             handleValidationErrors(error, "updateData", ["tarif"]);
                         };
 

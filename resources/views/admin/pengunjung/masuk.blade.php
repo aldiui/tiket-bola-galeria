@@ -70,7 +70,7 @@
                     <small class="d-block pt-2">Tarif otomatis berdasarkan waktu yang di pilih</small>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary"><i class="ti ti-plus me-1"></i>Simpan</button>
                 </div>
             </form>
         </div>
@@ -95,12 +95,14 @@
                 const successCallback = function(response) {
                     $('#saveData .form-control').removeClass("is-invalid");
                     $('#saveData .invalid-feedback').html("").val();
-                    setButtonLoadingState("#saveData .btn.btn-primary", false);
+                    setButtonLoadingState("#saveData .btn.btn-primary", false,
+                        `<i class="ti ti-plus me-1"></i>Simpan`);
                     handleSuccess(response, null, null, "/riwayat-pengunjung-masuk");
                 };
 
                 const errorCallback = function(error) {
-                    setButtonLoadingState("#saveData .btn.btn-primary", false);
+                    setButtonLoadingState("#saveData .btn.btn-primary", false,
+                        `<i class="ti ti-plus me-1"></i>Simpan`);
                     handleValidationErrors(error, "saveData", ["nama_anak", 'nama_panggilan',
                         'nama_orang_tua', 'jenis_kelamin', 'nomor_telepon', 'durasi_bermain',
                         'metode_pembayaran', 'tarif'

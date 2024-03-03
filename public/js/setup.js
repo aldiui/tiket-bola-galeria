@@ -47,9 +47,18 @@ const getModal = (targetId, url = null, fields = null) => {
     $(`#${targetId}`).modal("show");
     $(`#${targetId} .form-control`).removeClass("is-invalid");
     $(`#${targetId} .invalid-feedback`).html("");
-    $(`#${targetId} input[type="checkbox"]`).prop("checked", false).trigger("change");
+    $(`#${targetId} input[type="checkbox"]`)
+        .prop("checked", false)
+        .trigger("change");
+
+    const cekLabelModal = $("#label-modal");
+    if (cekLabelModal) {
+        $("#id").val("");
+        cekLabelModal.text("Tambah");
+    }
 
     if (url) {
+        cekLabelModal.text("Edit");
         const successCallback = function (response) {
             fields.forEach((field) => {
                 if (response.data[field]) {
@@ -61,15 +70,28 @@ const getModal = (targetId, url = null, fields = null) => {
 
             if (response.data.hak_akses) {
                 const hakAkses = response.data.hak_akses;
-                $(`#${targetId} #tambah_pengunjung_masuk_edit`).prop("checked", hakAkses.tambah_pengunjung_masuk == 1).trigger("change");
-                $(`#${targetId} #tambah_pengunjung_keluar_edit`).prop("checked", hakAkses.tambah_pengunjung_keluar == 1).trigger("change");
-                $(`#${targetId} #riwayat_pengunjung_masuk_edit`).prop("checked", hakAkses.riwayat_pengunjung_masuk == 1).trigger("change");
-                $(`#${targetId} #riwayat_pengunjung_keluar_edit`).prop("checked", hakAkses.riwayat_pengunjung_keluar == 1).trigger("change");
-                $(`#${targetId} #laporan_keuangan_edit`).prop("checked", hakAkses.laporan_keuangan == 1).trigger("change");
-                $(`#${targetId} #user_management_edit`).prop("checked", hakAkses.user_management == 1).trigger("change");
-                $(`#${targetId} #ubah_tarif_edit`).prop("checked", hakAkses.ubah_tarif == 1).trigger("change");
+                $(`#${targetId} #tambah_pengunjung_masuk`)
+                    .prop("checked", hakAkses.tambah_pengunjung_masuk == 1)
+                    .trigger("change");
+                $(`#${targetId} #tambah_pengunjung_keluar`)
+                    .prop("checked", hakAkses.tambah_pengunjung_keluar == 1)
+                    .trigger("change");
+                $(`#${targetId} #riwayat_pengunjung_masuk`)
+                    .prop("checked", hakAkses.riwayat_pengunjung_masuk == 1)
+                    .trigger("change");
+                $(`#${targetId} #riwayat_pengunjung_keluar`)
+                    .prop("checked", hakAkses.riwayat_pengunjung_keluar == 1)
+                    .trigger("change");
+                $(`#${targetId} #laporan_keuangan`)
+                    .prop("checked", hakAkses.laporan_keuangan == 1)
+                    .trigger("change");
+                $(`#${targetId} #user_management`)
+                    .prop("checked", hakAkses.user_management == 1)
+                    .trigger("change");
+                $(`#${targetId} #ubah_tarif`)
+                    .prop("checked", hakAkses.ubah_tarif == 1)
+                    .trigger("change");
             }
-            
         };
 
         const errorCallback = function (error) {
@@ -393,4 +415,56 @@ const updateCountdown = (targetElement, duration) => {
     };
 
     updateTimer();
+};
+
+const getTicketNow = () => {
+    const successCallback = function (response) {
+        const kode = $("#now").val();
+        if (response.data.id != kode) {
+            $("#now").val(response.data.id);
+            $("#detail").html(`
+                <div clas="py-4">
+                    <div class="mb-3 text-center">
+                        <img src="/storage/pengunjung_masuk/${response.data.qr_code}"
+                            width="150px">
+                    </div>
+                    <table class="table table-striped" width="100%">
+                        <tbody>
+                            <tr>
+                                <td width="30%">Nama Anak</td>
+                                <td width="2%">:</td>
+                                <td>${response.data.nama_anak}</td>
+                            </tr>
+                            <tr>
+                                <td width="30%">Orang Tua</td>
+                                <td width="2%">:</td>
+                                <td>${response.data.nama_orang_tua}</td>
+                            </tr>
+                            <tr>
+                                <td>Jenis Kelamin</td>
+                                <td>:</td>
+                                <td>${response.data.jenis_kelamin}</td>
+                            </tr>
+                            <tr>
+                                <td>Pembayaran</td>
+                                <td>:</td>
+                                <td>${response.data.metode_pembayaran}</td>
+                            </tr>
+                            <tr>
+                                <td>Bermain</td>
+                                <td>:</td>
+                                <td>${response.data.durasi_bermain} Jam</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `);
+        }
+    };
+
+    const errorCallback = function (error) {
+        console.log(error);
+    };
+
+    ajaxCall("/get-tiket-now", "GET", null, successCallback, errorCallback);
 };

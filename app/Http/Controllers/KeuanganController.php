@@ -34,7 +34,7 @@ class KeuanganController extends Controller
                         return formatRupiah($pengunjungMasuk->tarif);
                     })
                     ->addColumn('durasi', function ($pengunjungMasuk) {
-                        return '<span class="badge bg-primary rounded-3 fw-semibold">' . $pengunjungMasuk->durasi_bermain . ' Jam</span>';
+                        return '<span class="badge bg-primary rounded-3 fw-semibold"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->durasi_bermain . ' Jam</span>';
                     })
                     ->rawColumns(['admin', 'tanggal', 'pembayaran', 'durasi'])
                     ->addIndexColumn()

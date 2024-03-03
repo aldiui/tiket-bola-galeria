@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengunjungMasuk;
+use App\Traits\ApiResponder;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
 
 class TiketController extends Controller
 {
+    use ApiResponder;
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
             $tanggal = date('Y-m-d');
-            $pengunjungMasuks = PengunjungMasuk::whereDate('created_at', $tanggal)->latest()->get();
+            $pengunjungMasuks = PengunjungMasuk::whereDate('start_tiket', $tanggal)->latest()->get();
 
             if ($request->input("mode") == "datatable") {
                 return DataTables::of($pengunjungMasuks)
@@ -41,13 +44,13 @@ class TiketController extends Controller
 
                             $spanId = 'countdown_' . $pengunjungMasuk->uuid;
 
-                            return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '">' . $pengunjungMasuk->duration_difference . '</span>';
+                            return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->duration_difference . '</span>';
                         } else {
-                            return '<span class="badge bg-danger">Belum Mulai</span>';
+                            return '<span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Belum Mulai</span>';
                         }
                     })
                     ->addColumn('tiket', function ($pengunjungMasuk) {
-                        return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"> Tiket </a>';
+                        return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"><i class="ti ti-ticket me-1"></i> Tiket </a>';
                     })
                     ->rawColumns(['durasi', 'tiket'])
                     ->addIndexColumn()
@@ -88,6 +91,16 @@ class TiketController extends Controller
         }
 
         return view('admin.tiket.show', compact('pengunjungMasuk'));
+    }
+
+    public function getTiketNow(Request $request)
+    {
+        if ($request->ajax()) {
+            $pengunjungMasuk = PengunjungMasuk::latest()->first();
+            return $this->successResponse($pengunjungMasuk, 'Data tiket ditemukan.');
+        }
+
+        return view('admin.tiket.now');
     }
 
 }

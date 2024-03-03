@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
 Route::get('e-tiket', [TiketController::class, 'index'])->name('eTiket.index');
 Route::get('e-tiket/{uuid}', [TiketController::class, 'show'])->name('eTiket.show');
+Route::get('get-tiket-now', [TiketController::class, 'getTiketNow'])->name('eTiket.getTiketNow');
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');

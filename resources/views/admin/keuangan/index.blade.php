@@ -8,13 +8,26 @@
 
 @section('main')
     @php
-        $bulans = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $bulans = [
+            'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember',
+        ];
     @endphp
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title fw-semibold">Rincian @yield('title')</h5>
             <div>
-                <a id="cetak_laporan" class="btn btn-primary" target="_blank">Cetak</a>
+                <a id="cetak_laporan" class="btn btn-primary" target="_blank"><i class="ti ti-file me-1"></i>Cetak</a>
             </div>
         </div>
         <div class="card-body">

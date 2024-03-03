@@ -102,16 +102,16 @@ class PengunjungController extends Controller
 
                             $spanId = 'countdown_' . $pengunjungMasuk->uuid;
 
-                            return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '">' . $pengunjungMasuk->duration_difference . '</span>';
+                            return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '"> <i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->duration_difference . '</span>';
                         } else {
-                            return '<span class="badge bg-danger">Belum Mulai</span>';
+                            return '<span class="badge bg-danger"><i class="ti ti-clock me-1"></i>Belum Mulai</span>';
                         }
                     })
                     ->addColumn('tiket', function ($pengunjungMasuk) {
                         if ($pengunjungMasuk->start_tiket) {
-                            return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"> Tiket </a>';
+                            return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"><i class="ti ti-ticket me-1"></i>Tiket </a>';
                         } else {
-                            return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"> Tiket </a> <button class="btn btn-sm btn-success" onclick="confirmStart(`/konfirmasi-pengunjung/' . $pengunjungMasuk->id . '`, `pengunjung-masuk-table`)">Konfirmasi</button>';
+                            return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"><i class="ti ti-ticket me-1"></i> Tiket </a> <button class="btn btn-sm btn-success" onclick="confirmStart(`/konfirmasi-pengunjung/' . $pengunjungMasuk->id . '`, `pengunjung-masuk-table`)"><i class="ti ti-check me-1"></i>Konfirmasi</button>';
                         }
 
                     })

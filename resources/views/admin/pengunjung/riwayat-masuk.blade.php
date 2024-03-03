@@ -8,8 +8,12 @@
 
 @section('main')
     <div class="card">
-        <div class="card-header">
-            <h5 class="card-title fw-semibold">Riwayat @yield('title')</h5>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title fw-semibold">@yield('title')</h5>
+            <div>
+                <a class="btn btn-info" href="{{ route('eTiket.getTiketNow') }}" target="_blank"><i
+                        class="ti ti-ticket me-1"></i>Tiket Terbaru</a>
+            </div>
         </div>
         <div class="card-body">
             <div class="row mb-3">

@@ -50,8 +50,9 @@ class PengaturanController extends Controller
             if ($request->input("mode") == "datatable") {
                 return DataTables::of($admins)
                     ->addColumn('aksi', function ($admin) {
-                        $editButton = '<button class="btn btn-sm btn-warning me-1" onclick="getModal(`editModal`, `/user-management/' . $admin->id . '`, [`id`, `nama`, `email`])">Edit</button>';
-                        $deleteButton = '<button class="btn btn-sm btn-danger" onclick="confirmDelete(`/user-management/' . $admin->id . '`, `user-table`)">Hapus</button>';
+                        $editButton = '<button class="btn btn-sm btn-warning me-1" onclick="getModal(`createModal`, `/user-management/' . $admin->id . '`, [`id`, `nama`, `email`])">
+                        <i class="ti ti-edit me-1"></i>Edit</button>';
+                        $deleteButton = '<button class="btn btn-sm btn-danger" onclick="confirmDelete(`/user-management/' . $admin->id . '`, `user-table`)"><i class="ti ti-trash me-1"></i>Hapus</button>';
                         return $editButton . $deleteButton;
                     })
                     ->addIndexColumn()

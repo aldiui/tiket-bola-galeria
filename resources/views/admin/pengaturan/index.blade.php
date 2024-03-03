@@ -11,7 +11,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title fw-semibold">@yield('title')</h5>
             <button type="button" class="btn btn-primary" onclick="getModal('createModal')">
-                Tambah
+                <i class="ti ti-plus me-1"></i>Tambah
             </button>
         </div>
         <div class="card-body">
@@ -22,7 +22,7 @@
                             <th width="5%">#</th>
                             <th>Nama</th>
                             <th>Email</th>
-                            <th width="15%">Aksi</th>
+                            <th width="20%">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,7 +32,6 @@
         </div>
     </div>
     @include('admin.pengaturan.create')
-    @include('admin.pengaturan.edit')
 @endsection
 
 @push('scripts')
@@ -61,39 +60,26 @@
             $("#saveData").submit(function(e) {
                 setButtonLoadingState("#saveData .btn.btn-primary", true);
                 e.preventDefault();
-                const url = "{{ route('userManagement.store') }}";
+
+                const kode = $("#saveData #id").val();
+                let url = "{{ route('userManagement.store') }}";
                 const data = new FormData(this);
 
+                if (kode !== "") {
+                    data.append("_method", "PUT");
+                    url = `/user-management/${kode}`;
+                }
+
                 const successCallback = function(response) {
-                    setButtonLoadingState("#saveData .btn.btn-primary", false);
+                    setButtonLoadingState("#saveData .btn.btn-primary", false,
+                        `<i class="ti ti-plus me-1"></i>Simpan`);
                     handleSuccess(response, "user-table", "createModal");
                 };
 
                 const errorCallback = function(error) {
-                    setButtonLoadingState("#saveData .btn.btn-primary", false);
+                    setButtonLoadingState("#saveData .btn.btn-primary", false,
+                        `<i class="ti ti-plus me-1"></i>Simpan`);
                     handleValidationErrors(error, "saveData", ["nama", "email", "password",
-                        "confirm_password"
-                    ]);
-                };
-
-                ajaxCall(url, "POST", data, successCallback, errorCallback);
-            });
-
-            $("#updateData").submit(function(e) {
-                setButtonLoadingState("#updateData .btn.btn-primary", true);
-                e.preventDefault();
-                const kode = $("#updateData #id").val();
-                const url = `/user-management/${kode}`;
-                const data = new FormData(this);
-
-                const successCallback = function(response) {
-                    setButtonLoadingState("#updateData .btn.btn-primary", false);
-                    handleSuccess(response, "user-table", "editModal");
-                };
-
-                const errorCallback = function(error) {
-                    setButtonLoadingState("#updateData .btn.btn-primary", false);
-                    handleValidationErrors(error, "updateData", ["nama", "email", "password",
                         "confirm_password"
                     ]);
                 };

@@ -33,10 +33,12 @@
                                         <small class="invalid-feedback" id="errorpassword"></small>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <button type="submit" class="btn d-block w-100 btn-primary">Login</button>
+                                        <button type="submit" class="btn d-block w-100 btn-primary"><i
+                                                class="ti ti-login me-1"></i>Login</button>
                                     </div>
                                 </form>
                                 <a href="{{ route('eTiket.index') }}" class="btn d-block w-100 btn-secondary">
+                                    <i class="ti ti-layout me-1"></i>
                                     Monitoring Tiket
                                 </a>
                             </div>
@@ -52,18 +54,21 @@
     <script>
         $(document).ready(function() {
             $("#login").submit(function(e) {
-                setButtonLoadingState("#login .btn.btn-primary", true, "Login");
+                setButtonLoadingState("#login .btn.btn-primary", true,
+                    `Login`);
                 e.preventDefault();
                 const url = "{{ route('login') }}";
                 const data = new FormData(this);
 
                 const successCallback = function(response) {
-                    setButtonLoadingState("#login .btn.btn-primary", false, "Login");
+                    setButtonLoadingState("#login .btn.btn-primary", false,
+                        `<i class="ti ti-login me-1"></i>Login`);
                     handleSuccess(response, null, null, "./");
                 };
 
                 const errorCallback = function(error) {
-                    setButtonLoadingState("#login .btn.btn-primary", false, "Login");
+                    setButtonLoadingState("#login .btn.btn-primary", false,
+                        `<i class="ti ti-login me-1"></i>Login`);
                     handleValidationErrors(error, "login", ["email", "password"]);
                 };
 

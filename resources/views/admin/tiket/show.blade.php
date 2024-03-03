@@ -75,14 +75,15 @@
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
 
-    @push('scripts')
-        <script>
-            $(document).ready(function() {
-                const targetElement = '#countdown';
-                const duration = '{{ $pengunjungMasuk->duration_difference }}';
-                updateCountdown(targetElement, duration);
-            });
-        </script>
-    @endpush
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            const targetElement = '#countdown';
+            const duration = '{{ $pengunjungMasuk->duration_difference }}';
+            updateCountdown(targetElement, duration);
+        });
+    </script>
+@endpush
