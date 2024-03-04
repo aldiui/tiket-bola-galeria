@@ -26,7 +26,7 @@
                                     </div>
                                     <div class="timeline-desc text-dark mt-n1"> Nama Anak :
                                         {{ $pengunjungMasuk->nama_anak }}
-                                        ({{ $pengunjungMasuk->nama_panggilan }})
+                                        (Panggilan : {{ $pengunjungMasuk->nama_panggilan }})
                                 </li>
                                 <li class="timeline-item d-flex position-relative overflow-hidden">
                                     <div class="timeline-badge-wrap d-flex flex-column align-items-center">
