@@ -96,8 +96,13 @@ class TiketController extends Controller
     public function getTiketNow(Request $request)
     {
         if ($request->ajax()) {
-            $pengunjungMasuk = PengunjungMasuk::latest()->first();
+            $pengunjungMasuk = PengunjungMasuk::where('start_tiket', null)
+                ->where('created_at', '>=', now()->subHours(6))
+                ->latest()
+                ->first();
+
             return $this->successResponse($pengunjungMasuk, 'Data tiket ditemukan.');
+
         }
 
         return view('admin.tiket.now');

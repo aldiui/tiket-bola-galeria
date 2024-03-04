@@ -425,43 +425,52 @@ const updateCountdown = (targetElement, duration) => {
 const getTicketNow = () => {
     const successCallback = function (response) {
         const kode = $("#now").val();
-        if (response.data.id != kode) {
-            $("#now").val(response.data.id);
-            $("#detail").html(`
-                <div clas="py-4">
-                    <div class="mb-3 text-center">
-                        <img src="/storage/pengunjung_masuk/${response.data.qr_code}"
-                            width="150px">
+        if (response.data) {
+            if (response.data.id != kode) {
+                $("#now").val(response.data.id);
+                $("#detail").html(`
+                    <div clas="py-4">
+                        <div class="mb-3 text-center">
+                            <img src="/storage/pengunjung_masuk/${response.data.qr_code}"
+                                width="150px">
+                        </div>
+                        <table class="table table-striped" width="100%">
+                            <tbody>
+                                <tr>
+                                    <td width="30%">Nama Anak</td>
+                                    <td width="2%">:</td>
+                                    <td>${response.data.nama_anak}</td>
+                                </tr>
+                                <tr>
+                                    <td width="30%">Orang Tua</td>
+                                    <td width="2%">:</td>
+                                    <td>${response.data.nama_orang_tua}</td>
+                                </tr>
+                                <tr>
+                                    <td>Jenis Kelamin</td>
+                                    <td>:</td>
+                                    <td>${response.data.jenis_kelamin}</td>
+                                </tr>
+                                <tr>
+                                    <td>Pembayaran</td>
+                                    <td>:</td>
+                                    <td>${response.data.metode_pembayaran}</td>
+                                </tr>
+                                <tr>
+                                    <td>Bermain</td>
+                                    <td>:</td>
+                                    <td>${response.data.durasi_bermain} Jam</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <table class="table table-striped" width="100%">
-                        <tbody>
-                            <tr>
-                                <td width="30%">Nama Anak</td>
-                                <td width="2%">:</td>
-                                <td>${response.data.nama_anak}</td>
-                            </tr>
-                            <tr>
-                                <td width="30%">Orang Tua</td>
-                                <td width="2%">:</td>
-                                <td>${response.data.nama_orang_tua}</td>
-                            </tr>
-                            <tr>
-                                <td>Jenis Kelamin</td>
-                                <td>:</td>
-                                <td>${response.data.jenis_kelamin}</td>
-                            </tr>
-                            <tr>
-                                <td>Pembayaran</td>
-                                <td>:</td>
-                                <td>${response.data.metode_pembayaran}</td>
-                            </tr>
-                            <tr>
-                                <td>Bermain</td>
-                                <td>:</td>
-                                <td>${response.data.durasi_bermain} Jam</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                `);
+            }
+        } else {
+            $("#detail").html(`
+                <div class="text-center py-5">
+                    <i class="ti ti-reload text-danger me-1"></i>
+                    Belum Ada Tiket
                 </div>
             `);
         }
