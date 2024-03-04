@@ -238,7 +238,12 @@ const select2ToJsonPengunjungMasuk = () => {
         responseList.forEach(function (row) {
             const option = $("<option></option>");
             option.attr("value", row.id);
-            option.text(row.nama_anak + " - " + row.nama_orang_tua);
+            option.text(
+                "Anak : " +
+                    row.nama_anak +
+                    " - Orang Tua : " +
+                    row.nama_orang_tua
+            );
             selectElem.append(option);
         });
 

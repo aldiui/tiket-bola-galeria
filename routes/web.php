@@ -28,7 +28,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::match(['get', 'post'], 'ubah-tarif', [PengaturanController::class, 'ubahTarif'])->name('ubahTarif');
     Route::match(['get', 'post'], 'pengunjung-masuk', [PengunjungController::class, 'pengunjungMasuk'])->name('pengunjungMasuk');
-    Route::match(['get', 'post'], 'pengunjung-masuk', [PengunjungController::class, 'pengunjungMasuk'])->name('pengunjungMasuk');
     Route::post('konfirmasi-pengunjung/{id}', [PengunjungController::class, 'konfirmasiPengunjung'])->name('konfirmasiPengunjung');
     Route::get('pengunjung-masuk/{id}', [PengunjungController::class, 'getPengunjungMasuk'])->name('getPengunjungMasuk');
     Route::get('riwayat-pengunjung-masuk', [PengunjungController::class, 'riwayatPengunjungMasuk'])->name('riwayatPengunjungMasuk');

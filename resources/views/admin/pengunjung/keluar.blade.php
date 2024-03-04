@@ -102,29 +102,6 @@
 
                 ajaxCall(url, "POST", data, successCallback, errorCallback);
             });
-
-            $("#pengunjung_masuk_id").on("change", function() {
-                const pengunjungMasukId = $("#pengunjung_masuk_id").val();
-                const url = "/pengunjung-masuk/" + pengunjungMasukId;
-
-                const successCallback = function(response) {
-                    const data = response.data;
-                    $("#nama_anak").val(data.nama_anak);
-                    $("#nama_panggilan").val(data.nama_panggilan);
-                    $("#nama_orang_tua").val(data.nama_orang_tua);
-                    $("#jenis_kelamin").val(data.jenis_kelamin);
-                    $("#nomor_telepon").val(data.nomor_telepon);
-                    $("#durasi_bermain").val(data.durasi_bermain);
-                };
-
-                const errorCallback = function(error) {
-                    console.log(error)
-                };
-
-                ajaxCall(url, "GET", data = null, successCallback, errorCallback);
-            });
-
-
         });
     </script>
 @endpush

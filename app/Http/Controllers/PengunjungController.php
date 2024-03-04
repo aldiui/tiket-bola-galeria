@@ -130,7 +130,7 @@ class PengunjungController extends Controller
                     $countPengunjungMasukPerempuan,
                 ], 'Data pengunjung masuk ditemukan.');
             } else {
-                $pengunjungMasukDay = PengunjungMasuk::whereDate('created_at', date('Y-m-d'))
+                $pengunjungMasukDay = PengunjungMasuk::whereDate('start_tiket', date('Y-m-d'))
                     ->whereNotIn('id', function ($query) {
                         $query->select('pengunjung_masuk_id')->from('pengunjung_keluars');
                     })->get();
@@ -166,6 +166,20 @@ class PengunjungController extends Controller
             $pengunjungMasuk = PengunjungMasuk::find($request->input('pengunjung_masuk_id'));
             if (!$pengunjungMasuk) {
                 return $this->errorResponse(null, 'Data Pengunjung Masuk tidak ditemukan.', 404);
+            }
+
+            $validasiPengunjungMasuk = [
+                'nama_anak' => $pengunjungMasuk->nama_anak === $request->input('nama_anak') ? null : ['Maaf Data Anak Tidak Sesuai'],
+                'nama_panggilan' => $pengunjungMasuk->nama_panggilan === $request->input('nama_panggilan') ? null : ['Maaf Data Panggilan Tidak Sesuai'],
+                'nama_orang_tua' => $pengunjungMasuk->nama_orang_tua === $request->input('nama_orang_tua') ? null : ['Maaf Data Orang Tua Tidak Sesuai'],
+                'nomor_telepon' => $pengunjungMasuk->nomor_telepon === $request->input('nomor_telepon') ? null : ['Maaf Data Nomor Telepon Tidak Sesuai'],
+                'durasi_bermain' => $pengunjungMasuk->durasi_bermain == $request->input('durasi_bermain') ? null : ['Maaf Data Durasi Bermain Tidak Sesuai'],
+            ];
+
+            $validasiPengunjungMasuk = array_filter($validasiPengunjungMasuk);
+
+            if ($validasiPengunjungMasuk) {
+                return $this->errorResponse($validasiPengunjungMasuk, 'Data tidak valid.', 422);
             }
 
             $ceKPengunjungKeluar = PengunjungKeluar::where('pengunjung_masuk_id', $request->input('pengunjung_masuk_id'))->first();
