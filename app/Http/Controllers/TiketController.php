@@ -104,20 +104,25 @@ class TiketController extends Controller
     {
         if ($request->ajax()) {
             $pengunjungMasuk = PengunjungMasuk::where('start_tiket', null)
-                ->where('created_at', '>=', now()->subHours(6))
+                ->where('created_at', '>=', now()->subMinutes(30))
                 ->latest()
                 ->first();
 
-            if ($pengunjungMasuk) {
+            $pengunjungKeluar = PengunjungKeluar::where('created_at', '>=', now()->subMinutes(30))
+                ->latest()
+                ->first();
+
+            $pengunjungMasukData = new \stdClass();
+
+            if ($pengunjungMasuk && (!$pengunjungKeluar || $pengunjungMasuk->created_at >= $pengunjungKeluar->created_at)) {
                 $pengunjungMasuk->label = 'Pengunjung Masuk';
+                $pengunjungMasukData = $pengunjungMasuk;
             } else {
-                $pengunjungMasuk = PengunjungKeluar::where('created_at', '>=', now()->subHours(6))
-                    ->latest()
-                    ->first();
-                $pengunjungMasuk->label = 'Pengunjung Keluar';
+                $pengunjungKeluar->label = 'Pengunjung Keluar';
+                $pengunjungMasukData = $pengunjungKeluar;
             }
 
-            return $this->successResponse($pengunjungMasuk, 'Data tiket ditemukan.');
+            return $this->successResponse($pengunjungMasukData, 'Data tiket ditemukan.');
         }
 
         return view('admin.tiket.now');

@@ -490,7 +490,12 @@ const getTicketNow = () => {
     };
 
     const errorCallback = function (error) {
-        console.log(error);
+        $("#detail").html(`
+            <div class="text-center py-5">
+                <i class="ti ti-reload text-danger me-1"></i>
+                Belum Ada Tiket
+            </div>
+        `);
     };
 
     ajaxCall("/get-tiket-now", "GET", null, successCallback, errorCallback);

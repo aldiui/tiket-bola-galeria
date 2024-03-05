@@ -15,7 +15,7 @@
                         <div class="card-body">
                             <h5 class="fw-semibold text-center mb-3">E-Drop Ticket</h5>
                             <div class="mb-3 text-center">
-                                <span class="badge bg-info" id="label-tiket">Coba</span>
+                                <span class="badge bg-info" id="label-tiket"></span>
                             </div>
                             <input type="hidden" id="now">
                             <div id="detail">
