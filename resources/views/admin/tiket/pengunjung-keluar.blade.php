@@ -15,11 +15,7 @@
                         <div class="card-body">
                             <h5 class="fw-semibold text-center mb-3">E-Drop Ticket</h5>
                             <div class="mb-3 text-center">
-                                @if (!$pengunjungMasuk->pengunjungKeluar)
-                                    <span class="badge bg-success"><i class="ti ti-logout me-1"></i>Pengunjung Masuk</span>
-                                @else
-                                    <span class="badge bg-success"><i class="ti ti-login me-1"></i>Pengunjung Keluar</span>
-                                @endif
+                                <span class="badge bg-danger"><i class="ti ti-login me-1"></i>Pengunjung Keluar</span>
                             </div>
                             <div class="text-center">
                                 <img src="{{ asset('images/check.png') }}">
@@ -32,8 +28,8 @@
                                         <span class="timeline-badge-border d-block flex-shrink-0"></span>
                                     </div>
                                     <div class="timeline-desc text-dark mt-n1"> Nama Anak :
-                                        {{ $pengunjungMasuk->nama_anak }}
-                                        (Panggilan : {{ $pengunjungMasuk->nama_panggilan }})
+                                        {{ $pengunjungKeluar->nama_anak }}
+                                        (Panggilan : {{ $pengunjungKeluar->nama_panggilan }})
                                 </li>
                                 <li class="timeline-item d-flex position-relative overflow-hidden">
                                     <div class="timeline-badge-wrap d-flex flex-column align-items-center">
@@ -42,7 +38,7 @@
                                         <span class="timeline-badge-border d-block flex-shrink-0"></span>
                                     </div>
                                     <div class="timeline-desc text-dark mt-n1">Orang Tua :
-                                        {{ $pengunjungMasuk->nama_orang_tua }}
+                                        {{ $pengunjungKeluar->nama_orang_tua }}
                                     </div>
                                 </li>
                                 <li class="timeline-item d-flex position-relative overflow-hidden">
@@ -51,7 +47,7 @@
                                             class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
                                         <span class="timeline-badge-border d-block flex-shrink-0"></span>
                                     </div>
-                                    <div class="timeline-desc text-dark mt-n1">{{ $pengunjungMasuk->jenis_kelamin }}
+                                    <div class="timeline-desc text-dark mt-n1">{{ $pengunjungKeluar->jenis_kelamin }}
                                     </div>
                                 </li>
                                 <li class="timeline-item d-flex position-relative overflow-hidden">
@@ -61,17 +57,8 @@
                                         <span class="timeline-badge-border d-block flex-shrink-0"></span>
                                     </div>
                                     <div class="timeline-desc text-dark mt-n1">Nomor Telepon :
-                                        {{ $pengunjungMasuk->nomor_telepon }}
+                                        {{ $pengunjungKeluar->nomor_telepon }}
                                     </div>
-                                </li>
-                                <li class="timeline-item d-flex position-relative overflow-hidden">
-                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                        <span
-                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                    </div>
-                                    <div class="timeline-desc text-dark mt-n1">Metode Pembayaran :
-                                        {{ $pengunjungMasuk->metode_pembayaran }}</div>
                                 </li>
                                 <li class="timeline-item d-flex position-relative overflow-hidden">
                                     <div class="timeline-badge-wrap d-flex flex-column align-items-center">
@@ -80,7 +67,7 @@
                                         <span class="timeline-badge-border d-block flex-shrink-0"></span>
                                     </div>
                                     <div class="timeline-desc text-dark mt-n1">Durasi Bermain :
-                                        {{ $pengunjungMasuk->durasi_bermain }} Jam </div>
+                                        {{ $pengunjungKeluar->durasi_bermain }} Jam </div>
                                 </li>
                                 <li class="timeline-item d-flex position-relative overflow-hidden">
                                     <div class="timeline-badge-wrap d-flex flex-column align-items-center">
@@ -88,25 +75,12 @@
                                             class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
                                     </div>
                                     <div class="timeline-desc text-dark mt-n1">Tanggal :
-                                        {{ formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s') }}</div>
+                                        {{ formatTanggal($pengunjungKeluar->created_at, 'j M Y H:i:s') }}</div>
                                 </li>
                             </ul>
                             <div class="text-center">
-                                <div class="mb-3">
-                                    @if ($pengunjungMasuk->start_tiket)
-                                        @if (!$pengunjungMasuk->pengunjungKeluar)
-                                            <span id="countdown" class="badge bg-primary rounded-3 fs-2 mb-2"></span>
-                                        @else
-                                            <span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Sudah
-                                                Selesai</span>
-                                        @endif
-                                    @else
-                                        <span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Belum
-                                            Mulai</span>
-                                    @endif
-                                </div>
                                 <div>
-                                    <img src="{{ asset('/storage/pengunjung_masuk/' . $pengunjungMasuk->qr_code) }}"
+                                    <img src="{{ asset('/storage/pengunjung_keluar/' . $pengunjungKeluar->qr_code) }}"
                                         width="150px">
                                 </div>
                             </div>
@@ -119,11 +93,5 @@
 @endsection
 
 @push('scripts')
-    <script>
-        $(document).ready(function() {
-            const targetElement = '#countdown';
-            const duration = '{{ $pengunjungMasuk->duration_difference }}';
-            updateCountdown(targetElement, duration);
-        });
     </script>
 @endpush

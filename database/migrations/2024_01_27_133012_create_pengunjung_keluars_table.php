@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('nama_orang_tua');
             $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
             $table->integer('durasi_bermain');
+            $table->string('qr_code');
             $table->string('nomor_telepon');
             $table->timestamps();
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\PengunjungKeluar;
 use App\Models\PengunjungMasuk;
 use App\Traits\ApiResponder;
 use Carbon\Carbon;
@@ -68,33 +69,35 @@ class TiketController extends Controller
     {
         $pengunjungMasuk = PengunjungMasuk::where('uuid', $uuid)->first();
 
-        if (!$pengunjungMasuk) {
-            return redirect()->route('/');
-        }
+        if ($pengunjungMasuk) {
+            if ($pengunjungMasuk->start_tiket) {
+                $startTicket = Carbon::parse($pengunjungMasuk->start_tiket);
+                $today = Carbon::now()->format('Y-m-d');
+                $ticketDate = $startTicket->format('Y-m-d');
 
-        if ($pengunjungMasuk->start_tiket) {
-            $startTicket = Carbon::parse($pengunjungMasuk->start_tiket);
-            $today = Carbon::now()->format('Y-m-d');
-            $ticketDate = $startTicket->format('Y-m-d');
+                if ($today !== $ticketDate) {
+                    $pengunjungMasuk->start_tiket = Carbon::parse($ticketDate)->startOfDay();
+                }
 
-            if ($today !== $ticketDate) {
-                $pengunjungMasuk->start_tiket = Carbon::parse($ticketDate)->startOfDay();
+                $endTime = $startTicket->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
+
+                $now = Carbon::now();
+                $now = $now->isAfter($endTime) ? $endTime : $now;
+
+                $durationDiff = $now->diff($endTime);
+
+                $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
+                $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
+            } else {
+                $pengunjungMasuk->duration_difference = '00:00:00';
             }
 
-            $endTime = $startTicket->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
-
-            $now = Carbon::now();
-            $now = $now->isAfter($endTime) ? $endTime : $now;
-
-            $durationDiff = $now->diff($endTime);
-
-            $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
-            $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
+            return view('admin.tiket.pengunjung-masuk', compact('pengunjungMasuk'));
         } else {
-            $pengunjungMasuk->duration_difference = '00:00:00';
+            $pengunjungKeluar = PengunjungKeluar::where('uuid', $uuid)->first();
+            return view('admin.tiket.pengunjung-keluar', compact('pengunjungKeluar'));
         }
 
-        return view('admin.tiket.show', compact('pengunjungMasuk'));
     }
 
     public function getTiketNow(Request $request)
@@ -105,8 +108,16 @@ class TiketController extends Controller
                 ->latest()
                 ->first();
 
-            return $this->successResponse($pengunjungMasuk, 'Data tiket ditemukan.');
+            if ($pengunjungMasuk) {
+                $pengunjungMasuk->label = 'Pengunjung Masuk';
+            } else {
+                $pengunjungMasuk = PengunjungKeluar::where('created_at', '>=', now()->subHours(6))
+                    ->latest()
+                    ->first();
+                $pengunjungMasuk->label = 'Pengunjung Keluar';
+            }
 
+            return $this->successResponse($pengunjungMasuk, 'Data tiket ditemukan.');
         }
 
         return view('admin.tiket.now');

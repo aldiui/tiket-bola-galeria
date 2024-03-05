@@ -428,10 +428,15 @@ const getTicketNow = () => {
         if (response.data) {
             if (response.data.id != kode) {
                 $("#now").val(response.data.id);
+                $("#label-tiket").text(response.data.label);
                 $("#detail").html(`
                     <div clas="py-4">
                         <div class="mb-3 text-center">
-                            <img src="/storage/pengunjung_masuk/${response.data.qr_code}"
+                            <img src="/storage/${
+                                response.data.label == "Pengunjung Masuk"
+                                    ? "pengunjung_masuk"
+                                    : "pengunjung_keluar"
+                            }/${response.data.qr_code}"
                                 width="150px">
                         </div>
                         <table class="table table-striped" width="100%">
@@ -451,11 +456,19 @@ const getTicketNow = () => {
                                     <td>:</td>
                                     <td>${response.data.jenis_kelamin}</td>
                                 </tr>
+                                ${
+                                    response.data.metode_pembayaran
+                                        ? `
                                 <tr>
                                     <td>Pembayaran</td>
                                     <td>:</td>
                                     <td>${response.data.metode_pembayaran}</td>
                                 </tr>
+                                
+                                
+                                `
+                                        : ""
+                                }
                                 <tr>
                                     <td>Bermain</td>
                                     <td>:</td>

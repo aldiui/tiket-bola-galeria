@@ -38,7 +38,7 @@
                             <th>Nama Panggilan</th>
                             <th>Sisa Waktu</th>
                             <th>Nama Orang Tua</th>
-                            <th>Tiket</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>

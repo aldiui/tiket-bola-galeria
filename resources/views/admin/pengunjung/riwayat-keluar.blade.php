@@ -29,9 +29,11 @@
                     <thead>
                         <tr>
                             <th width="5%">#</th>
+                            <th>QR Code</th>
                             <th>Nama Anak</th>
                             <th>Nama Panggilan</th>
                             <th>Nama Orang Tua</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +55,10 @@
                     name: 'DT_RowIndex'
                 },
                 {
+                    data: 'qrcode',
+                    name: 'qrcode'
+                },
+                {
                     data: 'nama_anak',
                     name: 'nama_anak'
                 },
@@ -63,6 +69,10 @@
                 {
                     data: 'nama_orang_tua',
                     name: 'nama_orang_tua'
+                },
+                {
+                    data: 'tiket',
+                    name: 'tiket'
                 },
             ]);
 

@@ -13,7 +13,10 @@
                 <div class="col-md-8 col-lg-5 col-xl-4">
                     <div class="card mb-0 border border-primary border-5">
                         <div class="card-body">
-                            <h5 class="fw-semibold text-center mb-3">E-Drop Ticket Pengunjung Terbaru</h5>
+                            <h5 class="fw-semibold text-center mb-3">E-Drop Ticket</h5>
+                            <div class="mb-3 text-center">
+                                <span class="badge bg-info" id="label-tiket">Coba</span>
+                            </div>
                             <input type="hidden" id="now">
                             <div id="detail">
                                 <div class="text-center py-5">
@@ -36,7 +39,7 @@
 
             setInterval(function() {
                 getTicketNow()
-            }, 60000);
+            }, 30000);
         });
     </script>
 @endpush

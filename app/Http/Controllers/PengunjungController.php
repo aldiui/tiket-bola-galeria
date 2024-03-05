@@ -194,6 +194,11 @@ class PengunjungController extends Controller
             }
 
             $uuid = Uuid::uuid4()->toString();
+            $baseUrl = config('app.url');
+            $redirectUrl = $baseUrl . '/e-tiket/' . $uuid;
+
+            $qrCode = QrCode::format('svg')->size(300)->generate($redirectUrl);
+            $qrCodePath = 'public/pengunjung_keluar/' . $uuid . '_qrcode.svg';
 
             $pengunjungKeluar = PengunjungKeluar::create([
                 'uuid' => $uuid,
@@ -205,7 +210,10 @@ class PengunjungController extends Controller
                 'nomor_telepon' => $request->input('nomor_telepon'),
                 'durasi_bermain' => $request->input('durasi_bermain'),
                 'user_id' => Auth::user()->id,
+                'qr_code' => $uuid . '_qrcode.svg',
             ]);
+
+            Storage::put($qrCodePath, $qrCode);
 
             return $this->successResponse($pengunjungKeluar, 'Pengunjung Keluar Berhasil ditambahkan.', 200);
         }
@@ -220,6 +228,13 @@ class PengunjungController extends Controller
             $pengunjungKeluars = PengunjungKeluar::with('pengunjungMasuk')->whereDate('created_at', $tanggal)->latest()->get();
             if ($request->input("mode") == "datatable") {
                 return DataTables::of($pengunjungKeluars)
+                    ->addColumn('tiket', function ($pengunjungKeluar) {
+                        return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungKeluar->uuid . '"><i class="ti ti-ticket me-1"></i>Tiket </a>';
+                    })
+                    ->addColumn('qrcode', function ($pengunjungKeluar) {
+                        return '<img src="' . asset('/storage/pengunjung_keluar/' . $pengunjungKeluar->qr_code) . '" alt="qrcode" width="100px" height="100px">';
+                    })
+                    ->rawColumns(['tiket', 'qrcode'])
                     ->addIndexColumn()
                     ->make(true);
             } elseif ($request->input("mode") == "pie") {
@@ -250,17 +265,6 @@ class PengunjungController extends Controller
         $pengunjung->update([
             "start_tiket" => now(),
         ]);
-
-        return $this->successResponse($pengunjung, 'Data pengunjung dikonfirmasi.', 200);
-    }
-
-    public function getPengunjungMasuk($id)
-    {
-        $pengunjung = PengunjungMasuk::find($id);
-
-        if (!$pengunjung) {
-            return $this->errorResponse(null, 'Data pengunjung tidak ditemukan.', 404);
-        }
 
         return $this->successResponse($pengunjung, 'Data pengunjung dikonfirmasi.', 200);
     }
