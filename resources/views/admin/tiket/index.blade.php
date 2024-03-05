@@ -25,10 +25,7 @@
                                         <tr>
                                             <th width="5%">#</th>
                                             <th>Nama Anak</th>
-                                            <th>Nama Panggilan</th>
                                             <th>Sisa Waktu</th>
-                                            <th>Nama Orang Tua</th>
-                                            <th>Tiket</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,20 +53,8 @@
                     name: 'nama_anak'
                 },
                 {
-                    data: 'nama_panggilan',
-                    name: 'nama_panggilan'
-                },
-                {
                     data: 'durasi',
                     name: 'durasi'
-                },
-                {
-                    data: 'nama_orang_tua',
-                    name: 'nama_orang_tua'
-                },
-                {
-                    data: 'tiket',
-                    name: 'tiket'
                 },
             ]);
 
