@@ -85,7 +85,19 @@
                                 </li>
                             </ul>
                             <div class="text-center">
-                                <span id="countdown" class="badge bg-primary rounded-3 fs-2 mb-2"></span>
+                                <div class="mb-3">
+                                    @if ($pengunjungMasuk->start_tiket)
+                                        @if (!$pengunjungMasuk->pengunjungKeluar)
+                                            <span id="countdown" class="badge bg-primary rounded-3 fs-2 mb-2"></span>
+                                        @else
+                                            <span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Sudah
+                                                Selesai</span>
+                                        @endif
+                                    @else
+                                        <span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Belum
+                                            Mulai</span>
+                                    @endif
+                                </div>
                                 <div>
                                     <img src="{{ asset('/storage/pengunjung_masuk/' . $pengunjungMasuk->qr_code) }}"
                                         width="150px">
