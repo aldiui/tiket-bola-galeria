@@ -23,28 +23,32 @@ class TiketController extends Controller
                 return DataTables::of($pengunjungMasuks)
                     ->addColumn('durasi', function ($pengunjungMasuk) {
                         if ($pengunjungMasuk->start_tiket) {
-                            $startTicket = Carbon::parse($pengunjungMasuk->start_tiket);
-                            $today = Carbon::now()->format('Y-m-d');
-                            $ticketDate = $startTicket->format('Y-m-d');
+                            if ($pengunjungMasuk->pengunjungKeluar) {
+                                return '<span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Sudah Selesai</span>';
+                            } else {
+                                $startTicket = Carbon::parse($pengunjungMasuk->start_tiket);
+                                $today = Carbon::now()->format('Y-m-d');
+                                $ticketDate = $startTicket->format('Y-m-d');
 
-                            if ($today !== $ticketDate) {
-                                $startTicket->startOfDay();
-                                $pengunjungMasuk->created_at = $startTicket;
+                                if ($today !== $ticketDate) {
+                                    $startTicket->startOfDay();
+                                    $pengunjungMasuk->created_at = $startTicket;
+                                }
+
+                                $endTime = $startTicket->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
+
+                                $now = Carbon::now();
+                                $now = $now->isAfter($endTime) ? $endTime : $now;
+
+                                $durationDiff = $now->diff($endTime);
+
+                                $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
+                                $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
+
+                                $spanId = 'countdown_' . $pengunjungMasuk->uuid;
+
+                                return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->duration_difference . '</span>';
                             }
-
-                            $endTime = $startTicket->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
-
-                            $now = Carbon::now();
-                            $now = $now->isAfter($endTime) ? $endTime : $now;
-
-                            $durationDiff = $now->diff($endTime);
-
-                            $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
-                            $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
-
-                            $spanId = 'countdown_' . $pengunjungMasuk->uuid;
-
-                            return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->duration_difference . '</span>';
                         } else {
                             return '<span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Belum Mulai</span>';
                         }
