@@ -13,7 +13,14 @@
                 <div class="col-md-8 col-lg-5 col-xl-4">
                     <div class="card mb-0 border border-primary border-5">
                         <div class="card-body">
-                            <h5 class="fw-semibold text-center mb-3">E-Drop Ticket Pengunjung</h5>
+                            <h5 class="fw-semibold text-center mb-3">E-Drop Ticket</h5>
+                            <div class="mb-3 text-center">
+                                @if (!$pengunjungMasuk->pengunjungKeluar)
+                                    <span class="badge bg-success"><i class="ti ti-logout me-1"></i>Pengunjung Masuk</span>
+                                @else
+                                    <span class="badge bg-success"><i class="ti ti-login me-1"></i>Pengunjung Keluar</span>
+                                @endif
+                            </div>
                             <div class="text-center">
                                 <img src="{{ asset('images/check.png') }}">
                             </div>
