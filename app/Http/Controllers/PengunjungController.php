@@ -50,14 +50,14 @@ class PengunjungController extends Controller
 
             $pengunjungMasuk = PengunjungMasuk::create([
                 'uuid' => $uuid,
-                'nama_anak' => $request->input('nama_anak'),
-                'nama_panggilan' => $request->input('nama_panggilan'),
-                'nama_orang_tua' => $request->input('nama_orang_tua'),
-                'jenis_kelamin' => $request->input('jenis_kelamin'),
-                'nomor_telepon' => $request->input('nomor_telepon'),
-                'durasi_bermain' => $request->input('durasi_bermain'),
-                'metode_pembayaran' => $request->input('metode_pembayaran'),
-                'tarif' => $request->input('tarif'),
+                'nama_anak' => $request->nama_anak,
+                'nama_panggilan' => $request->nama_panggilan,
+                'nama_orang_tua' => $request->nama_orang_tua,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'nomor_telepon' => $request->nomor_telepon,
+                'durasi_bermain' => $request->durasi_bermain,
+                'metode_pembayaran' => $request->metode_pembayaran,
+                'tarif' => $request->tarif,
                 'user_id' => Auth::user()->id,
                 'qr_code' => $uuid . '_qrcode.svg',
             ]);
@@ -74,10 +74,10 @@ class PengunjungController extends Controller
     public function riwayatPengunjungMasuk(Request $request)
     {
         if ($request->ajax()) {
-            $tanggal = $request->input("tanggal") ?? date('Y-m-d');
+            $tanggal = $request->tanggal ?? date('Y-m-d');
             $pengunjungMasuks = PengunjungMasuk::whereDate('created_at', $tanggal)->latest()->get();
 
-            if ($request->input("mode") == "datatable") {
+            if ($request->mode == "datatable") {
                 return DataTables::of($pengunjungMasuks)
                     ->addColumn('durasi', function ($pengunjungMasuk) {
                         if ($pengunjungMasuk->start_tiket) {
@@ -127,7 +127,7 @@ class PengunjungController extends Controller
                     ->rawColumns(['durasi', 'tiket', 'qrcode'])
                     ->addIndexColumn()
                     ->make(true);
-            } elseif ($request->input("mode") == "pie") {
+            } elseif ($request->mode == "pie") {
                 $countPengunjungMasukLakiLaki = PengunjungMasuk::whereDate('created_at', $tanggal)->where('jenis_kelamin', 'Laki-laki')->count();
                 $countPengunjungMasukPerempuan = PengunjungMasuk::whereDate('created_at', $tanggal)->where('jenis_kelamin', 'Perempuan')->count();
 
@@ -169,17 +169,17 @@ class PengunjungController extends Controller
                 return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
             }
 
-            $pengunjungMasuk = PengunjungMasuk::find($request->input('pengunjung_masuk_id'));
+            $pengunjungMasuk = PengunjungMasuk::find($request->pengunjung_masuk_id);
             if (!$pengunjungMasuk) {
                 return $this->errorResponse(null, 'Data Pengunjung Masuk tidak ditemukan.', 404);
             }
 
             $validasiPengunjungMasuk = [
-                'nama_anak' => $pengunjungMasuk->nama_anak === $request->input('nama_anak') ? null : ['Maaf Data Anak Tidak Sesuai'],
-                'nama_panggilan' => $pengunjungMasuk->nama_panggilan === $request->input('nama_panggilan') ? null : ['Maaf Data Panggilan Tidak Sesuai'],
-                'nama_orang_tua' => $pengunjungMasuk->nama_orang_tua === $request->input('nama_orang_tua') ? null : ['Maaf Data Orang Tua Tidak Sesuai'],
-                'nomor_telepon' => $pengunjungMasuk->nomor_telepon === $request->input('nomor_telepon') ? null : ['Maaf Data Nomor Telepon Tidak Sesuai'],
-                'durasi_bermain' => $pengunjungMasuk->durasi_bermain == $request->input('durasi_bermain') ? null : ['Maaf Data Durasi Bermain Tidak Sesuai'],
+                'nama_anak' => $pengunjungMasuk->nama_anak === $request->nama_anak ? null : ['Maaf Data Anak Tidak Sesuai'],
+                'nama_panggilan' => $pengunjungMasuk->nama_panggilan === $request->nama_panggilan ? null : ['Maaf Data Panggilan Tidak Sesuai'],
+                'nama_orang_tua' => $pengunjungMasuk->nama_orang_tua === $request->nama_orang_tua ? null : ['Maaf Data Orang Tua Tidak Sesuai'],
+                'nomor_telepon' => $pengunjungMasuk->nomor_telepon === $request->nomor_telepon ? null : ['Maaf Data Nomor Telepon Tidak Sesuai'],
+                'durasi_bermain' => $pengunjungMasuk->durasi_bermain == $request->durasi_bermain ? null : ['Maaf Data Durasi Bermain Tidak Sesuai'],
             ];
 
             $validasiPengunjungMasuk = array_filter($validasiPengunjungMasuk);
@@ -188,7 +188,7 @@ class PengunjungController extends Controller
                 return $this->errorResponse($validasiPengunjungMasuk, 'Data tidak valid.', 422);
             }
 
-            $ceKPengunjungKeluar = PengunjungKeluar::where('pengunjung_masuk_id', $request->input('pengunjung_masuk_id'))->first();
+            $ceKPengunjungKeluar = PengunjungKeluar::where('pengunjung_masuk_id', $request->pengunjung_masuk_id)->first();
             if ($ceKPengunjungKeluar) {
                 return $this->errorResponse(null, 'Data Pengunjung Keluar sudah ada.', 409);
             }
@@ -202,13 +202,13 @@ class PengunjungController extends Controller
 
             $pengunjungKeluar = PengunjungKeluar::create([
                 'uuid' => $uuid,
-                'pengunjung_masuk_id' => $request->input('pengunjung_masuk_id'),
-                'nama_anak' => $request->input('nama_anak'),
-                'nama_panggilan' => $request->input('nama_panggilan'),
-                'nama_orang_tua' => $request->input('nama_orang_tua'),
-                'jenis_kelamin' => $request->input('jenis_kelamin'),
-                'nomor_telepon' => $request->input('nomor_telepon'),
-                'durasi_bermain' => $request->input('durasi_bermain'),
+                'pengunjung_masuk_id' => $request->pengunjung_masuk_id,
+                'nama_anak' => $request->nama_anak,
+                'nama_panggilan' => $request->nama_panggilan,
+                'nama_orang_tua' => $request->nama_orang_tua,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'nomor_telepon' => $request->nomor_telepon,
+                'durasi_bermain' => $request->durasi_bermain,
                 'user_id' => Auth::user()->id,
                 'qr_code' => $uuid . '_qrcode.svg',
             ]);
@@ -224,9 +224,9 @@ class PengunjungController extends Controller
     public function riwayatPengunjungKeluar(Request $request)
     {
         if ($request->ajax()) {
-            $tanggal = $request->input("tanggal") ?? date('Y-m-d');
+            $tanggal = $request->tanggal ?? date('Y-m-d');
             $pengunjungKeluars = PengunjungKeluar::with('pengunjungMasuk')->whereDate('created_at', $tanggal)->latest()->get();
-            if ($request->input("mode") == "datatable") {
+            if ($request->mode == "datatable") {
                 return DataTables::of($pengunjungKeluars)
                     ->addColumn('tiket', function ($pengunjungKeluar) {
                         return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungKeluar->uuid . '"><i class="ti ti-ticket me-1"></i>Tiket </a>';
@@ -237,7 +237,7 @@ class PengunjungController extends Controller
                     ->rawColumns(['tiket', 'qrcode'])
                     ->addIndexColumn()
                     ->make(true);
-            } elseif ($request->input("mode") == "pie") {
+            } elseif ($request->mode == "pie") {
                 $countPengunjungKeluarLakiLaki = PengunjungKeluar::whereHas('pengunjungMasuk', function ($query) {
                     $query->where('jenis_kelamin', 'Laki-laki');
                 })->whereDate('created_at', $tanggal)->count();

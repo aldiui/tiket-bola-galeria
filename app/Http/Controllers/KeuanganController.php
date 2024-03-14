@@ -17,12 +17,12 @@ class KeuanganController extends Controller
 
     public function index(Request $request)
     {
-        $bulan = $request->input("bulan");
-        $tahun = $request->input("tahun");
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
 
         $pengunjungMasuks = PengunjungMasuk::with('user')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->latest()->get();
         if ($request->ajax()) {
-            if ($request->input("mode") == "datatable") {
+            if ($request->mode == "datatable") {
                 return DataTables::of($pengunjungMasuks)
                     ->addColumn('admin', function ($pengunjungMasuk) {
                         return $pengunjungMasuk->user->nama;
@@ -39,7 +39,7 @@ class KeuanganController extends Controller
                     ->rawColumns(['admin', 'tanggal', 'pembayaran', 'durasi'])
                     ->addIndexColumn()
                     ->make(true);
-            } elseif ($request->input("mode") == "single") {
+            } elseif ($request->mode == "single") {
                 $startDate = Carbon::create($tahun, $bulan, 1)->startOfMonth();
                 $endDate = Carbon::create($tahun, $bulan, 1)->endOfMonth();
 
@@ -70,7 +70,7 @@ class KeuanganController extends Controller
             }
         }
 
-        if ($request->input("mode") == "pdf") {
+        if ($request->mode == "pdf") {
             $bulanTahun = Carbon::create($tahun, $bulan, 1)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('F Y');
             $pdf = PDF::loadView('admin.keuangan.pdf', compact('pengunjungMasuks', 'bulanTahun'));
 

@@ -30,10 +30,10 @@ class PengaturanController extends Controller
             }
 
             if (!$pengaturan) {
-                $pengaturan = Pengaturan::create(['tarif' => $request->input('tarif')]);
+                $pengaturan = Pengaturan::create(['tarif' => $request->tarif]);
             }
 
-            $pengaturan->update(['tarif' => $request->input('tarif')]);
+            $pengaturan->update(['tarif' => $request->tarif]);
 
             return $this->successResponse($pengaturan, 'Ubah Tarif berhasil diubah.', 200);
         }
@@ -47,7 +47,7 @@ class PengaturanController extends Controller
 
         if ($request->ajax()) {
             $admins = User::all();
-            if ($request->input("mode") == "datatable") {
+            if ($request->mode == "datatable") {
                 return DataTables::of($admins)
                     ->addColumn('aksi', function ($admin) {
                         $editButton = '<button class="btn btn-sm btn-warning me-1" onclick="getModal(`createModal`, `/user-management/' . $admin->id . '`, [`id`, `nama`, `email`])">
@@ -94,20 +94,20 @@ class PengaturanController extends Controller
         }
 
         $admin = User::create([
-            'nama' => $request->input('nama'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
         ]);
 
         HakAkses::create([
             'user_id' => $admin->id,
-            'tambah_pengunjung_masuk' => $request->input('tambah_pengunjung_masuk') ?? 0,
-            'tambah_pengunjung_keluar' => $request->input('tambah_pengunjung_keluar') ?? 0,
-            'riwayat_pengunjung_masuk' => $request->input('riwayat_pengunjung_masuk') ?? 0,
-            'riwayat_pengunjung_keluar' => $request->input('riwayat_pengunjung_keluar') ?? 0,
-            'laporan_keuangan' => $request->input('laporan_keuangan') ?? 0,
-            'user_management' => $request->input('user_management') ?? 0,
-            'ubah_tarif' => $request->input('ubah_tarif') ?? 0,
+            'tambah_pengunjung_masuk' => $request->tambah_pengunjung_masuk ?? 0,
+            'tambah_pengunjung_keluar' => $request->tambah_pengunjung_keluar ?? 0,
+            'riwayat_pengunjung_masuk' => $request->riwayat_pengunjung_masuk ?? 0,
+            'riwayat_pengunjung_keluar' => $request->riwayat_pengunjung_keluar ?? 0,
+            'laporan_keuangan' => $request->laporan_keuangan ?? 0,
+            'user_management' => $request->user_management ?? 0,
+            'ubah_tarif' => $request->ubah_tarif ?? 0,
         ]);
 
         return $this->successResponse($admin, 'Data admin ditambahkan.', 201);
@@ -122,7 +122,7 @@ class PengaturanController extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
         ];
 
-        if ($request->input('password') != null) {
+        if ($request->password != null) {
             $dataValidator['password'] = 'required|min:8|confirmed';
         }
 
@@ -139,24 +139,24 @@ class PengaturanController extends Controller
         }
 
         $updateAdmin = [
-            'nama' => $request->input('nama'),
-            'email' => $request->input('email'),
+            'nama' => $request->nama,
+            'email' => $request->email,
         ];
 
-        if ($request->input('password') != null) {
-            $updateAdmin['password'] = bcrypt($request->input('password'));
+        if ($request->password != null) {
+            $updateAdmin['password'] = bcrypt($request->password);
         }
 
         $admin->update($updateAdmin);
 
         $admin->hakAkses()->update([
-            'tambah_pengunjung_masuk' => $request->input('tambah_pengunjung_masuk') ?? 0,
-            'tambah_pengunjung_keluar' => $request->input('tambah_pengunjung_keluar') ?? 0,
-            'riwayat_pengunjung_masuk' => $request->input('riwayat_pengunjung_masuk') ?? 0,
-            'riwayat_pengunjung_keluar' => $request->input('riwayat_pengunjung_keluar') ?? 0,
-            'laporan_keuangan' => $request->input('laporan_keuangan') ?? 0,
-            'user_management' => $request->input('user_management') ?? 0,
-            'ubah_tarif' => $request->input('ubah_tarif') ?? 0,
+            'tambah_pengunjung_masuk' => $request->tambah_pengunjung_masuk ?? 0,
+            'tambah_pengunjung_keluar' => $request->tambah_pengunjung_keluar ?? 0,
+            'riwayat_pengunjung_masuk' => $request->riwayat_pengunjung_masuk ?? 0,
+            'riwayat_pengunjung_keluar' => $request->riwayat_pengunjung_keluar ?? 0,
+            'laporan_keuangan' => $request->laporan_keuangan ?? 0,
+            'user_management' => $request->user_management ?? 0,
+            'ubah_tarif' => $request->ubah_tarif ?? 0,
         ]);
 
         return $this->successResponse($admin, 'Data admin diubah.');
