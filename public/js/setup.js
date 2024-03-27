@@ -464,8 +464,8 @@ const getTicketNow = () => {
                                     <td>:</td>
                                     <td>${response.data.metode_pembayaran}</td>
                                 </tr>
-                                
-                                
+
+
                                 `
                                         : ""
                                 }
