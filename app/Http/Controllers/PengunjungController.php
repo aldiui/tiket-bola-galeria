@@ -199,7 +199,7 @@ class PengunjungController extends Controller
                 'nama_panggilan' => $pengunjungMasuk->nama_panggilan === $request->nama_panggilan ? null : ['Maaf Data Panggilan Tidak Sesuai'],
                 'nama_orang_tua' => $pengunjungMasuk->nama_orang_tua === $request->nama_orang_tua ? null : ['Maaf Data Orang Tua Tidak Sesuai'],
                 'nomor_telepon' => $pengunjungMasuk->nomor_telepon === $request->nomor_telepon ? null : ['Maaf Data Nomor Telepon Tidak Sesuai'],
-                'durasi_bermain' => $pengunjungMasuk->durasi_bermain == $request->durasi_bermain ? null : ['Maaf Data Durasi Bermain Tidak Sesuai'],
+                'durasi_bermain' => ($pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain) == $request->durasi_bermain ? null : ['Maaf Data Durasi Bermain Tidak Sesuai'],
             ];
 
             $validasiPengunjungMasuk = array_filter($validasiPengunjungMasuk);
