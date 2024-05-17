@@ -131,7 +131,7 @@ class PengunjungController extends Controller
                         }
                     })
                     ->addColumn('tiket', function ($pengunjungMasuk) {
-                        $tiket = '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"><i class="ti ti-ticket me-1"></i>Tiket </a>';
+                        $tiket = '<a target="_blank" class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"><i class="ti ti-ticket me-1"></i>Tiket </a>';
                         $extra = '<a class="btn btn-success btn-sm" href="/extra-time/' . $pengunjungMasuk->uuid . '"> <i class="ti ti-clock me-1"></i>Extra Time </a>';
 
                         if ($pengunjungMasuk->start_tiket) {
