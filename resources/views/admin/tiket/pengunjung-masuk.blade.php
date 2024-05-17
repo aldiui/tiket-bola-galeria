@@ -27,7 +27,7 @@
                                             class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
                                         <span class="timeline-badge-border d-block flex-shrink-0"></span>
                                     </div>
-                                    <div class="timeline-desc text-dark mt-n1"> ID Tiket :
+                                    <div class="timeline-desc text-dark mt-n1"> Nomor Tiket :
                                         {{ $pengunjungMasuk->uuid }}
                                 </li>
                                 <li class="timeline-item d-flex position-relative overflow-hidden">
