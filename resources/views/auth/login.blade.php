@@ -16,7 +16,7 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 <a href="./" class="text-nowrap logo-img mb-3 d-flex justify-content-center">
-                                    <img src="{{ asset('images/logos/logo1.PNG') }}" width="180" class=""
+                                    <img src="{{ asset('images/logos/logo.png') }}" width="180" class=""
                                         alt="" />
                                 </a>
                                 <form id="login" autocomplete="off">

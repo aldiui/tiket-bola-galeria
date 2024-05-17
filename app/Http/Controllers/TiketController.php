@@ -37,18 +37,25 @@ class TiketController extends Controller
                                 }
 
                                 $endTime = $startTicket->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
-
                                 $now = Carbon::now();
                                 $now = $now->isAfter($endTime) ? $endTime : $now;
-
                                 $durationDiff = $now->diff($endTime);
+                                $remainingSeconds = $now->diffInSeconds($endTime, false);
 
                                 $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
                                 $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
 
                                 $spanId = 'countdown_' . $pengunjungMasuk->uuid;
 
-                                return '<span id="' . $spanId . '" class="badge bg-primary rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->duration_difference . '</span>';
+                                if ($remainingSeconds < 5 * 60) {
+                                    $badgeColor = 'bg-danger blink';
+                                } elseif ($remainingSeconds < 10 * 60) {
+                                    $badgeColor = 'bg-warning blink';
+                                } else {
+                                    $badgeColor = 'bg-primary';
+                                }
+
+                                return '<span id="' . $spanId . '" class="badge ' . $badgeColor . ' rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->duration_difference . '</span>';
                             }
                         } else {
                             return '<span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Belum Mulai</span>';

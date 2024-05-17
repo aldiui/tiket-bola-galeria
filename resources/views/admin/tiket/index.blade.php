@@ -4,15 +4,36 @@
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('libs/datatables/datatables.min.css') }}" />
+    <style>
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .blink {
+            animation: blink 1s linear infinite;
+        }
+    </style>
 @endpush
 
 @section('main')
-    <div class="min-vh-100"
-        style="background-image: url('{{ asset('images/bali-pagoda-indonesia.jpg') }}'); background-size: cover">
+    <div class="min-vh-100 bg-white">
+        <div class="text-start">
+            <img src="{{ asset('images/logos/logo.png') }}" width="180" class="" alt="" />
+        </div>
         <div class="container">
             <div class="row justify-content-center py-5">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card mb-1">
                         <div class="card-header">
                             <h5 class="card-title fw-semibold text-center">Riwayat Pengunjung Masuk {{ formatTanggal() }}
                             </h5>
@@ -60,7 +81,7 @@
 
             setInterval(function() {
                 $("#pengunjung-masuk-table").DataTable().ajax.reload();
-            }, 60000);
+            }, 30000);
         });
     </script>
 @endpush
