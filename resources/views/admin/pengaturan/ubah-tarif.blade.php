@@ -18,6 +18,14 @@
                         placeholder="Masukkan jumlah tarif per jam" value="{{ $pengaturan->tarif ?? '' }}">
                     <small class="invalid-feedback" id="errortarif"></small>
                 </div>
+                <div class="form-group mb-3">
+                    <label for="toleransi_waktu" class="form-label">Toleransi Waktu dalam menit <span
+                            class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="toleransi_waktu" id="toleransi_waktu"
+                        placeholder="Masukkan jumlah Toleransi Waktu dalam menit"
+                        value="{{ $pengaturan->toleransi_waktu ?? '' }}">
+                    <small class="invalid-feedback" id="errortoleransi_waktu"></small>
+                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><i class="ti ti-pencil me-1"></i>Ubah Tarif</button>
                 </div>

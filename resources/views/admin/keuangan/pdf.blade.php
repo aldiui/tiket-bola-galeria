@@ -25,10 +25,12 @@
                     <tr>
                         <td align ="center">{{ $loop->iteration }}</td>
                         <td>{{ $pengunjungMasuk->nama_anak }}</td>
-                        <td>{{ $pengunjungMasuk->durasi_bermain }} Jam </td>
+                        <td>{{ $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain }}
+                            Jam </td>
                         <td>{{ $pengunjungMasuk->nama_orang_tua }}</td>
                         <td>{{ $pengunjungMasuk->metode_pembayaran }}</td>
-                        <td>{{ formatRupiah($pengunjungMasuk->tarif) }}</td>
+                        <td>{{ formatRupiah($pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif) }}
+                        </td>
                         <td>{{ formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s') }}</td>
                         <td>{{ $pengunjungMasuk->user->nama }}</td>
                     </tr>
@@ -37,7 +39,7 @@
             <tfoot>
                 <tr>
                     <td colspan="5" align="center">Total Pembayaran</td>
-                    <td>{{ formatRupiah($pengunjungMasuks->sum('tarif')) }}</td>
+                    <td>{{ formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra')) }}</td>
                     <td></td>
                     <td></td>
                 </tr>

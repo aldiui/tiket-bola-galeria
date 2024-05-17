@@ -76,10 +76,11 @@ class PengunjungController extends Controller
         if ($request->ajax()) {
             $tanggal = $request->tanggal ?? date('Y-m-d');
             $pengunjungMasuks = PengunjungMasuk::whereDate('created_at', $tanggal)->latest()->get();
+            $toleransiWaktu = Pengaturan::find(1);
 
             if ($request->mode == "datatable") {
                 return DataTables::of($pengunjungMasuks)
-                    ->addColumn('durasi', function ($pengunjungMasuk) {
+                    ->addColumn('durasi', function ($pengunjungMasuk) use ($toleransiWaktu) {
                         if ($pengunjungMasuk->start_tiket) {
                             if ($pengunjungMasuk->start_tiket) {
                                 if ($pengunjungMasuk->pengunjungKeluar) {
@@ -88,6 +89,7 @@ class PengunjungController extends Controller
                                     $startTicket = Carbon::parse($pengunjungMasuk->start_tiket);
                                     $today = Carbon::now()->format('Y-m-d');
                                     $ticketDate = $startTicket->format('Y-m-d');
+                                    $waktuToleransi = $toleransiWaktu->toleransi_waktu;
 
                                     if ($today !== $ticketDate) {
                                         $startTicket->startOfDay();
@@ -95,10 +97,15 @@ class PengunjungController extends Controller
                                     }
 
                                     $endTime = $startTicket->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
+                                    if ($pengunjungMasuk->durasi_extra) {
+                                        $endTime->addMinutes($pengunjungMasuk->durasi_extra * 60);
+                                    }
+
                                     $now = Carbon::now();
                                     $now = $now->isAfter($endTime) ? $endTime : $now;
                                     $durationDiff = $now->diff($endTime);
                                     $remainingSeconds = $now->diffInSeconds($endTime, false);
+                                    $toleransTime = $endTime->addMinutes($waktuToleransi);
 
                                     $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
                                     $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
@@ -113,7 +120,10 @@ class PengunjungController extends Controller
                                         $badgeColor = 'bg-primary';
                                     }
 
-                                    return '<span id="' . $spanId . '" class="badge ' . $badgeColor . ' rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->duration_difference . '</span>';
+                                    return '
+                                     <span id="' . $spanId . '" class="badge ' . $badgeColor . ' rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->duration_difference . '</span>
+                                     <div class="mt-2"> Toleransi Waktu : ' . $toleransTime . '</div>'
+                                    ;
                                 }
                             }
                         } else {
@@ -121,12 +131,15 @@ class PengunjungController extends Controller
                         }
                     })
                     ->addColumn('tiket', function ($pengunjungMasuk) {
-                        if ($pengunjungMasuk->start_tiket) {
-                            return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"><i class="ti ti-ticket me-1"></i>Tiket </a>';
-                        } else {
-                            return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"><i class="ti ti-ticket me-1"></i> Tiket </a> <button class="btn btn-sm btn-success" onclick="confirmStart(`/konfirmasi-pengunjung/' . $pengunjungMasuk->id . '`, `pengunjung-masuk-table`)"><i class="ti ti-check me-1"></i>Konfirmasi</button>';
-                        }
+                        $tiket = '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"><i class="ti ti-ticket me-1"></i>Tiket </a>';
+                        $extra = '<a class="btn btn-success btn-sm" href="/extra-time/' . $pengunjungMasuk->uuid . '"> <i class="ti ti-clock me-1"></i>Extra Time </a>';
 
+                        if ($pengunjungMasuk->start_tiket) {
+                            return $pengunjungMasuk->durasi_extra ? $tiket : $tiket . $extra;
+                        } else {
+                            $konfirmasi = '<button class="btn btn-sm btn-success" onclick="confirmStart(`/konfirmasi-pengunjung/' . $pengunjungMasuk->id . '`, `pengunjung-masuk-table`)"><i class="ti ti-check me-1"></i>Konfirmasi</button>';
+                            return $tiket . $konfirmasi;
+                        }
                     })
                     ->addColumn('qrcode', function ($pengunjungMasuk) {
                         return '<img src="' . asset('/storage/pengunjung_masuk/' . $pengunjungMasuk->qr_code) . '" alt="qrcode" width="100px" height="100px">';
@@ -247,7 +260,7 @@ class PengunjungController extends Controller
             } elseif ($request->mode == "pie") {
                 $countPengunjungKeluarLakiLaki = PengunjungKeluar::whereHas('pengunjungMasuk', function ($query) {
                     $query->where('jenis_kelamin', 'Laki-laki');
-                })->whereDate('created_at', $tanggal)->count();
+                })->whereDate('created_at', $tanggpal)->count();
                 $countPengunjungKeluarPerempuan = PengunjungKeluar::whereHas('pengunjungMasuk', function ($query) {
                     $query->where('jenis_kelamin', 'Perempuan');
                 })->whereDate('created_at', $tanggal)->count();
@@ -274,5 +287,46 @@ class PengunjungController extends Controller
         ]);
 
         return $this->successResponse($pengunjung, 'Data pengunjung dikonfirmasi.', 200);
+    }
+
+    public function extraTime($uuid)
+    {
+        if (!getPermission('tambah_pengunjung_masuk')) {return redirect()->route('dashboard');}
+
+        $pengunjung = PengunjungMasuk::where('uuid', $uuid)->whereNull('durasi_extra')->first();
+
+        if (!$pengunjung) {
+            return redirect()->route('riwayatPengunjungMasuk');
+        }
+
+        $pengaturan = Pengaturan::find(1);
+        return view('admin.pengunjung.extra-time', compact('pengunjung', 'pengaturan'));
+    }
+
+    public function extraTimeUpdate(Request $request, $uuid)
+    {
+        if (!getPermission('tambah_pengunjung_masuk')) {return redirect()->route('dashboard');}
+
+        $validator = Validator::make($request->all(), [
+            'durasi_extra' => 'required',
+            'tarif_extra' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
+        }
+
+        $pengunjung = PengunjungMasuk::where('uuid', $uuid)->whereNull('durasi_extra')->first();
+
+        if (!$pengunjung) {
+            return redirect()->route('riwayatPengunjungMasuk');
+        }
+
+        $pengunjung->update([
+            "durasi_extra" => $request->durasi_extra,
+            "tarif_extra" => $request->tarif_extra,
+        ]);
+
+        return $this->successResponse($pengunjung, 'Pengunjung Masuk Berhasil tambah extra waktu.', 200);
     }
 }

@@ -31,10 +31,10 @@ class KeuanganController extends Controller
                         return formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s');
                     })
                     ->addColumn('pembayaran', function ($pengunjungMasuk) {
-                        return formatRupiah($pengunjungMasuk->tarif);
+                        return formatRupiah($pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif);
                     })
                     ->addColumn('durasi', function ($pengunjungMasuk) {
-                        return '<span class="badge bg-primary rounded-3 fw-semibold"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->durasi_bermain . ' Jam</span>';
+                        return '<span class="badge bg-primary rounded-3 fw-semibold"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain . ' Jam</span>';
                     })
                     ->rawColumns(['admin', 'tanggal', 'pembayaran', 'durasi'])
                     ->addIndexColumn()
@@ -48,7 +48,7 @@ class KeuanganController extends Controller
                     ->orderBy('date')
                     ->get([
                         DB::raw('DATE(created_at) as date'),
-                        DB::raw('SUM(tarif) as total_tarif'),
+                        DB::raw('SUM(tarif + tarif_extra) as total_tarif'),
                     ])
                     ->pluck('total_tarif', 'date');
 

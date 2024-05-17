@@ -33,7 +33,10 @@ class PengaturanController extends Controller
                 $pengaturan = Pengaturan::create(['tarif' => $request->tarif]);
             }
 
-            $pengaturan->update(['tarif' => $request->tarif]);
+            $pengaturan->update([
+                'tarif' => $request->tarif,
+                'toleransi_waktu' => $request->toleransi_waktu,
+            ]);
 
             return $this->successResponse($pengaturan, 'Ubah Tarif berhasil diubah.', 200);
         }

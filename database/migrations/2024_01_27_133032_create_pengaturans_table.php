@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pengaturans', function (Blueprint $table) {
             $table->id();
             $table->integer('tarif');
+            $table->integer('toleransi_waktu')->default('10');
             $table->timestamps();
         });
     }

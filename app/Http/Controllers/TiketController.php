@@ -37,6 +37,9 @@ class TiketController extends Controller
                                 }
 
                                 $endTime = $startTicket->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
+                                if ($pengunjungMasuk->durasi_extra) {
+                                    $endTime->addMinutes($pengunjungMasuk->durasi_extra * 60);
+                                }
                                 $now = Carbon::now();
                                 $now = $now->isAfter($endTime) ? $endTime : $now;
                                 $durationDiff = $now->diff($endTime);
@@ -87,6 +90,9 @@ class TiketController extends Controller
                 }
 
                 $endTime = $startTicket->copy()->addMinutes($pengunjungMasuk->durasi_bermain * 60);
+                if ($pengunjungMasuk->durasi_extra) {
+                    $endTime->addMinutes($pengunjungMasuk->durasi_extra * 60);
+                }
 
                 $now = Carbon::now();
                 $now = $now->isAfter($endTime) ? $endTime : $now;

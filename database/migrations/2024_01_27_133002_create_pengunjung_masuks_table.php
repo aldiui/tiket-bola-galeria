@@ -21,8 +21,10 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
             $table->enum('metode_pembayaran', ['Cash', 'Transfer']);
             $table->integer('durasi_bermain');
+            $table->integer('durasi_extra')->nullable();
             $table->string('nomor_telepon');
             $table->integer('tarif');
+            $table->integer('tarif_extra')->nullable();
             $table->string('qr_code');
             $table->datetime('start_tiket')->nullable();
             $table->timestamps();
