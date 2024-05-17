@@ -249,7 +249,7 @@ class PengunjungController extends Controller
             if ($request->mode == "datatable") {
                 return DataTables::of($pengunjungKeluars)
                     ->addColumn('tiket', function ($pengunjungKeluar) {
-                        return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungKeluar->uuid . '"><i class="ti ti-ticket me-1"></i>Tiket </a>';
+                        return '<a target="_blank" class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungKeluar->uuid . '"><i class="ti ti-ticket me-1"></i>Tiket </a>';
                     })
                     ->addColumn('qrcode', function ($pengunjungKeluar) {
                         return '<img src="' . asset('/storage/pengunjung_keluar/' . $pengunjungKeluar->qr_code) . '" alt="qrcode" width="100px" height="100px">';
