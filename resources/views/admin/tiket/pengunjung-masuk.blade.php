@@ -69,6 +69,18 @@
                                         {{ $pengunjungMasuk->nomor_telepon }}
                                     </div>
                                 </li>
+                                @if ($pengunjungMasuk->email)
+                                    <li class="timeline-item d-flex position-relative overflow-hidden">
+                                        <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                            <span
+                                                class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                            <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                        </div>
+                                        <div class="timeline-desc text-dark mt-n1">Email :
+                                            {{ $pengunjungMasuk->email }}
+                                        </div>
+                                    </li>
+                                @endif
                                 <li class="timeline-item d-flex position-relative overflow-hidden">
                                     <div class="timeline-badge-wrap d-flex flex-column align-items-center">
                                         <span
@@ -88,14 +100,53 @@
                                         {{ $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain }}
                                         Jam </div>
                                 </li>
+                                @if ($pengunjungMasuk->diskon)
+                                    <li class="timeline-item d-flex position-relative overflow-hidden">
+                                        <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                            <span
+                                                class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                            <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                        </div>
+                                        <div class="timeline-desc text-dark mt-n1">Diskon :
+                                            {{ formatRupiah($pengunjungMasuk->diskon) }}
+                                        </div>
+                                    </li>
+                                    <li class="timeline-item d-flex position-relative overflow-hidden">
+                                        <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                            <span
+                                                class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                            <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                        </div>
+                                        <div class="timeline-desc text-dark mt-n1">Alasan Diskon :
+                                            {{ $pengunjungMasuk->alasan_diskon ?? '-' }}
+                                        </div>
+                                    </li>
+                                @endif
                                 <li class="timeline-item d-flex position-relative overflow-hidden">
                                     <div class="timeline-badge-wrap d-flex flex-column align-items-center">
                                         <span
                                             class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
                                         <span class="timeline-badge-border d-block flex-shrink-0"></span>
                                     </div>
+                                    @php
+                                        $total = $pengunjungMasuk->durasi_extra
+                                            ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra
+                                            : $pengunjungMasuk->tarif;
+                                        $totalDenganDiskon = $total - $pengunjungMasuk->diskon ?? 0;
+                                    @endphp
+                                    <div class="timeline-desc text-dark mt-n1">Pembayaran :
+                                        {{ formatRupiah($total) }}
+                                    </div>
+                                </li>
+                                <li class="timeline-item d-flex position-relative overflow-hidden">
+                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                        <span
+                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                    </div>
+
                                     <div class="timeline-desc text-dark mt-n1">Total Pembayaran :
-                                        {{ formatRupiah($pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif) }}
+                                        {{ formatRupiah($totalDenganDiskon) }}
                                     </div>
                                 </li>
                                 <li class="timeline-item d-flex position-relative overflow-hidden">

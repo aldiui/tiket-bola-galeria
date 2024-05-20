@@ -67,7 +67,9 @@
                             <th>Durasi</th>
                             <th>Orang Tua</th>
                             <th>Metode Pembayaran</th>
-                            <th>Jumlah Pembayaran</th>
+                            <th>Pembayaran</th>
+                            <th>Diskon</th>
+                            <th>Total</th>
                             <th>Tanggal dan Waktu</th>
                             <th>Admin</th>
                         </tr>
@@ -109,6 +111,14 @@
                 {
                     data: 'pembayaran',
                     name: 'pembayaran'
+                },
+                {
+                    data: 'diskon',
+                    name: 'diskon'
+                },
+                {
+                    data: 'total',
+                    name: 'total'
                 },
                 {
                     data: 'tanggal',

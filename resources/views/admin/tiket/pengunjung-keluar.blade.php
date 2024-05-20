@@ -27,6 +27,15 @@
                                             class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
                                         <span class="timeline-badge-border d-block flex-shrink-0"></span>
                                     </div>
+                                    <div class="timeline-desc text-dark mt-n1"> Nomor Tiket :
+                                        {{ $pengunjungKeluar->uuid }}
+                                </li>
+                                <li class="timeline-item d-flex position-relative overflow-hidden">
+                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                        <span
+                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                    </div>
                                     <div class="timeline-desc text-dark mt-n1"> Nama Anak :
                                         {{ $pengunjungKeluar->nama_anak }}
                                         (Panggilan : {{ $pengunjungKeluar->nama_panggilan }})
@@ -60,6 +69,18 @@
                                         {{ $pengunjungKeluar->nomor_telepon }}
                                     </div>
                                 </li>
+                                @if ($pengunjungKeluar->pengunjungMasuk->email)
+                                    <li class="timeline-item d-flex position-relative overflow-hidden">
+                                        <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                            <span
+                                                class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                            <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                        </div>
+                                        <div class="timeline-desc text-dark mt-n1">Email :
+                                            {{ $pengunjungKeluar->pengunjungMasuk->email }}
+                                        </div>
+                                    </li>
+                                @endif
                                 <li class="timeline-item d-flex position-relative overflow-hidden">
                                     <div class="timeline-badge-wrap d-flex flex-column align-items-center">
                                         <span
@@ -69,6 +90,56 @@
                                     <div class="timeline-desc text-dark mt-n1">Durasi Bermain :
                                         {{ $pengunjungKeluar->durasi_bermain }} Jam </div>
                                 </li>
+                                @if ($pengunjungKeluar->pengunjungMasuk->diskon)
+                                    <li class="timeline-item d-flex position-relative overflow-hidden">
+                                        <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                            <span
+                                                class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                            <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                        </div>
+                                        <div class="timeline-desc text-dark mt-n1">Diskon :
+                                            {{ formatRupiah($pengunjungKeluar->pengunjungMasuk->diskon) }}
+                                        </div>
+                                    </li>
+                                    <li class="timeline-item d-flex position-relative overflow-hidden">
+                                        <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                            <span
+                                                class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                            <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                        </div>
+                                        <div class="timeline-desc text-dark mt-n1">Alasan Diskon :
+                                            {{ $pengunjungKeluar->pengunjungMasuk->alasan_diskon ?? '-' }}
+                                        </div>
+                                    </li>
+                                @endif
+                                <li class="timeline-item d-flex position-relative overflow-hidden">
+                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                        <span
+                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                    </div>
+                                    @php
+                                        $total = $pengunjungKeluar->pengunjungMasuk->durasi_extra
+                                            ? $pengunjungKeluar->pengunjungMasuk->tarif +
+                                                $pengunjungKeluar->pengunjungMasuk->tarif_extra
+                                            : $pengunjungKeluar->pengunjungMasuk->tarif;
+                                        $totalDenganDiskon = $total - $pengunjungKeluar->pengunjungMasuk->diskon ?? 0;
+                                    @endphp
+                                    <div class="timeline-desc text-dark mt-n1">Pembayaran :
+                                        {{ formatRupiah($total) }}
+                                    </div>
+                                </li>
+                                <li class="timeline-item d-flex position-relative overflow-hidden">
+                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                        <span
+                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
+                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                    </div>
+
+                                    <div class="timeline-desc text-dark mt-n1">Total Pembayaran :
+                                        {{ formatRupiah($totalDenganDiskon) }}
+                                    </div>
+                                </li>
                                 <li class="timeline-item d-flex position-relative overflow-hidden">
                                     <div class="timeline-badge-wrap d-flex flex-column align-items-center">
                                         <span
@@ -77,6 +148,7 @@
                                     <div class="timeline-desc text-dark mt-n1">Tanggal :
                                         {{ formatTanggal($pengunjungKeluar->created_at, 'j M Y H:i:s') }}</div>
                                 </li>
+
                             </ul>
                             <div class="text-center">
                                 <div>

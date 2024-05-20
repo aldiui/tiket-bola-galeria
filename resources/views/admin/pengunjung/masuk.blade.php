@@ -42,6 +42,11 @@
                     <small class="invalid-feedback" id="errornomor_telepon"></small>
                 </div>
                 <div class="form-group mb-3">
+                    <label for="email" class="form-label">Email (Opsional)</label>
+                    <input type="email" class="form-control" name="email" id="email">
+                    <small class="invalid-feedback" id="erroremail"></small>
+                </div>
+                <div class="form-group mb-3">
                     <label for="durasi_bermain" class="form-label">Durasi Bermain <span class="text-danger">*</span></label>
                     <select class="form-control" name="durasi_bermain" id="durasi_bermain">
                         <option value="">-- Pilih Durasi Bermain --</option>
@@ -68,6 +73,17 @@
                     <input type="number" class="form-control" name="tarif" id="tarif" readonly>
                     <small class="invalid-feedback" id="errortarif"></small>
                     <small class="d-block pt-2">Tarif otomatis berdasarkan waktu yang di pilih</small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="diskon" class="form-label">Diskon (Opsional)</label>
+                    <input type="number" class="form-control" name="diskon" id="diskon">
+                    <small class="invalid-feedback" id="errordiskon"></small>
+                    <small class="d-block pt-2">Diskon berupa potongan dengan mengisi nominal</small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="alasan_diskon" class="form-label">Alasan Diskon (Opsional)</label>
+                    <textarea name="alasan_diskon" id="alasan_diskon" cols="20" rows="10" class="form-control"></textarea>
+                    <small class="invalid-feedback" id="erroralasan_diskon"></small>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><i class="ti ti-plus me-1"></i>Simpan</button>
@@ -105,7 +121,7 @@
                         `<i class="ti ti-plus me-1"></i>Simpan`);
                     handleValidationErrors(error, "saveData", ["nama_anak", 'nama_panggilan',
                         'nama_orang_tua', 'jenis_kelamin', 'nomor_telepon', 'durasi_bermain',
-                        'metode_pembayaran', 'tarif'
+                        'metode_pembayaran', 'tarif', 'email', 'diskon', 'alasan_diskon'
                     ]);
                 };
 

@@ -23,8 +23,11 @@ return new class extends Migration
             $table->integer('durasi_bermain');
             $table->integer('durasi_extra')->nullable();
             $table->string('nomor_telepon');
+            $table->string('email')->nullable();
             $table->integer('tarif');
             $table->integer('tarif_extra')->nullable();
+            $table->integer('diskon')->nullable();
+            $table->text('alasan_diskon')->nullable();
             $table->string('qr_code');
             $table->datetime('start_tiket')->nullable();
             $table->timestamps();

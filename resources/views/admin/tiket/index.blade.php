@@ -27,10 +27,10 @@
 
 @section('main')
     <div class="min-vh-100 bg-white">
-        <div class="text-start">
-            <img src="{{ asset('images/logos/logo.png') }}" width="180" class="" alt="" />
+        <div class="text-center">
+            <img src="{{ asset('images/logos/logo.png') }}" width="150" class="" alt="" />
         </div>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row justify-content-center py-5">
                 <div class="col-12">
                     <div class="card mb-1">

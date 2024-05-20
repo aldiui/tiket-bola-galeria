@@ -31,9 +31,12 @@ class PengunjungController extends Controller
                 'nama_orang_tua' => 'required',
                 'jenis_kelamin' => 'required',
                 'nomor_telepon' => 'required',
-                'durasi_bermain' => 'required',
+                'durasi_bermain' => 'required|numeric',
                 'metode_pembayaran' => 'required',
                 'tarif' => 'required',
+                'email' => 'nullable|email',
+                'diskon' => 'nullable|numeric',
+                'alasan_diskon' => "required_if:diskon,>0",
             ]);
 
             if ($validator->fails()) {
@@ -58,6 +61,9 @@ class PengunjungController extends Controller
                 'durasi_bermain' => $request->durasi_bermain,
                 'metode_pembayaran' => $request->metode_pembayaran,
                 'tarif' => $request->tarif,
+                'email' => $request->email,
+                'diskon' => $request->diskon,
+                'alasan_diskon' => $request->alasan_diskon,
                 'user_id' => Auth::user()->id,
                 'qr_code' => $uuid . '_qrcode.svg',
             ]);
@@ -176,13 +182,13 @@ class PengunjungController extends Controller
 
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
-                'pengunjung_masuk_id' => 'required',
+                'pengunjung_masuk_id' => 'required|exists:pengunjung_masuks,id|unique:pengunjung_keluars,pengunjung_masuk_id',
                 'nama_anak' => 'required',
                 'nama_panggilan' => 'required',
                 'nama_orang_tua' => 'required',
                 'jenis_kelamin' => 'required',
                 'nomor_telepon' => 'required',
-                'durasi_bermain' => 'required',
+                'durasi_bermain' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {

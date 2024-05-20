@@ -33,6 +33,14 @@ class KeuanganController extends Controller
                     ->addColumn('pembayaran', function ($pengunjungMasuk) {
                         return formatRupiah($pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif);
                     })
+                    ->addColumn('diskon', function ($pengunjungMasuk) {
+                        return formatRupiah($pengunjungMasuk->diskon);
+                    })
+                    ->addColumn('total', function ($pengunjungMasuk) {
+                        $total = $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif;
+                        $total = $total - $pengunjungMasuk->diskon ?? 0;
+                        return formatRupiah($total);
+                    })
                     ->addColumn('durasi', function ($pengunjungMasuk) {
                         return '<span class="badge bg-primary rounded-3 fw-semibold"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain . ' Jam</span>';
                     })
