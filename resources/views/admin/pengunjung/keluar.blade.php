@@ -59,6 +59,11 @@
                         <option value="3">3 Jam</option>
                         <option value="4">4 Jam</option>
                         <option value="5">5 Jam</option>
+                        <option value="6">6 Jam</option>
+                        <option value="7">7 Jam</option>
+                        <option value="8">8 Jam</option>
+                        <option value="9">9 Jam</option>
+                        <option value="10">10 Jam</option>
                     </select>
                     <small class="invalid-feedback" id="errordurasi_bermain"></small>
                 </div>
@@ -102,6 +107,30 @@
 
                 ajaxCall(url, "POST", data, successCallback, errorCallback);
             });
+
+            $("#pengunjung_masuk_id").on("change", function() {
+                let cekPengunjungMasukId = $("#pengunjung_masuk_id").val();
+                const fields = ["nama_anak", "nama_panggilan", "nama_orang_tua", "jenis_kelamin",
+                    "nomor_telepon", "durasi_bermain"
+                ];
+
+                const successCallback = function(response) {
+                    fields.forEach((field) => {
+                        if (response.data[field]) {
+                            $(`#${field}`)
+                                .val(response.data[field])
+                                .trigger("change");
+                        }
+                    });
+                };
+
+                const errorCallback = function(error) {
+                    console.log(error);
+                };
+                ajaxCall(`/pengunjung-masuk/${cekPengunjungMasukId}`, "GET", null, successCallback,
+                    errorCallback);
+            });
+
         });
     </script>
 @endpush

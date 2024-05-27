@@ -1,28 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Laporan Keuangan')
+@section('title', 'Laporan Bulanan')
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('libs/datatables/datatables.min.css') }}" />
 @endpush
 
 @section('main')
-    @php
-        $bulans = [
-            'Januari',
-            'Februari',
-            'Maret',
-            'April',
-            'Mei',
-            'Juni',
-            'Juli',
-            'Agustus',
-            'September',
-            'Oktober',
-            'November',
-            'Desember',
-        ];
-    @endphp
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="card-title fw-semibold">Rincian @yield('title')</h5>
@@ -34,24 +18,16 @@
             <div class="row mb-3">
                 <div class="col-lg-6">
                     <div class="form-group mb-3">
-                        <label for="bulan_filter" class="form-label">Bulan</label>
-                        <select name="bulan_filter" id="bulan_filter" class="form-control">
-                            @foreach ($bulans as $key => $value)
-                                <option value="{{ $key + 1 }}" {{ $key + 1 == date('m') ? 'selected' : '' }}>
-                                    {{ $value }}</option>
-                            @endforeach
-                        </select>
+                        <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
+                        <input type="date" name="tanggal_mulai" id="tanggal_mulai" value="{{ date('Y-m-d') }}"
+                            class="form-control">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group mb-3">
-                        <label for="tahun_filter" class="form-label">Tahun</label>
-                        <select name="tahun_filter" id="tahun_filter" class="form-control">
-                            @for ($i = now()->year; $i >= now()->year - 4; $i--)
-                                <option value="{{ $i }}" {{ $i == date('Y') ? 'selected' : '' }}>
-                                    {{ $i }}</option>
-                            @endfor
-                        </select>
+                        <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
+                        <input type="date" name="tanggal_selesai" id="tanggal_selesai" value="{{ date('Y-m-d') }}"
+                            class="form-control">
                     </div>
                 </div>
                 <div class="col-12">
@@ -76,6 +52,15 @@
                     </thead>
                     <tbody>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="5" class="text-center">Total</th>
+                            <td id="pembayaran"></td>
+                            <td id="diskon"></td>
+                            <td id="total"></td>
+                            <td></td>
+                            <td></td>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -132,7 +117,7 @@
 
             renderData();
 
-            $("#bulan_filter, #tahun_filter").on("change", function() {
+            $("#tanggal_mulai, #tanggal_selesai").on("change", function() {
                 $("#laporan-keuangan-table").DataTable().ajax.reload();
                 renderData();
             });
@@ -141,6 +126,10 @@
         const renderData = () => {
             const successCallback = function(response) {
                 renderSingleChart(response.data.data, response.data.labels);
+
+                $("#pembayaran").text(response.data.pembayaran);
+                $("#diskon").text(response.data.diskon);
+                $("#total").text(response.data.total);
             };
 
             const errorCallback = function(error) {
@@ -148,9 +137,9 @@
             };
 
             const url =
-                `/laporan-keuangan?mode=single&bulan=${$("#bulan_filter").val()}&tahun=${$("#tahun_filter").val()}`;
+                `/laporan-keuangan?mode=single&tanggal_mulai=${$("#tanggal_mulai").val()}&tanggal_selesai=${$("#tanggal_selesai").val()}`;
             const cetakLaporan =
-                `/laporan-keuangan?mode=pdf&bulan=${$("#bulan_filter").val()}&tahun=${$("#tahun_filter").val()}`;
+                `/laporan-keuangan?mode=pdf&tanggal_mulai=${$("#tanggal_mulai").val()}&tanggal_selesai=${$("#tanggal_selesai").val()}`;
             $("#cetak_laporan").attr("href", cetakLaporan);
 
             ajaxCall(url, "GET", null, successCallback, errorCallback);

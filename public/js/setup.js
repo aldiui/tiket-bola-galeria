@@ -10,12 +10,14 @@ const datatableCall = (targetId, url, columns) => {
                 d.bulan = $("#bulan_filter").val() ?? null;
                 d.tahun = $("#tahun_filter").val() ?? null;
                 d.tanggal = $("#tanggal_filter").val() ?? null;
+                d.tanggal_mulai = $("#tanggal_mulai").val() ?? null;
+                d.tanggal_selesai = $("#tanggal_selesai").val() ?? null;
             },
         },
         columns: columns,
         lengthMenu: [
-            [25, 50, 100, 250, -1],
-            [25, 50, 100, 250, "All"],
+            [50, 100, 250, -1],
+            [50, 100, 250, "All"],
         ],
     });
 };

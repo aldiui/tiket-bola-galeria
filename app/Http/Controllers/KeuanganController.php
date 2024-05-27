@@ -17,10 +17,10 @@ class KeuanganController extends Controller
 
     public function index(Request $request)
     {
-        $bulan = $request->bulan;
-        $tahun = $request->tahun;
+        $tanggalMulai = $request->tanggal_mulai;
+        $tanggalSelesai = $request->tanggal_selesai;
 
-        $pengunjungMasuks = PengunjungMasuk::with('user')->whereMonth('created_at', $bulan)->whereYear('created_at', $tahun)->latest()->get();
+        $pengunjungMasuks = PengunjungMasuk::with('user')->whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])->latest()->get();
         if ($request->ajax()) {
             if ($request->mode == "datatable") {
                 return DataTables::of($pengunjungMasuks)
@@ -48,10 +48,8 @@ class KeuanganController extends Controller
                     ->addIndexColumn()
                     ->make(true);
             } elseif ($request->mode == "single") {
-                $startDate = Carbon::create($tahun, $bulan, 1)->startOfMonth();
-                $endDate = Carbon::create($tahun, $bulan, 1)->endOfMonth();
 
-                $keuanganData = PengunjungMasuk::whereBetween('created_at', [$startDate, $endDate])
+                $keuanganData = PengunjungMasuk::whereBetween('created_at', [$tanggalMulai, $tanggalSelesai])
                     ->groupBy('date')
                     ->orderBy('date')
                     ->get([
@@ -60,11 +58,11 @@ class KeuanganController extends Controller
                     ])
                     ->pluck('total_tarif', 'date');
 
-                $dates = Carbon::parse($startDate);
+                $dates = Carbon::parse($tanggalMulai);
                 $labels = [];
                 $dataKeuangan = [];
 
-                while ($dates <= $endDate) {
+                while ($dates <= Carbon::parse($tanggalSelesai)) {
                     $dateString = $dates->toDateString();
                     $labels[] = formatTanggal($dateString, 'd');
                     $dataKeuangan[] = $keuanganData[$dateString] ?? 0;
@@ -74,13 +72,16 @@ class KeuanganController extends Controller
                 return $this->successResponse([
                     'labels' => $labels,
                     'data' => $dataKeuangan,
+                    'pembayaran' => formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra')),
+                    'diskon' => formatRupiah($pengunjungMasuks->sum('diskon')),
+                    'total' => formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra') - $pengunjungMasuks->sum('diskon')),
+
                 ], 'Data laporan keuangan ditemukan.');
             }
         }
 
         if ($request->mode == "pdf") {
-            $bulanTahun = Carbon::create($tahun, $bulan, 1)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('F Y');
-            $pdf = PDF::loadView('admin.keuangan.pdf', compact('pengunjungMasuks', 'bulanTahun'));
+            $pdf = PDF::loadView('admin.keuangan.pdf', compact('pengunjungMasuks', 'tanggalMulai', 'tanggalSelesai'));
 
             $options = [
                 'margin_top' => 20,

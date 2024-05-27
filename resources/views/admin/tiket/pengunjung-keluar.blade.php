@@ -165,5 +165,4 @@
 @endsection
 
 @push('scripts')
-    </script>
 @endpush

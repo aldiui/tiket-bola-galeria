@@ -1,13 +1,14 @@
 @extends('layouts.pdf')
 
-@section('title', 'Laporan Keuangan ' . $bulanTahun)
+@section('title', 'Laporan Keuangan ' . formatTanggal($tanggalMulai, 'j M Y') . ' - ' . formatTanggal($tanggalSelesai,
+    'j M Y'))
 
-@push('style')
-@endpush
+    @push('style')
+    @endpush
 
 @section('main')
     <div>
-        <table width="100%" border="1" cellpadding="2.5" cellspacing="0">
+        <table width="100%" border="1" cellpadding="4" cellspacing="0">
             <thead>
                 <tr>
                     <th width="5%">#</th>
@@ -32,26 +33,30 @@
                     @endphp
                     <tr>
                         <td align ="center">{{ $loop->iteration }}</td>
-                        <td>{{ $pengunjungMasuk->nama_anak }}</td>
-                        <td>{{ $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain }}
+                        <td align="center">{{ $pengunjungMasuk->nama_anak }}</td>
+                        <td align="center">
+                            {{ $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain }}
                             Jam </td>
-                        <td>{{ $pengunjungMasuk->nama_orang_tua }}</td>
-                        <td>{{ $pengunjungMasuk->metode_pembayaran }}</td>
-                        <td>{{ formatRupiah($total) }}
+                        <td align="center">{{ $pengunjungMasuk->nama_orang_tua }}</td>
+                        <td align="center">{{ $pengunjungMasuk->metode_pembayaran }}</td>
+                        <td align="right">{{ formatRupiah($total) }}
                         </td>
-                        <td>{{ formatRupiah($pengunjungMasuk->diskon) }}</td>
-                        <td>{{ formatRupiah($totalDenganDiskon) }}</td>
-                        <td>{{ formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s') }}</td>
-                        <td>{{ $pengunjungMasuk->user->nama }}</td>
+                        <td align="right">{{ formatRupiah($pengunjungMasuk->diskon) }}</td>
+                        <td align="right">{{ formatRupiah($totalDenganDiskon) }}</td>
+                        <td align="center">{{ formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s') }}</td>
+                        <td align="center">{{ $pengunjungMasuk->user->nama }}</td>
                     </tr>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr>
                     <td colspan="5" align="center">Total Pembayaran</td>
-                    <td>{{ formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra')) }}</td>
-                    <td>{{ formatRupiah($pengunjungMasuks->sum('diskon')) }}</td>
-                    <td>{{ formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra') - $pengunjungMasuks->sum('diskon')) }}</td>
+                    <td align="right">
+                        {{ formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra')) }}</td>
+                    <td align="right">{{ formatRupiah($pengunjungMasuks->sum('diskon')) }}</td>
+                    <td align="right">
+                        {{ formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra') - $pengunjungMasuks->sum('diskon')) }}
+                    </td>
                     <td></td>
                     <td></td>
                 </tr>

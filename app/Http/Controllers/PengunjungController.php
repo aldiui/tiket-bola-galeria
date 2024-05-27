@@ -335,4 +335,17 @@ class PengunjungController extends Controller
 
         return $this->successResponse($pengunjung, 'Pengunjung Masuk Berhasil tambah extra waktu.', 200);
     }
+
+    public function getPengunjungMasuk($id)
+    {
+        $pengunjung = PengunjungMasuk::find($id);
+
+        if (!$pengunjung) {
+            return $this->errorResponse(null, 'Data pengunjung tidak ditemukan.', 404);
+        }
+
+        $pengunjung->durasi_bermain = $pengunjung->durasi_extra ? $pengunjung->durasi_bermain + $pengunjung->durasi_extra : $pengunjung->durasi_bermain;
+
+        return $this->successResponse($pengunjung, 'Data pengunjung ditemukan.', 200);
+    }
 }
