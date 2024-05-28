@@ -35,8 +35,8 @@
                     </div>
                     <div class="card mb-1">
                         <div class="card-header">
-                            <h5 class="card-title fw-semibold text-center">Riwayat Pengunjung Masuk {{ formatTanggal() }}
-                            </h5>
+                            <h1 class="card-title fw-semibold text-center">Riwayat Pengunjung Masuk {{ formatTanggal() }}
+                            </h1>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">

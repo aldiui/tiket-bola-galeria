@@ -25,7 +25,7 @@ class TiketController extends Controller
                     ->addColumn('durasi', function ($pengunjungMasuk) {
                         if ($pengunjungMasuk->start_tiket) {
                             if ($pengunjungMasuk->pengunjungKeluar) {
-                                return '<span class="fs-1 badge bg-danger"><i class="ti ti-clock me-1"></i> Sudah Selesai</span>';
+                                return '<span style="font-size: 20px" class="badge bg-danger"><i class="ti ti-clock me-1"></i> Sudah Selesai</span>';
                             } else {
                                 $startTicket = Carbon::parse($pengunjungMasuk->start_tiket);
                                 $today = Carbon::now()->format('Y-m-d');
@@ -58,10 +58,10 @@ class TiketController extends Controller
                                     $badgeColor = 'bg-primary';
                                 }
 
-                                return '<span id="' . $spanId . '" class="fs-1 badge ' . $badgeColor . ' rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->duration_difference . '</span>';
+                                return '<span style="font-size: 20px" id="' . $spanId . '" class="badge ' . $badgeColor . ' rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->duration_difference . '</span>';
                             }
                         } else {
-                            return '<span class="fs-1 badge bg-danger"><i class="ti ti-clock me-1"></i> Belum Mulai</span>';
+                            return '<span style="font-size: 20px" class="badge bg-danger"><i class="ti ti-clock me-1"></i> Belum Mulai</span>';
                         }
                     })
                     ->addColumn('tiket', function ($pengunjungMasuk) {
