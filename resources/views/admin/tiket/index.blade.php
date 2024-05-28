@@ -30,7 +30,7 @@
         <div class="text-center">
             <img src="{{ asset('images/logos/logo.png') }}" width="150" class="" alt="" />
         </div>
-        <div class="container-fluid">
+        <div class="container">
             <div class="row justify-content-center py-5">
                 <div class="col-12">
                     <div class="card mb-1">
