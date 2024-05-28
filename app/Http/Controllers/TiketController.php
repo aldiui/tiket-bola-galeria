@@ -64,10 +64,12 @@ class TiketController extends Controller
                             return '<span style="font-size: 20px" class="badge bg-danger"><i class="ti ti-clock me-1"></i> Belum Mulai</span>';
                         }
                     })
-                    ->addColumn('tiket', function ($pengunjungMasuk) {
-                        return '<a class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"><i class="ti ti-ticket me-1"></i> Tiket </a>';
+                    ->addColumn('nama_anak', function ($pengunjungMasuk) {
+                        return '<span style="font-size: 20px" class="fw-bolder">
+                        ' . $pengunjungMasuk->nama_anak . '
+                        </span>';
                     })
-                    ->rawColumns(['durasi', 'tiket'])
+                    ->rawColumns(['durasi', 'nama_anak'])
                     ->addIndexColumn()
                     ->make(true);
             }
