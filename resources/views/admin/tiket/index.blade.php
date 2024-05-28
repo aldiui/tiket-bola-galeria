@@ -27,12 +27,12 @@
 
 @section('main')
     <div class="min-vh-100 bg-white">
-        <div class="text-center">
-            <img src="{{ asset('images/logos/logo.png') }}" width="150" class="" alt="" />
-        </div>
         <div class="container">
             <div class="row justify-content-center py-5">
                 <div class="col-12">
+                    <div class="text-center mb-3">
+                        <img src="{{ asset('images/logos/logo.png') }}" width="150" class="" alt="" />
+                    </div>
                     <div class="card mb-1">
                         <div class="card-header">
                             <h5 class="card-title fw-semibold text-center">Riwayat Pengunjung Masuk {{ formatTanggal() }}
@@ -40,8 +40,8 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="pengunjung-masuk-table" class="table table-bordered table-striped"
-                                    width="100%" style="font-size: 22px">
+                                <table id="pengunjung-masuk-table" class="table table-bordered table-striped" width="100%"
+                                    style="font-size: 22px">
                                     <thead>
                                         <tr>
                                             <th width="5%">#</th>
