@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pembayaran;
 use App\Models\PengunjungMasuk;
 use App\Traits\ApiResponder;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -19,8 +20,29 @@ class KeuanganController extends Controller
     {
         $tanggalMulai = $request->tanggal_mulai;
         $tanggalSelesai = $request->tanggal_selesai;
+        $pembayaranId = $request->pembayaran_id;
 
-        $pengunjungMasuks = PengunjungMasuk::with('user')->whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])->latest()->get();
+        $pengunjungMasuks = [];
+
+        if ($pembayaranId == "Semua") {
+            $pengunjungMasuks = PengunjungMasuk::with('user', 'pembayaran')
+                ->whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
+                ->latest()
+                ->get();
+        } else if ($pembayaranId == "Cash") {
+            $pengunjungMasuks = PengunjungMasuk::with('user', 'pembayaran')
+                ->whereNull('pembayaran_id')
+                ->whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
+                ->latest()
+                ->get();
+        } else {
+            $pengunjungMasuks = PengunjungMasuk::with('user', 'pembayaran')
+                ->where('pembayaran_id', $pembayaranId)
+                ->whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
+                ->latest()
+                ->get();
+        }
+
         if ($request->ajax()) {
             if ($request->mode == "datatable") {
                 return DataTables::of($pengunjungMasuks)
@@ -29,6 +51,9 @@ class KeuanganController extends Controller
                     })
                     ->addColumn('tanggal', function ($pengunjungMasuk) {
                         return formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s');
+                    })
+                    ->addColumn('metode_pembayaran', function ($pengunjungMasuk) {
+                        return $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama : 'Cash';
                     })
                     ->addColumn('pembayaran', function ($pengunjungMasuk) {
                         return formatRupiah($pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif);
@@ -44,23 +69,30 @@ class KeuanganController extends Controller
                     ->addColumn('durasi', function ($pengunjungMasuk) {
                         return '<span class="badge bg-primary rounded-3 fw-semibold"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain . ' Jam</span>';
                     })
-                    ->rawColumns(['admin', 'tanggal', 'pembayaran', 'durasi'])
+                    ->rawColumns(['admin', 'tanggal', 'pembayaran', 'durasi', 'metode_pembayaran', 'diskon', 'total'])
                     ->addIndexColumn()
                     ->make(true);
             } elseif ($request->mode == "single") {
 
-                $keuanganData = PengunjungMasuk::whereBetween('created_at', [$tanggalMulai, $tanggalSelesai])
-                    ->groupBy('date')
+                $query = PengunjungMasuk::whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai]);
+
+                if ($pembayaranId == "Cash") {
+                    $query->whereNull('pembayaran_id');
+                } elseif ($pembayaranId != "Semua") {
+                    $query->where('pembayaran_id', $pembayaranId);
+                }
+
+                $keuanganData = $query->select([
+                    DB::raw('DATE(created_at) as date'),
+                    DB::raw('SUM(tarif) + SUM(tarif_extra) as total_tarif'),
+                ])
+                    ->groupBy(DB::raw('DATE(created_at)'))
                     ->orderBy('date')
-                    ->get([
-                        DB::raw('DATE(created_at) as date'),
-                        DB::raw('SUM(tarif + tarif_extra) as total_tarif'),
-                    ])
                     ->pluck('total_tarif', 'date');
 
-                $dates = Carbon::parse($tanggalMulai);
                 $labels = [];
                 $dataKeuangan = [];
+                $dates = Carbon::parse($tanggalMulai);
 
                 while ($dates <= Carbon::parse($tanggalSelesai)) {
                     $dateString = $dates->toDateString();
@@ -102,6 +134,7 @@ class KeuanganController extends Controller
 
         if (!getPermission('laporan_keuangan')) {return redirect()->route('dashboard');}
 
-        return view('admin.keuangan.index');
+        $pembayaran = Pembayaran::all();
+        return view('admin.keuangan.index', compact('pembayaran'));
     }
 }

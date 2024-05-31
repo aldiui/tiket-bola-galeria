@@ -38,7 +38,8 @@
                             {{ $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain }}
                             Jam </td>
                         <td align="center">{{ $pengunjungMasuk->nama_orang_tua }}</td>
-                        <td align="center">{{ $pengunjungMasuk->metode_pembayaran }}</td>
+                        <td align="center">
+                            {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama : 'Cash' }}</td>
                         <td align="right">{{ formatRupiah($total) }}
                         </td>
                         <td align="right">{{ formatRupiah($pengunjungMasuk->diskon) }}</td>

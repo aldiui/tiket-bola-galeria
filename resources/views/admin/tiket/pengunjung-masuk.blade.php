@@ -13,169 +13,112 @@
                 <div class="col-md-8 col-lg-5 col-xl-4">
                     <div class="card mb-0 border border-primary border-5">
                         <div class="card-body">
-                            <h5 class="fw-semibold text-center mb-3">E-Drop Ticket</h5>
-                            <div class="mb-3 text-center">
-                                <span class="badge bg-success"><i class="ti ti-logout me-1"></i>Pengunjung Masuk</span>
-                            </div>
-                            <div class="text-center">
-                                <img src="{{ asset('images/check.png') }}">
-                            </div>
-                            <ul class="timeline-widget mb-0 position-relative mb-3">
-                                <li class="timeline-item d-flex position-relative overflow-hidden">
-                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                        <span
-                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                            <div class="row mb-2">
+                                <div class="col-4 mb-2">
+                                    <div>
+                                        <img src="{{ asset('/storage/pengunjung_masuk/' . $pengunjungMasuk->qr_code) }}"
+                                            class="img-fluid">
                                     </div>
-                                    <div class="timeline-desc text-dark mt-n1"> Nomor Tiket :
-                                        {{ $pengunjungMasuk->uuid }}
-                                </li>
-                                <li class="timeline-item d-flex position-relative overflow-hidden">
-                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                        <span
-                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                </div>
+                                <div class="col-8 mb-2 text-center">
+                                    <h5 class="fw-semibold mb-3">E-Drop Ticket</h5>
+                                    <div class="mb-2">
+                                        <span class="badge bg-success"><i class="ti ti-logout me-1"></i>Pengunjung
+                                            Masuk</span>
                                     </div>
-                                    <div class="timeline-desc text-dark mt-n1"> Nama Anak :
-                                        {{ $pengunjungMasuk->nama_anak }}
-                                        (Panggilan : {{ $pengunjungMasuk->nama_panggilan }})
-                                </li>
-                                <li class="timeline-item d-flex position-relative overflow-hidden">
-                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                        <span
-                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                    </div>
-                                    <div class="timeline-desc text-dark mt-n1">Orang Tua :
-                                        {{ $pengunjungMasuk->nama_orang_tua }}
-                                    </div>
-                                </li>
-                                <li class="timeline-item d-flex position-relative overflow-hidden">
-                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                        <span
-                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                    </div>
-                                    <div class="timeline-desc text-dark mt-n1">{{ $pengunjungMasuk->jenis_kelamin }}
-                                    </div>
-                                </li>
-                                <li class="timeline-item d-flex position-relative overflow-hidden">
-                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                        <span
-                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                    </div>
-                                    <div class="timeline-desc text-dark mt-n1">Nomor Telepon :
-                                        {{ $pengunjungMasuk->nomor_telepon }}
-                                    </div>
-                                </li>
-                                @if ($pengunjungMasuk->email)
-                                    <li class="timeline-item d-flex position-relative overflow-hidden">
-                                        <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                            <span
-                                                class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                            <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                        </div>
-                                        <div class="timeline-desc text-dark mt-n1">Email :
-                                            {{ $pengunjungMasuk->email }}
-                                        </div>
-                                    </li>
-                                @endif
-                                <li class="timeline-item d-flex position-relative overflow-hidden">
-                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                        <span
-                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                    </div>
-                                    <div class="timeline-desc text-dark mt-n1">Metode Pembayaran :
-                                        {{ $pengunjungMasuk->metode_pembayaran }}</div>
-                                </li>
-                                <li class="timeline-item d-flex position-relative overflow-hidden">
-                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                        <span
-                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                    </div>
-                                    <div class="timeline-desc text-dark mt-n1">Durasi Bermain :
-                                        {{ $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain }}
-                                        Jam </div>
-                                </li>
-                                @if ($pengunjungMasuk->diskon)
-                                    <li class="timeline-item d-flex position-relative overflow-hidden">
-                                        <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                            <span
-                                                class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                            <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                        </div>
-                                        <div class="timeline-desc text-dark mt-n1">Diskon :
-                                            {{ formatRupiah($pengunjungMasuk->diskon) }}
-                                        </div>
-                                    </li>
-                                    <li class="timeline-item d-flex position-relative overflow-hidden">
-                                        <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                            <span
-                                                class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                            <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                        </div>
-                                        <div class="timeline-desc text-dark mt-n1">Alasan Diskon :
-                                            {{ $pengunjungMasuk->alasan_diskon ?? '-' }}
-                                        </div>
-                                    </li>
-                                @endif
-                                <li class="timeline-item d-flex position-relative overflow-hidden">
-                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                        <span
-                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                    </div>
-                                    @php
-                                        $total = $pengunjungMasuk->durasi_extra
-                                            ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra
-                                            : $pengunjungMasuk->tarif;
-                                        $totalDenganDiskon = $total - $pengunjungMasuk->diskon ?? 0;
-                                    @endphp
-                                    <div class="timeline-desc text-dark mt-n1">Pembayaran :
-                                        {{ formatRupiah($total) }}
-                                    </div>
-                                </li>
-                                <li class="timeline-item d-flex position-relative overflow-hidden">
-                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                        <span
-                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                    </div>
-
-                                    <div class="timeline-desc text-dark mt-n1">Total Pembayaran :
-                                        {{ formatRupiah($totalDenganDiskon) }}
-                                    </div>
-                                </li>
-                                <li class="timeline-item d-flex position-relative overflow-hidden">
-                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                        <span
-                                            class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                    </div>
-                                    <div class="timeline-desc text-dark mt-n1">Tanggal :
-                                        {{ formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s') }}</div>
-                                </li>
-                            </ul>
-                            <div class="text-center">
-                                <div class="mb-3">
-                                    @if ($pengunjungMasuk->start_tiket)
-                                        @if (!$pengunjungMasuk->pengunjungKeluar)
-                                            <span id="countdown" class="badge bg-primary rounded-3 fs-2 mb-2"></span>
+                                    <div class="mb-2">
+                                        @if ($pengunjungMasuk->start_tiket)
+                                            @if (!$pengunjungMasuk->pengunjungMasuk)
+                                                <span id="countdown" class="badge bg-primary rounded-3 fs-2 mb-2"></span>
+                                            @else
+                                                <span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Sudah
+                                                    Selesai</span>
+                                            @endif
                                         @else
-                                            <span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Sudah
-                                                Selesai</span>
+                                            <span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Belum
+                                                Mulai</span>
                                         @endif
-                                    @else
-                                        <span class="badge bg-danger"><i class="ti ti-clock me-1"></i> Belum
-                                            Mulai</span>
-                                    @endif
+                                    </div>
                                 </div>
-                                <div>
-                                    <img src="{{ asset('/storage/pengunjung_masuk/' . $pengunjungMasuk->qr_code) }}"
-                                        width="150px">
-                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Nomor Tiket</td>
+                                            <td class="text-dark">{{ $pengunjungMasuk->uuid }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Nama Anak</td>
+                                            <td class="text-dark"> {{ $pengunjungMasuk->nama_anak }}
+                                                (Panggilan : {{ $pengunjungMasuk->nama_panggilan }})</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Orang Tua</td>
+                                            <td class="text-dark">{{ $pengunjungMasuk->nama_orang_tua }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Jenis Kelamin</td>
+                                            <td class="text-dark">{{ $pengunjungMasuk->jenis_kelamin }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Nomor Telepon</td>
+                                            <td class="text-dark">{{ $pengunjungMasuk->nomor_telepon }}</td>
+                                        </tr>
+                                        @if ($pengunjungMasuk->email)
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Email</td>
+                                                <td class="text-dark">{{ $pengunjungMasuk->email }}</td>
+                                            </tr>
+                                        @endif
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Metode Pembayaran</td>
+                                            <td class="text-dark">
+                                                {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama : 'Cash' }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Durasi Bermain</td>
+                                            <td class="text-dark">
+                                                {{ $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain }}
+                                                Jam</td>
+                                        </tr>
+                                        @if ($pengunjungMasuk->diskon)
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Diskon</td>
+                                                <td class="text-dark">{{ $pengunjungMasuk->diskon }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Alasan Diskon</td>
+                                                <td class="text-dark">{{ $pengunjungMasuk->alasan_diskon }}</td>
+                                            </tr>
+                                        @endif
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Pembayaran</td>
+                                            @php
+                                                $total = $pengunjungMasuk->durasi_extra
+                                                    ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra
+                                                    : $pengunjungMasuk->tarif;
+                                                $totalDenganDiskon = $total - $pengunjungMasuk->diskon ?? 0;
+                                            @endphp
+                                            <td class="text-dark">
+                                                {{ formatRupiah($total) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Total Pembayaran</td>
+                                            <td class="text-dark">
+                                                {{ formatRupiah($totalDenganDiskon) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Tanggal</td>
+                                            <td class="text-dark">
+                                                {{ formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s') }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

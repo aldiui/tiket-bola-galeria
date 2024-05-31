@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('nomor_telepon');
             $table->string('email')->nullable();
             $table->integer('tarif');
-            $table->integer('tarif_extra')->nullable();
+            $table->integer('tarif_extra')->default("0");
             $table->integer('diskon')->nullable();
             $table->text('alasan_diskon')->nullable();
             $table->string('qr_code');

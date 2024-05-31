@@ -33,7 +33,7 @@ class PengunjungController extends Controller
                 'jenis_kelamin' => 'required',
                 'nomor_telepon' => 'required',
                 'durasi_bermain' => 'required|numeric',
-                'pembayaran_id' => 'nullable|exists:pembayaran,id',
+                'pembayaran_id' => 'nullable|exists:pembayarans,id',
                 'tarif' => 'required',
                 'email' => 'nullable|email',
                 'diskon' => 'nullable|numeric',

@@ -16,18 +16,31 @@
         </div>
         <div class="card-body">
             <div class="row mb-3">
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="form-group mb-3">
                         <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
                         <input type="date" name="tanggal_mulai" id="tanggal_mulai" value="{{ date('Y-m-d') }}"
                             class="form-control">
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="form-group mb-3">
                         <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
                         <input type="date" name="tanggal_selesai" id="tanggal_selesai" value="{{ date('Y-m-d') }}"
                             class="form-control">
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group mb-3">
+                        <label for="pembayaran_id" class="form-label">Metode Pembayaran </label>
+                        <select class="form-control" name="pembayaran_id" id="pembayaran_id">
+                            <option value="Semua">Semua</option>
+                            <option value="Cash">Cash</option>
+                            @foreach ($pembayaran as $row)
+                                <option value="{{ $row->id }}">{{ $row->nama }} - {{ $row->nomor_rekening }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-12">
@@ -117,7 +130,7 @@
 
             renderData();
 
-            $("#tanggal_mulai, #tanggal_selesai").on("change", function() {
+            $("#tanggal_mulai, #tanggal_selesai, #pembayaran_id").on("change", function() {
                 $("#laporan-keuangan-table").DataTable().ajax.reload();
                 renderData();
             });
@@ -137,9 +150,9 @@
             };
 
             const url =
-                `/laporan-keuangan?mode=single&tanggal_mulai=${$("#tanggal_mulai").val()}&tanggal_selesai=${$("#tanggal_selesai").val()}`;
+                `/laporan-keuangan?mode=single&tanggal_mulai=${$("#tanggal_mulai").val()}&tanggal_selesai=${$("#tanggal_selesai").val()}&pembayaran_id=${$("#pembayaran_id").val()}`;
             const cetakLaporan =
-                `/laporan-keuangan?mode=pdf&tanggal_mulai=${$("#tanggal_mulai").val()}&tanggal_selesai=${$("#tanggal_selesai").val()}`;
+                `/laporan-keuangan?mode=pdf&tanggal_mulai=${$("#tanggal_mulai").val()}&tanggal_selesai=${$("#tanggal_selesai").val()}&pembayaran_id=${$("#pembayaran_id").val()}`;
             $("#cetak_laporan").attr("href", cetakLaporan);
 
             ajaxCall(url, "GET", null, successCallback, errorCallback);

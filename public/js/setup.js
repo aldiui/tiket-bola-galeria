@@ -12,6 +12,7 @@ const datatableCall = (targetId, url, columns) => {
                 d.tanggal = $("#tanggal_filter").val() ?? null;
                 d.tanggal_mulai = $("#tanggal_mulai").val() ?? null;
                 d.tanggal_selesai = $("#tanggal_selesai").val() ?? null;
+                d.pembayaran_id = $("#pembayaran_id").val() ?? null;
             },
         },
         columns: columns,
@@ -447,7 +448,7 @@ const getTicketNow = () => {
                             }/${response.data.qr_code}"
                                 width="150px">
                         </div>
-                        <table class="table table-striped" width="100%">
+                        <table class="table table-striped table-sm" width="100%">
                             <tbody>
                                 <tr>
                                     <td width="30%">Nama Anak</td>
