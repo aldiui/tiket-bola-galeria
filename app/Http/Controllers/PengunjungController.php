@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Pengaturan;
-use App\Models\PengunjungKeluar;
-use App\Models\PengunjungMasuk;
-use App\Traits\ApiResponder;
-use Carbon\Carbon;
 use DataTables;
+use Carbon\Carbon;
+use Ramsey\Uuid\Uuid;
+use App\Models\Pembayaran;
+use App\Models\Pengaturan;
+use App\Traits\ApiResponder;
 use Illuminate\Http\Request;
+use App\Models\PengunjungMasuk;
+use App\Models\PengunjungKeluar;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Ramsey\Uuid\Uuid;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PengunjungController extends Controller
@@ -32,7 +33,7 @@ class PengunjungController extends Controller
                 'jenis_kelamin' => 'required',
                 'nomor_telepon' => 'required',
                 'durasi_bermain' => 'required|numeric',
-                'metode_pembayaran' => 'required',
+                'pembayaran_id' => 'nullable|exists:pembayaran,id',
                 'tarif' => 'required',
                 'email' => 'nullable|email',
                 'diskon' => 'nullable|numeric',
@@ -59,7 +60,7 @@ class PengunjungController extends Controller
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nomor_telepon' => $request->nomor_telepon,
                 'durasi_bermain' => $request->durasi_bermain,
-                'metode_pembayaran' => $request->metode_pembayaran,
+                'pembayaran_id' => $request->pembayaran_id,
                 'tarif' => $request->tarif,
                 'email' => $request->email,
                 'diskon' => $request->diskon,
@@ -74,7 +75,8 @@ class PengunjungController extends Controller
         }
 
         $pengaturan = Pengaturan::find(1);
-        return view('admin.pengunjung.masuk', compact('pengaturan'));
+        $pembayaran = Pembayaran::all();
+        return view('admin.pengunjung.masuk', compact('pengaturan', 'pembayaran'));
     }
 
     public function riwayatPengunjungMasuk(Request $request)

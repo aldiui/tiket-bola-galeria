@@ -73,6 +73,16 @@
                                     autocomplete="off" value="1">
                                 <label class="form-check-label" for="ubah_tarif">Ubah Tarif</label>
                             </div>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" name="daftar_bank" id="daftar_bank"
+                                    autocomplete="off" value="1">
+                                <label class="form-check-label" for="daftar_bank">Daftar Bank</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" name="toleransi_waktu"
+                                    id="toleransi_waktu" autocomplete="off" value="1">
+                                <label class="form-check-label" for="toleransi_waktu">Toleransi Waktu</label>
+                            </div>
                         </div>
                     </div>
                 </div>

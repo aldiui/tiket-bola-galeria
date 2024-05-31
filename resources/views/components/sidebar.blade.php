@@ -98,6 +98,22 @@
                         </a>
                     </li>
                 @endif
+                @if (getAdmin()->daftar_bank == 1)
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/daftar-bank" aria-expanded="false">
+                            <i class="ti ti-coin-bitcoin"></i>
+                            <span class="hide-menu">Daftar Bank</span>
+                        </a>
+                    </li>
+                @endif
+                @if (getAdmin()->toleransi_waktu == 1)
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/toleransi-waktu" aria-expanded="false">
+                            <i class="ti ti-clock"></i>
+                            <span class="hide-menu">Toleransi Waktu</span>
+                        </a>
+                    </li>
+                @endif
                 <li class="pb-5 mb-5"></li>
             </ul>
         </nav>

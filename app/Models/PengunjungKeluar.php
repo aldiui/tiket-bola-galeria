@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Pembayaran;
 use App\Models\PengunjungMasuk;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,5 +22,10 @@ class PengunjungKeluar extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function pembayaran()
+    {
+        return $this->belongsTo(Pembayaran::class);
     }
 }

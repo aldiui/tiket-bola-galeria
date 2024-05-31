@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->uuid();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('pembayaran_id')->nullable();
             $table->string('nama_anak');
             $table->string('nama_panggilan');
             $table->string('nama_orang_tua');
             $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
-            $table->enum('metode_pembayaran', ['Cash', 'Transfer']);
             $table->integer('durasi_bermain');
             $table->integer('durasi_extra')->nullable();
             $table->string('nomor_telepon');
@@ -33,6 +33,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('pembayaran_id')->references('id')->on('pembayarans')->onDelete('cascade');
         });
     }
 

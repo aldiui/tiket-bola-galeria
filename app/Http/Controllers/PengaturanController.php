@@ -35,13 +35,36 @@ class PengaturanController extends Controller
 
             $pengaturan->update([
                 'tarif' => $request->tarif,
-                'toleransi_waktu' => $request->toleransi_waktu,
             ]);
 
             return $this->successResponse($pengaturan, 'Ubah Tarif berhasil diubah.', 200);
         }
 
         return view('admin.pengaturan.ubah-tarif', compact('pengaturan'));
+    }
+
+    public function toleransiWaktu(Request $request)
+    {
+        if (!getPermission('toleransi_waktu')) {return redirect()->route('dashboard');}
+
+        $pengaturan = Pengaturan::find(1);
+        if ($request->isMethod('post')) {
+            $validator = Validator::make($request->all(), [
+                'toleransi_waktu' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
+            }
+
+            $pengaturan->update([
+                'toleransi_waktu' => $request->toleransi_waktu,
+            ]);
+
+            return $this->successResponse($pengaturan, 'Toleransi Waktu berhasil diubah.', 200);
+        }
+
+        return view('admin.pengaturan.toleransi-waktu', compact('pengaturan'));
     }
 
     public function index(Request $request)
@@ -111,6 +134,8 @@ class PengaturanController extends Controller
             'laporan_keuangan' => $request->laporan_keuangan ?? 0,
             'user_management' => $request->user_management ?? 0,
             'ubah_tarif' => $request->ubah_tarif ?? 0,
+            'daftar_bank' => $request->daftar_bank ?? 0,
+            'toleransi_waktu' => $request->toleransi_waktu ?? 0,
         ]);
 
         return $this->successResponse($admin, 'Data admin ditambahkan.', 201);
@@ -160,6 +185,8 @@ class PengaturanController extends Controller
             'laporan_keuangan' => $request->laporan_keuangan ?? 0,
             'user_management' => $request->user_management ?? 0,
             'ubah_tarif' => $request->ubah_tarif ?? 0,
+            'daftar_bank' => $request->daftar_bank ?? 0,
+            'toleransi_waktu' => $request->toleransi_waktu ?? 0,
         ]);
 
         return $this->successResponse($admin, 'Data admin diubah.');

@@ -64,14 +64,15 @@
                     <small class="invalid-feedback" id="errordurasi_bermain"></small>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="metode_pembayaran" class="form-label">Metode Pembayaran <span
+                    <label for="pembayaran_id" class="form-label">Metode Pembayaran <span
                             class="text-danger">*</span></label>
-                    <select class="form-control" name="metode_pembayaran" id="metode_pembayaran">
-                        <option value="">-- Pilih Metode Pembayaran --</option>
-                        <option value="Cash">Cash</option>
-                        <option value="Transfer">Transfer</option>
+                    <select class="form-control" name="pembayaran_id" id="pembayaran_id">
+                        <option value="">Cash</option>
+                        @foreach ($pembayaran as $row)
+                            <option value="{{ $row->id }}">{{ $row->nama }} - {{ $row->nomor_rekening }}</option>
+                        @endforeach
                     </select>
-                    <small class="invalid-feedback" id="errormetode_pembayaran"></small>
+                    <small class="invalid-feedback" id="errorpembayaran_id"></small>
                 </div>
                 <div class="form-group mb-3">
                     <label for="tarif" class="form-label">Tarif <span class="text-danger">*</span></label>
@@ -126,7 +127,7 @@
                         `<i class="ti ti-plus me-1"></i>Simpan`);
                     handleValidationErrors(error, "saveData", ["nama_anak", 'nama_panggilan',
                         'nama_orang_tua', 'jenis_kelamin', 'nomor_telepon', 'durasi_bermain',
-                        'metode_pembayaran', 'tarif', 'email', 'diskon', 'alasan_diskon'
+                        'pembayaran_id', 'tarif', 'email', 'diskon', 'alasan_diskon'
                     ]);
                 };
 

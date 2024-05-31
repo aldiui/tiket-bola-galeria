@@ -21,6 +21,8 @@ return new class extends Migration
             $table->boolean('laporan_keuangan');
             $table->boolean('user_management');
             $table->boolean('ubah_tarif');
+            $table->boolean('daftar_bank');
+            $table->boolean('toleransi_waktu');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

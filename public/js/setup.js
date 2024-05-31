@@ -93,6 +93,12 @@ const getModal = (targetId, url = null, fields = null) => {
                 $(`#${targetId} #ubah_tarif`)
                     .prop("checked", hakAkses.ubah_tarif == 1)
                     .trigger("change");
+                $(`#${targetId} #daftar_bank`)
+                    .prop("checked", hakAkses.daftar_bank == 1)
+                    .trigger("change");
+                $(`#${targetId} #toleransi_waktu`)
+                    .prop("checked", hakAkses.toleransi_waktu == 1)
+                    .trigger("change");
             }
         };
 

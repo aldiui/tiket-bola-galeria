@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
             'laporan_keuangan' => '1',
             'user_management' => '1',
             'ubah_tarif' => '1',
+            'daftar_bank' => '1',
+            'toleransi_waktu' => '1',
         ]);
 
         DB::table('pengaturans')->insert([
