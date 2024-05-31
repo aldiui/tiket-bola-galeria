@@ -22,7 +22,7 @@ class PembayaranController extends Controller
             if ($request->mode == "datatable") {
                 return DataTables::of($daftarBank)
                     ->addColumn('aksi', function ($daftarBank) {
-                        $editButton = '<button class="btn btn-sm btn-warning me-1" onclick="getModal(`createModal`, `/daftar-bank/' . $daftarBank->id . '`, [`id`, `nama`, `nomor_rekening`])">
+                        $editButton = '<button class="btn btn-sm btn-warning me-1" onclick="getModal(`createModal`, `/daftar-bank/' . $daftarBank->id . '`, [`id`, `nama_bank`, `nama_akun`, `nomor_rekening`])">
                         <i class="ti ti-edit me-1"></i>Edit</button>';
                         $deleteButton = '<button class="btn btn-sm btn-danger" onclick="confirmDelete(`/daftar-bank/' . $daftarBank->id . '`, `user-table`)"><i class="ti ti-trash me-1"></i>Hapus</button>';
                         return $editButton . $deleteButton;
@@ -56,7 +56,8 @@ class PembayaranController extends Controller
         if (!getPermission('daftar_bank')) {return redirect()->route('dashboard');}
 
         $validator = Validator::make($request->all(), [
-            'nama' => 'required',
+            'nama_bank' => 'required',
+            'nama_akun' => 'required',
             'nomor_rekening' => 'required',
         ]);
 
@@ -65,7 +66,8 @@ class PembayaranController extends Controller
         }
 
         $daftarBank = Pembayaran::create([
-            'nama' => $request->nama,
+            'nama_bank' => $request->nama_bank,
+            'nama_akun' => $request->nama_akun,
             'nomor_rekening' => $request->nomor_rekening,
         ]);
 
@@ -77,7 +79,8 @@ class PembayaranController extends Controller
         if (!getPermission('daftar_bank')) {return redirect()->route('dashboard');}
 
         $validator = Validator::make($request->all(), [
-            'nama' => 'required',
+            'nama_bank' => 'required',
+            'nama_akun' => 'required',
             'nomor_rekening' => 'required',
         ]);
 
@@ -92,7 +95,8 @@ class PembayaranController extends Controller
         }
 
         $daftarBank->update([
-            'nama' => $request->nama,
+            'nama_bank' => $request->nama_bank,
+            'nama_akun' => $request->nama_akun,
             'nomor_rekening' => $request->nomor_rekening,
         ]);
 

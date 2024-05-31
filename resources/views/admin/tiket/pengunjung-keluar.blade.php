@@ -50,7 +50,8 @@
                                         </tr>
                                         <tr>
                                             <td class="text-dark fw-semibold">Nomor Telepon</td>
-                                            <td class="text-dark">{{ $pengunjungKeluar->nomor_telepon }}</td>
+                                            <td class="text-dark">{{ $pengunjungKeluar->pengunjungMasuk->nomor_telepon }}
+                                            </td>
                                         </tr>
                                         @if ($pengunjungKeluar->pengunjungMasuk->email)
                                             <tr>
@@ -61,13 +62,13 @@
                                         <tr>
                                             <td class="text-dark fw-semibold">Metode Pembayaran</td>
                                             <td class="text-dark">
-                                                {{ $pengunjungKeluar->pengunjungMasuk->pembayaran_id ? $pengunjungKeluar->pengunjungMasuk->pembayaran->nama : 'Cash' }}
+                                                {{ $pengunjungKeluar->pengunjungMasuk->pembayaran_id ? $pengunjungKeluar->pengunjungMasuk->pembayaran->nama_bank . ' - ' . $pengunjungKeluar->pengunjungMasuk->pembayaran->nama_akun . ' ( ' . $pengunjungKeluar->pengunjungMasuk->pembayaran->nomor_rekening . ' ) ' : 'Cash' }}j
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="text-dark fw-semibold">Durasi Bermain</td>
                                             <td class="text-dark">
-                                                {{ $pengunjungKeluar->durasi_bermain }}
+                                                {{ $pengunjungKeluar->pengunjungMasuk->durasi_extra ? $pengunjungKeluar->pengunjungMasuk->durasi_bermain + $pengunjungKeluar->pengunjungMasuk->durasi_extra : $pengunjungKeluar->pengunjungMasuk->durasi_bermain }}
                                                 Jam</td>
                                         </tr>
                                         @if ($pengunjungKeluar->pengunjungMasuk->diskon)

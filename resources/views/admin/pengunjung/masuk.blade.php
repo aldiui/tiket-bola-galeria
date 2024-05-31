@@ -69,7 +69,8 @@
                     <select class="form-control" name="pembayaran_id" id="pembayaran_id">
                         <option value="">Cash</option>
                         @foreach ($pembayaran as $row)
-                            <option value="{{ $row->id }}">{{ $row->nama }} - {{ $row->nomor_rekening }}</option>
+                            <option value="{{ $row->id }}">{{ $row->nama_bank }} - {{ $row->nama_akun }} (
+                                {{ $row->nomor_rekening }} )</option>
                         @endforeach
                     </select>
                     <small class="invalid-feedback" id="errorpembayaran_id"></small>

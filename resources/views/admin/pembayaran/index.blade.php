@@ -20,7 +20,8 @@
                     <thead>
                         <tr>
                             <th width="5%">#</th>
-                            <th>Bank</th>
+                            <th>Nama Bank</th>
+                            <th>Nama Akun</th>
                             <th>Nomor Rekening</th>
                             <th width="20%">Aksi</th>
                         </tr>
@@ -44,8 +45,12 @@
                     name: 'DT_RowIndex'
                 },
                 {
-                    data: 'nama',
-                    name: 'nama'
+                    data: 'nama_bank',
+                    name: 'nama_bank'
+                },
+                {
+                    data: 'nama_akun',
+                    name: 'nama_akun'
                 },
                 {
                     data: 'nomor_rekening',
@@ -79,7 +84,9 @@
                 const errorCallback = function(error) {
                     setButtonLoadingState("#saveData .btn.btn-primary", false,
                         `<i class="ti ti-plus me-1"></i>Simpan`);
-                    handleValidationErrors(error, "saveData", ["nama", "nomor_rekening"]);
+                    handleValidationErrors(error, "saveData", ["nama_bank", "nama_akun",
+                        "nomor_rekening"
+                    ]);
                 };
 
                 ajaxCall(url, "POST", data, successCallback, errorCallback);

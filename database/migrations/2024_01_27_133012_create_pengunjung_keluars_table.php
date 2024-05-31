@@ -20,9 +20,7 @@ return new class extends Migration
             $table->string('nama_panggilan');
             $table->string('nama_orang_tua');
             $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
-            $table->integer('durasi_bermain');
             $table->string('qr_code');
-            $table->string('nomor_telepon');
             $table->timestamps();
 
             $table->foreign('pengunjung_masuk_id')->references('id')->on('pengunjung_masuks')->onDelete('cascade');

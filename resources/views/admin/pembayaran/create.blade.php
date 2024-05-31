@@ -10,9 +10,14 @@
                 <div class="modal-body">
                     <input type="hidden" id="id">
                     <div class="form-group mb-3">
-                        <label for="nama" class="form-label">Nama <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nama" name="nama">
-                        <small class="invalid-feedback" id="errornama"></small>
+                        <label for="nama_bank" class="form-label">Nama Akun <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="nama_bank" name="nama_bank">
+                        <small class="invalid-feedback" id="errornama_bank"></small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="nama_akun" class="form-label">Nama Akun <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="nama_akun" name="nama_akun">
+                        <small class="invalid-feedback" id="errornama_akun"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label for="nomor_rekening" class="form-label">Nomor Rekening <span

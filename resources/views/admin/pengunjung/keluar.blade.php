@@ -45,28 +45,6 @@
                     </select>
                     <small class="invalid-feedback" id="errorjenis_kelamin"></small>
                 </div>
-                <div class="form-group mb-3">
-                    <label for="nomor_telepon" class="form-label">Nomor Telepon <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="nomor_telepon" id="nomor_telepon">
-                    <small class="invalid-feedback" id="errornomor_telepon"></small>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="durasi_bermain" class="form-label">Durasi Bermain <span class="text-danger">*</span></label>
-                    <select class="form-control" name="durasi_bermain" id="durasi_bermain">
-                        <option value="">-- Pilih Durasi Bermain --</option>
-                        <option value="1">1 Jam</option>
-                        <option value="2">2 Jam</option>
-                        <option value="3">3 Jam</option>
-                        <option value="4">4 Jam</option>
-                        <option value="5">5 Jam</option>
-                        <option value="6">6 Jam</option>
-                        <option value="7">7 Jam</option>
-                        <option value="8">8 Jam</option>
-                        <option value="9">9 Jam</option>
-                        <option value="10">10 Jam</option>
-                    </select>
-                    <small class="invalid-feedback" id="errordurasi_bermain"></small>
-                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><i class="ti ti-plus me-1"></i>Simpan</button>
                 </div>
@@ -110,9 +88,7 @@
 
             $("#pengunjung_masuk_id").on("change", function() {
                 let cekPengunjungMasukId = $("#pengunjung_masuk_id").val();
-                const fields = ["nama_anak", "nama_panggilan", "nama_orang_tua", "jenis_kelamin",
-                    "nomor_telepon", "durasi_bermain"
-                ];
+                const fields = ["nama_anak", "nama_panggilan", "nama_orang_tua", "jenis_kelamin"];
 
                 const successCallback = function(response) {
                     fields.forEach((field) => {

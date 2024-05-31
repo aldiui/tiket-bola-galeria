@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use DataTables;
-use Carbon\Carbon;
-use Ramsey\Uuid\Uuid;
+use App\Http\Controllers\Controller;
 use App\Models\Pembayaran;
 use App\Models\Pengaturan;
-use App\Traits\ApiResponder;
-use Illuminate\Http\Request;
-use App\Models\PengunjungMasuk;
 use App\Models\PengunjungKeluar;
-use App\Http\Controllers\Controller;
+use App\Models\PengunjungMasuk;
+use App\Traits\ApiResponder;
+use Carbon\Carbon;
+use DataTables;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Ramsey\Uuid\Uuid;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PengunjungController extends Controller
@@ -189,8 +189,6 @@ class PengunjungController extends Controller
                 'nama_panggilan' => 'required',
                 'nama_orang_tua' => 'required',
                 'jenis_kelamin' => 'required',
-                'nomor_telepon' => 'required',
-                'durasi_bermain' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -206,8 +204,7 @@ class PengunjungController extends Controller
                 'nama_anak' => $pengunjungMasuk->nama_anak === $request->nama_anak ? null : ['Maaf Data Anak Tidak Sesuai'],
                 'nama_panggilan' => $pengunjungMasuk->nama_panggilan === $request->nama_panggilan ? null : ['Maaf Data Panggilan Tidak Sesuai'],
                 'nama_orang_tua' => $pengunjungMasuk->nama_orang_tua === $request->nama_orang_tua ? null : ['Maaf Data Orang Tua Tidak Sesuai'],
-                'nomor_telepon' => $pengunjungMasuk->nomor_telepon === $request->nomor_telepon ? null : ['Maaf Data Nomor Telepon Tidak Sesuai'],
-                'durasi_bermain' => ($pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain) == $request->durasi_bermain ? null : ['Maaf Data Durasi Bermain Tidak Sesuai'],
+                'jenis_kelamin' => $pengunjungMasuk->jenis_kelamin === $request->jenis_kelamin ? null : ['Maaf Data Jenis Kelamin Tidak Sesuai'],
             ];
 
             $validasiPengunjungMasuk = array_filter($validasiPengunjungMasuk);
@@ -235,8 +232,6 @@ class PengunjungController extends Controller
                 'nama_panggilan' => $request->nama_panggilan,
                 'nama_orang_tua' => $request->nama_orang_tua,
                 'jenis_kelamin' => $request->jenis_kelamin,
-                'nomor_telepon' => $request->nomor_telepon,
-                'durasi_bermain' => $request->durasi_bermain,
                 'user_id' => Auth::user()->id,
                 'qr_code' => $uuid . '_qrcode.svg',
             ]);

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('nama_bank');
+            $table->string('nama_akun');
             $table->string('nomor_rekening');
             $table->timestamps();
         });

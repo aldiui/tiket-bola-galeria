@@ -81,7 +81,7 @@ class TiketController extends Controller
 
     public function show($uuid)
     {
-        $pengunjungMasuk = PengunjungMasuk::where('uuid', $uuid)->first();
+        $pengunjungMasuk = PengunjungMasuk::with('pembayaran')->where('uuid', $uuid)->first();
 
         if ($pengunjungMasuk) {
             if ($pengunjungMasuk->start_tiket) {
