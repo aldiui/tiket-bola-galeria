@@ -26,13 +26,17 @@
 @endpush
 
 @section('main')
-    <div class="min-vh-100 bg-white">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container">
+            <a class="navbar-brand mx-auto" href="#">
+                <img src="{{ asset('images/logos/logo.png') }}" width="150" alt="Logo">
+            </a>
+        </div>
+    </nav>
+    <div class="bg-white pt-5">
         <div class="container">
             <div class="row justify-content-center py-5">
                 <div class="col-12">
-                    <div class="text-center mb-3">
-                        <img src="{{ asset('images/logos/logo.png') }}" width="150" class="" alt="" />
-                    </div>
                     <div class="card mb-1">
                         <div class="card-header">
                             <h1 class="card-title fw-semibold text-center">Riwayat Pengunjung Masuk {{ formatTanggal() }}

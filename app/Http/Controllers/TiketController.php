@@ -73,6 +73,8 @@ class TiketController extends Controller
                     ->addIndexColumn()
                     ->make(true);
             }
+
+            return view('admin.tiket.table', compact('pengunjungMasuks'))->render();
         }
         return view('admin.tiket.index');
     }
