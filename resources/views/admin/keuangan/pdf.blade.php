@@ -39,7 +39,8 @@
                             Jam </td>
                         <td align="center">{{ $pengunjungMasuk->nama_orang_tua }}</td>
                         <td align="center">
-                            {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama : 'Cash' }}</td>
+                            {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank . ' - ' . $pengunjungMasuk->pembayaran->nama_akun : 'Cash' }}
+                        </td>
                         <td align="right">{{ formatRupiah($total) }}
                         </td>
                         <td align="right">{{ formatRupiah($pengunjungMasuk->diskon) }}</td>

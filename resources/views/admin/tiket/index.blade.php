@@ -85,7 +85,7 @@
 
             setInterval(function() {
                 $("#pengunjung-masuk-table").DataTable().ajax.reload();
-            }, 30000);
+            }, 5000);
         });
     </script>
 @endpush

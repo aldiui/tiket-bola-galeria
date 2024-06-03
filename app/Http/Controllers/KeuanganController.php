@@ -53,7 +53,7 @@ class KeuanganController extends Controller
                         return formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s');
                     })
                     ->addColumn('metode_pembayaran', function ($pengunjungMasuk) {
-                        return $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama : 'Cash';
+                        return $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank . ' - ' . $pengunjungMasuk->pembayaran->nama_akun : 'Cash';
                     })
                     ->addColumn('pembayaran', function ($pengunjungMasuk) {
                         return formatRupiah($pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif);
