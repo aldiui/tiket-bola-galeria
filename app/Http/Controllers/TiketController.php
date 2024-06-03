@@ -74,7 +74,7 @@ class TiketController extends Controller
                     ->make(true);
             }
 
-            return view('admin.tiket.table', compact('pengunjungMasuks'))->render();
+            return $this->successResponse($pengunjungMasuks->count(), 'Data tiket ditemukan.');
         }
         return view('admin.tiket.index');
     }

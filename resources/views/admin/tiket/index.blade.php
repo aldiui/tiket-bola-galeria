@@ -43,6 +43,7 @@
                             </h1>
                         </div>
                         <div class="card-body">
+                            <div class="text-center mb-2">Data Pengujung : <span id="data-show">0</span></div>
                             <div class="table-responsive">
                                 <table id="pengunjung-masuk-table" class="table table-bordered table-striped" width="100%"
                                     style="font-size: 22px">
@@ -83,9 +84,26 @@
                 },
             ]);
 
+            renderData();
+
             setInterval(function() {
                 $("#pengunjung-masuk-table").DataTable().ajax.reload();
+                renderData();
             }, 5000);
+
+
+
         });
+
+        const renderData = () => {
+            const successCallback = function(response) {
+                $("#data-show").html(response.data);
+            };
+
+            const errorCallback = function(error) {
+                console.log(error);
+            };
+            ajaxCall('{{ route('eTiket.index') }}', "GET", null, successCallback, errorCallback);
+        }
     </script>
 @endpush
