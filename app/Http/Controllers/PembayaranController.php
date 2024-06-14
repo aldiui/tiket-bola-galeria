@@ -32,7 +32,7 @@ class PembayaranController extends Controller
                     ->make(true);
             }
 
-            return $this->successResponse($daftarBank, 'Data daftar bank ditemukan.');
+            return $this->successResponse($daftarBank, 'Data Daftar Bank ditemukan.');
         }
 
         return view('admin.pembayaran.index');
@@ -45,10 +45,10 @@ class PembayaranController extends Controller
         $daftarBank = Pembayaran::find($id);
 
         if (!$daftarBank) {
-            return $this->errorResponse(null, 'Data daftar bank tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data Daftar Bank tidak ditemukan.', 404);
         }
 
-        return $this->successResponse($daftarBank, 'Data daftar bank ditemukan.');
+        return $this->successResponse($daftarBank, 'Data Daftar Bank ditemukan.');
     }
 
     public function store(Request $request)
@@ -71,7 +71,7 @@ class PembayaranController extends Controller
             'nomor_rekening' => $request->nomor_rekening,
         ]);
 
-        return $this->successResponse($daftarBank, 'Data daftar bank ditambahkan.', 201);
+        return $this->successResponse($daftarBank, 'Data Daftar Bank ditambahkan.', 201);
     }
 
     public function update(Request $request, $id)
@@ -91,7 +91,7 @@ class PembayaranController extends Controller
         $daftarBank = Pembayaran::find($id);
 
         if (!$daftarBank) {
-            return $this->errorResponse(null, 'Data daftar bank tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data Daftar Bank tidak ditemukan.', 404);
         }
 
         $daftarBank->update([
@@ -100,7 +100,7 @@ class PembayaranController extends Controller
             'nomor_rekening' => $request->nomor_rekening,
         ]);
 
-        return $this->successResponse($daftarBank, 'Data daftar bank diubah.');
+        return $this->successResponse($daftarBank, 'Data Daftar Bank diubah.');
     }
 
     public function destroy($id)
@@ -110,11 +110,11 @@ class PembayaranController extends Controller
         $daftarBank = Pembayaran::find($id);
 
         if (!$daftarBank) {
-            return $this->errorResponse(null, 'Data daftar bank tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data Daftar Bank tidak ditemukan.', 404);
         }
 
         $daftarBank->delete();
 
-        return $this->successResponse(null, 'Data daftar bank dihapus.');
+        return $this->successResponse(null, 'Data Daftar Bank dihapus.');
     }
 }

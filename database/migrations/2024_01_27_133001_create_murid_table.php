@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengaturans', function (Blueprint $table) {
+        Schema::create('murids', function (Blueprint $table) {
             $table->id();
-            $table->integer('tarif');
-            $table->integer('denda')->default('0');
-            $table->integer('toleransi_waktu')->default('10');
+            $table->string('nomor_murid')->unique();
+            $table->string('nama_anak');
+            $table->integer('umur');
+            $table->string('kelas');
+            $table->string('nama_orang_tua');
+            $table->string('nomor_telepon');
             $table->timestamps();
+
         });
     }
 
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pengaturans');
+        Schema::dropIfExists('murids');
     }
 };

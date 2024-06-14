@@ -1,14 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TiketController;
-use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KeuanganController;
+use App\Http\Controllers\MuridController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PengunjungController;
+use App\Http\Controllers\TiketController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::get('laporan-keuangan', [KeuanganController::class, 'index'])->name('laporanKeuangan');
     Route::resource('user-management', PengaturanController::class)->names('userManagement');
     Route::resource('daftar-bank', PembayaranController::class)->names('daftarBank');
+    Route::resource('murid', MuridController::class)->names('murid');
+
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
 

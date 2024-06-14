@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Murid;
 use App\Models\Pembayaran;
 use App\Models\PengunjungKeluar;
 use App\Models\User;
@@ -27,5 +28,11 @@ class PengunjungMasuk extends Model
     public function pembayaran()
     {
         return $this->belongsTo(Pembayaran::class);
+    }
+
+    public function murid()
+    {
+        return $this->belongsTo(Murid::class);
+
     }
 }

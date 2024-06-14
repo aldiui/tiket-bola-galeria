@@ -106,6 +106,14 @@
                         </a>
                     </li>
                 @endif
+                @if (getAdmin()->murid == 1)
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/murid" aria-expanded="false">
+                            <i class="ti ti-users"></i>
+                            <span class="hide-menu">Murid</span>
+                        </a>
+                    </li>
+                @endif
                 @if (getAdmin()->toleransi_waktu == 1)
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/toleransi-waktu" aria-expanded="false">

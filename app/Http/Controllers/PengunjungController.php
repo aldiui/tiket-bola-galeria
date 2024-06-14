@@ -37,7 +37,10 @@ class PengunjungController extends Controller
                 'tarif' => 'required',
                 'email' => 'nullable|email',
                 'diskon' => 'nullable|numeric',
+                'biaya_mengantar' => 'nullable|numeric',
+                'biaya_kaos_kaki' => 'nullable|numeric',
                 'alasan_diskon' => "required_if:diskon,>0",
+                'status_murid' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -63,8 +66,11 @@ class PengunjungController extends Controller
                 'pembayaran_id' => $request->pembayaran_id,
                 'tarif' => $request->tarif,
                 'email' => $request->email,
-                'diskon' => $request->diskon,
+                'diskon' => $request->diskon ?? 0,
+                'biaya_mengantar' => $request->biaya_mengantar ?? 0,
+                'biaya_kaos_kaki' => $request->biaya_kaos_kaki ?? 0,
                 'alasan_diskon' => $request->alasan_diskon,
+                'status_murid' => $request->status_murid,
                 'user_id' => Auth::user()->id,
                 'qr_code' => $uuid . '_qrcode.svg',
             ]);
@@ -189,6 +195,7 @@ class PengunjungController extends Controller
                 'nama_panggilan' => 'required',
                 'nama_orang_tua' => 'required',
                 'jenis_kelamin' => 'required',
+                'denda' => 'nullable|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -234,6 +241,10 @@ class PengunjungController extends Controller
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'user_id' => Auth::user()->id,
                 'qr_code' => $uuid . '_qrcode.svg',
+            ]);
+
+            $ceKPengunjungKeluar->update([
+                'denda' => $request->denda ?? 0,
             ]);
 
             Storage::put($qrCodePath, $qrCode);

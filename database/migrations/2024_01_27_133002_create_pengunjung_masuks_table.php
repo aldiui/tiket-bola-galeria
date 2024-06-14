@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('murid_id')->nullable();
             $table->unsignedBigInteger('pembayaran_id')->nullable();
             $table->string('nama_anak');
             $table->string('nama_panggilan');
@@ -27,9 +28,13 @@ return new class extends Migration
             $table->integer('tarif');
             $table->integer('tarif_extra')->default("0");
             $table->integer('diskon')->nullable();
+            $table->integer('biaya_mengantar')->default("0");
+            $table->integer('denda')->default("0");
+            $table->integer('biaya_kaos_kaki')->default("0");
             $table->text('alasan_diskon')->nullable();
             $table->string('qr_code');
             $table->datetime('start_tiket')->nullable();
+            $table->boolean('status_murid')->default("0");
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

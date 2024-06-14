@@ -18,6 +18,12 @@
                         placeholder="Masukkan jumlah tarif per jam" value="{{ $pengaturan->tarif ?? '' }}">
                     <small class="invalid-feedback" id="errortarif"></small>
                 </div>
+                <div class="form-group mb-3">
+                    <label for="denda" class="form-label">Denda <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="denda" id="denda"
+                        placeholder="Masukkan nominal denda" value="{{ $pengaturan->denda ?? '' }}">
+                    <small class="invalid-feedback" id="errordenda"></small>
+                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><i class="ti ti-pencil me-1"></i>Ubah Tarif</button>
                 </div>
@@ -57,7 +63,7 @@
                         const errorCallback = function(error) {
                             setButtonLoadingState("#updateData .btn.btn-primary", false,
                                 `<i class="ti ti-pencil me-1"></i>Ubah Tarif`);
-                            handleValidationErrors(error, "updateData", ["tarif"]);
+                            handleValidationErrors(error, "updateData", ["tarif", "denda"]);
                         };
 
                         ajaxCall(url, "POST", data, successCallback, errorCallback);

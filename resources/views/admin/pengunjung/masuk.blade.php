@@ -76,6 +76,14 @@
                     <small class="invalid-feedback" id="errorpembayaran_id"></small>
                 </div>
                 <div class="form-group mb-3">
+                    <label for="status_murid" class="form-label">Status Murid <span class="text-danger">*</span></label>
+                    <select class="form-control" name="status_murid" id="status_murid" readonly>
+                        <option value="1">Murid</option>
+                        <option value="0" selected>Bukan Murid</option>
+                    </select>
+                    <small class="invalid-feedback" id="errorstatus_murid"></small>
+                </div>
+                <div class="form-group mb-3">
                     <label for="tarif" class="form-label">Tarif <span class="text-danger">*</span></label>
                     <input type="number" class="form-control" name="tarif" id="tarif" readonly>
                     <small class="invalid-feedback" id="errortarif"></small>
@@ -86,6 +94,18 @@
                     <input type="number" class="form-control" name="diskon" id="diskon">
                     <small class="invalid-feedback" id="errordiskon"></small>
                     <small class="d-block pt-2">Diskon berupa potongan dengan mengisi nominal</small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="biaya_mengantar" class="form-label">Biaya Mengantar (Opsional)</label>
+                    <input type="number" class="form-control" name="biaya_mengantar" id="biaya_mengantar">
+                    <small class="invalid-feedback" id="errorbiaya_mengantar"></small>
+                    <small class="d-block pt-2">Diisi jika ada yang mengantar bermain bola</small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="biaya_kaos_kaki" class="form-label">Biaya Kaos Kaki (Opsional)</label>
+                    <input type="number" class="form-control" name="biaya_kaos_kaki" id="biaya_kaos_kaki">
+                    <small class="invalid-feedback" id="errorbiaya_kaos_kaki"></small>
+                    <small class="d-block pt-2">Diisi jika ada yang mau menggunakan kaos kaki</small>
                 </div>
                 <div class="form-group mb-3">
                     <label for="alasan_diskon" class="form-label">Alasan Diskon (Opsional)</label>
@@ -128,7 +148,8 @@
                         `<i class="ti ti-plus me-1"></i>Simpan`);
                     handleValidationErrors(error, "saveData", ["nama_anak", 'nama_panggilan',
                         'nama_orang_tua', 'jenis_kelamin', 'nomor_telepon', 'durasi_bermain',
-                        'pembayaran_id', 'tarif', 'email', 'diskon', 'alasan_diskon'
+                        'pembayaran_id', 'tarif', 'email', 'diskon', 'alasan_diskon',
+                        'biaya_mengantar', 'biaya_kaos_kaki', 'status_murid'
                     ]);
                 };
 

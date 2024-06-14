@@ -45,6 +45,11 @@
                     </select>
                     <small class="invalid-feedback" id="errorjenis_kelamin"></small>
                 </div>
+                <div class="form-group mb-3">
+                    <label for="denda" class="form-label">Denda (Opsional)</label>
+                    <input type="number" class="form-control" name="denda" id="denda">
+                    <small class="invalid-feedback" id="errordenda"></small>
+                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><i class="ti ti-plus me-1"></i>Simpan</button>
                 </div>
@@ -80,6 +85,7 @@
                     handleValidationErrors(error, "saveData", ["pengunjung_masuk_id", "nama_anak",
                         'nama_panggilan',
                         'nama_orang_tua', 'jenis_kelamin', 'nomor_telepon', 'durasi_bermain',
+                        'denda'
                     ]);
                 };
 

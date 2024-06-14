@@ -22,7 +22,8 @@ class PengaturanController extends Controller
         $pengaturan = Pengaturan::find(1);
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
-                'tarif' => 'required',
+                'tarif' => 'required|numeric',
+                'denda' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -35,6 +36,7 @@ class PengaturanController extends Controller
 
             $pengaturan->update([
                 'tarif' => $request->tarif,
+                'denda' => $request->denda,
             ]);
 
             return $this->successResponse($pengaturan, 'Ubah Tarif berhasil diubah.', 200);
@@ -86,7 +88,7 @@ class PengaturanController extends Controller
                     ->make(true);
             }
 
-            return $this->successResponse($admins, 'Data admin ditemukan.');
+            return $this->successResponse($admins, 'Data Admin ditemukan.');
         }
 
         return view('admin.pengaturan.index');
@@ -99,10 +101,10 @@ class PengaturanController extends Controller
         $admin = User::with('hakAkses')->find($id);
 
         if (!$admin) {
-            return $this->errorResponse(null, 'Data admin tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data Admin tidak ditemukan.', 404);
         }
 
-        return $this->successResponse($admin, 'Data admin ditemukan.');
+        return $this->successResponse($admin, 'Data Admin ditemukan.');
     }
 
     public function store(Request $request)
@@ -138,7 +140,7 @@ class PengaturanController extends Controller
             'toleransi_waktu' => $request->toleransi_waktu ?? 0,
         ]);
 
-        return $this->successResponse($admin, 'Data admin ditambahkan.', 201);
+        return $this->successResponse($admin, 'Data Admin ditambahkan.', 201);
     }
 
     public function update(Request $request, $id)
@@ -163,7 +165,7 @@ class PengaturanController extends Controller
         $admin = User::find($id);
 
         if (!$admin) {
-            return $this->errorResponse(null, 'Data admin tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data Admin tidak ditemukan.', 404);
         }
 
         $updateAdmin = [
@@ -189,7 +191,7 @@ class PengaturanController extends Controller
             'toleransi_waktu' => $request->toleransi_waktu ?? 0,
         ]);
 
-        return $this->successResponse($admin, 'Data admin diubah.');
+        return $this->successResponse($admin, 'Data Admin diubah.');
     }
 
     public function destroy($id)
@@ -199,11 +201,11 @@ class PengaturanController extends Controller
         $admin = User::find($id);
 
         if (!$admin) {
-            return $this->errorResponse(null, 'Data admin tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data Admin tidak ditemukan.', 404);
         }
 
         $admin->delete();
 
-        return $this->successResponse(null, 'Data admin dihapus.');
+        return $this->successResponse(null, 'Data Admin dihapus.');
     }
 }
