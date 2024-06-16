@@ -80,13 +80,14 @@
                                         <tr>
                                             <td class="text-dark fw-semibold">Metode Pembayaran</td>
                                             <td class="text-dark">
-                                                {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama : 'Cash' }}
+                                                {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank . ' - ' . $pengunjungMasuk->pembayaran->nama_akun . ' ( ' . $pengunjungMasuk->pembayaran->nomor_rekening . ' ) ' : 'Cash' }}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="text-dark fw-semibold">Durasi Bermain</td>
                                             <td class="text-dark">
-                                                {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank . ' - ' . $pengunjungMasuk->pembayaran->nama_akun . ' ( ' . $pengunjungMasuk->pembayaran->nomor_rekening . ' ) ' : 'Cash' }}
+                                                {{ $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain }}
+                                                Jam
                                             </td>
                                         </tr>
                                         @if ($pengunjungMasuk->diskon)
