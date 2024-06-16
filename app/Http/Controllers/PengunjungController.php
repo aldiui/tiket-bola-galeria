@@ -21,6 +21,71 @@ class PengunjungController extends Controller
 {
     use ApiResponder;
 
+    public function pengunjungMurid(Request $request)
+    {
+        if (!getPermission('tambah_pengunjung_murid')) {return redirect()->route('dashboard');}
+
+        if ($request->isMethod('post')) {
+            $validator = Validator::make($request->all(), [
+                'nama_anak' => 'required',
+                'nama_panggilan' => 'required',
+                'nama_orang_tua' => 'required',
+                'jenis_kelamin' => 'required',
+                'nomor_telepon' => 'required',
+                'durasi_bermain' => 'required|numeric',
+                'pembayaran_id' => 'nullable|exists:pembayarans,id',
+                'tarif' => 'required',
+                'email' => 'nullable|email',
+                'nominal_diskon' => 'required|numeric',
+                'biaya_mengantar' => 'required|numeric',
+                'biaya_kaos_kaki' => 'required|numeric',
+                'murid_id' => 'required|exists:murids,id',
+            ]);
+
+            if ($validator->fails()) {
+                return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
+            }
+
+            $uuid = Uuid::uuid4()->toString();
+
+            $baseUrl = config('app.url');
+            $redirectUrl = $baseUrl . '/e-tiket/' . $uuid;
+
+            $qrCode = QrCode::format('svg')->size(300)->generate($redirectUrl);
+            $qrCodePath = 'public/pengunjung_masuk/' . $uuid . '_qrcode.svg';
+
+            $pengunjungMasuk = PengunjungMasuk::create([
+                'uuid' => $uuid,
+                'nama_anak' => $request->nama_anak,
+                'nama_panggilan' => $request->nama_panggilan,
+                'nama_orang_tua' => $request->nama_orang_tua,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'nomor_telepon' => $request->nomor_telepon,
+                'durasi_bermain' => $request->durasi_bermain,
+                'pembayaran_id' => $request->pembayaran_id,
+                'tarif' => $request->tarif,
+                'email' => $request->email,
+                'diskon' => 100,
+                'nominal_diskon' => $request->tarif,
+                'biaya_mengantar' => $request->biaya_mengantar ?? 0,
+                'biaya_kaos_kaki' => $request->biaya_kaos_kaki ?? 0,
+                'alasan_diskon' => "Murid",
+                'murid_id' => $request->murid_id,
+                'user_id' => Auth::user()->id,
+                'qr_code' => $uuid . '_qrcode.svg',
+                'status_murid' => 1,
+            ]);
+
+            Storage::put($qrCodePath, $qrCode);
+
+            return $this->successResponse($pengunjungMasuk, 'Pengunjung Masuk Berhasil ditambahkan.', 200);
+        }
+
+        $pengaturan = Pengaturan::find(1);
+        $pembayaran = Pembayaran::all();
+        return view('admin.pengunjung.murid', compact('pengaturan', 'pembayaran'));
+    }
+
     public function pengunjungMasuk(Request $request)
     {
         if (!getPermission('tambah_pengunjung_masuk')) {return redirect()->route('dashboard');}
@@ -36,11 +101,11 @@ class PengunjungController extends Controller
                 'pembayaran_id' => 'nullable|exists:pembayarans,id',
                 'tarif' => 'required',
                 'email' => 'nullable|email',
-                'diskon' => 'nullable|numeric',
-                'biaya_mengantar' => 'nullable|numeric',
-                'biaya_kaos_kaki' => 'nullable|numeric',
+                'diskon' => 'required|numeric|min:0|max:100',
+                'nominal_diskon' => 'required|numeric',
+                'biaya_mengantar' => 'required|numeric',
+                'biaya_kaos_kaki' => 'required|numeric',
                 'alasan_diskon' => "required_if:diskon,>0",
-                'status_murid' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -67,10 +132,10 @@ class PengunjungController extends Controller
                 'tarif' => $request->tarif,
                 'email' => $request->email,
                 'diskon' => $request->diskon ?? 0,
+                'nominal_diskon' => $request->nominal_diskon ?? 0,
                 'biaya_mengantar' => $request->biaya_mengantar ?? 0,
                 'biaya_kaos_kaki' => $request->biaya_kaos_kaki ?? 0,
                 'alasan_diskon' => $request->alasan_diskon,
-                'status_murid' => $request->status_murid,
                 'user_id' => Auth::user()->id,
                 'qr_code' => $uuid . '_qrcode.svg',
             ]);
@@ -252,7 +317,8 @@ class PengunjungController extends Controller
             return $this->successResponse($pengunjungKeluar, 'Pengunjung Keluar Berhasil ditambahkan.', 200);
         }
 
-        return view('admin.pengunjung.keluar');
+        $pengaturan = Pengaturan::find(1);
+        return view('admin.pengunjung.keluar', compact('pengaturan'));
     }
 
     public function riwayatPengunjungKeluar(Request $request)

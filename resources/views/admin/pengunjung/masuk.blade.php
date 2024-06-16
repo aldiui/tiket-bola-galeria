@@ -76,34 +76,34 @@
                     <small class="invalid-feedback" id="errorpembayaran_id"></small>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="status_murid" class="form-label">Status Murid <span class="text-danger">*</span></label>
-                    <select class="form-control" name="status_murid" id="status_murid" readonly>
-                        <option value="1">Murid</option>
-                        <option value="0" selected>Bukan Murid</option>
-                    </select>
-                    <small class="invalid-feedback" id="errorstatus_murid"></small>
-                </div>
-                <div class="form-group mb-3">
                     <label for="tarif" class="form-label">Tarif <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" name="tarif" id="tarif" readonly>
+                    <input type="number" value="0" class="form-control" name="tarif" id="tarif" readonly>
                     <small class="invalid-feedback" id="errortarif"></small>
                     <small class="d-block pt-2">Tarif otomatis berdasarkan waktu yang di pilih</small>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="diskon" class="form-label">Diskon (Opsional)</label>
-                    <input type="number" class="form-control" name="diskon" id="diskon">
+                    <label for="diskon" class="form-label">Diskon % (Opsional)</label>
+                    <input type="number" value="0" class="form-control" name="diskon" id="diskon" min="0" max="100">
                     <small class="invalid-feedback" id="errordiskon"></small>
-                    <small class="d-block pt-2">Diskon berupa potongan dengan mengisi nominal</small>
+                    <small class="d-block pt-2">Diskon berupa potongan dengan mengisi persentase dari 0 sampai 100</small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="nominal_diskon" class="form-label">Nominal Diskon </label>
+                    <input type="number" value="0" class="form-control" name="nominal_diskon" id="nominal_diskon"
+                        readonly>
+                    <small class="invalid-feedback" id="errornominal_diskon"></small>
                 </div>
                 <div class="form-group mb-3">
                     <label for="biaya_mengantar" class="form-label">Biaya Mengantar (Opsional)</label>
-                    <input type="number" class="form-control" name="biaya_mengantar" id="biaya_mengantar">
+                    <input type="number" value="0" class="form-control" name="biaya_mengantar"
+                        id="biaya_mengantar">
                     <small class="invalid-feedback" id="errorbiaya_mengantar"></small>
                     <small class="d-block pt-2">Diisi jika ada yang mengantar bermain bola</small>
                 </div>
                 <div class="form-group mb-3">
                     <label for="biaya_kaos_kaki" class="form-label">Biaya Kaos Kaki (Opsional)</label>
-                    <input type="number" class="form-control" name="biaya_kaos_kaki" id="biaya_kaos_kaki">
+                    <input type="number" value="0" class="form-control" name="biaya_kaos_kaki"
+                        id="biaya_kaos_kaki">
                     <small class="invalid-feedback" id="errorbiaya_kaos_kaki"></small>
                     <small class="d-block pt-2">Diisi jika ada yang mau menggunakan kaos kaki</small>
                 </div>
@@ -123,10 +123,22 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            function calculateNominalDiskon() {
+                const tarif = parseFloat($("#tarif").val());
+                const diskon = parseFloat($("#diskon").val());
+                const nominalDiskon = tarif * (diskon / 100);
+                $("#nominal_diskon").val(nominalDiskon.toFixed(0));
+            }
+
             $("#durasi_bermain").on("change", function() {
                 const durasi_bermain = $("#durasi_bermain").val();
                 const calculateTarif = durasi_bermain * {{ $pengaturan->tarif ?? 0 }};
                 $("#tarif").val(calculateTarif);
+                calculateNominalDiskon();
+            });
+
+            $("#diskon").on("input", function() {
+                calculateNominalDiskon();
             });
 
             $("#saveData").submit(function(e) {
@@ -149,7 +161,7 @@
                     handleValidationErrors(error, "saveData", ["nama_anak", 'nama_panggilan',
                         'nama_orang_tua', 'jenis_kelamin', 'nomor_telepon', 'durasi_bermain',
                         'pembayaran_id', 'tarif', 'email', 'diskon', 'alasan_diskon',
-                        'biaya_mengantar', 'biaya_kaos_kaki', 'status_murid'
+                        'biaya_mengantar', 'biaya_kaos_kaki', 'nominal_diskon'
                     ]);
                 };
 

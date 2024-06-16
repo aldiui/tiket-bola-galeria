@@ -34,6 +34,14 @@
                         </a>
                     </li>
                 @endif
+                @if (getAdmin()->tambah_pengunjung_murid == 1)
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/pengunjung-murid" aria-expanded="false">
+                            <i class="ti ti-browser-plus"></i>
+                            <span class="hide-menu">Pengunjung Murid</span>
+                        </a>
+                    </li>
+                @endif
                 @if (getAdmin()->tambah_pengunjung_keluar == 1)
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/pengunjung-keluar" aria-expanded="false">

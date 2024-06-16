@@ -40,6 +40,12 @@
                                             <td class="text-dark"> {{ $pengunjungKeluar->nama_anak }}
                                                 (Panggilan : {{ $pengunjungKeluar->nama_panggilan }})</td>
                                         </tr>
+                                        @if ($pengunjungKeluar->pengunjungMasuk->murid_id)
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Status Murid</td>
+                                                <td class="text-dark"> Murid</td>
+                                            </tr>
+                                        @endif
                                         <tr>
                                             <td class="text-dark fw-semibold">Orang Tua</td>
                                             <td class="text-dark">{{ $pengunjungKeluar->nama_orang_tua }}</td>
@@ -73,13 +79,42 @@
                                         </tr>
                                         @if ($pengunjungKeluar->pengunjungMasuk->diskon)
                                             <tr>
-                                                <td class="text-dark fw-semibold">Diskon</td>
-                                                <td class="text-dark">{{ $pengunjungKeluar->pengunjungMasuk->diskon }}</td>
+                                                <td class="text-dark fw-semibold">Diskon
+                                                    ({{ $pengunjungKeluar->pengunjungMasuk->diskon }} %)
+                                                </td>
+                                                <td class="text-dark">
+                                                    {{ formatRupiah($pengunjungKeluar->pengunjungMasuk->nominal_diskon) }}
+                                                </td>
                                             </tr>
+                                        @endif
+                                        @if ($pengunjungKeluar->pengunjungMasuk->alasan_diskon)
                                             <tr>
                                                 <td class="text-dark fw-semibold">Alasan Diskon</td>
                                                 <td class="text-dark">
                                                     {{ $pengunjungKeluar->pengunjungMasuk->alasan_diskon }}</td>
+                                            </tr>
+                                        @endif
+                                        @if ($pengunjungKeluar->pengunjungMasuk->biaya_mengantar)
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Biaya Mengantar</td>
+                                                <td class="text-dark">
+                                                    {{ formatRupiah($pengunjungKeluar->pengunjungMasuk->biaya_mengantar) }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if ($pengunjungKeluar->pengunjungMasuk->biaya_kaos_kaki)
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Biaya Kaos Kaki</td>
+                                                <td class="text-dark">
+                                                    {{ formatRupiah($pengunjungKeluar->pengunjungMasuk->biaya_kaos_kaki) }}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if ($pengunjungKeluar->pengunjungMasuk->denda)
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Denda</td>
+                                                <td class="text-dark">
+                                                    {{ formatRupiah($pengunjungKeluar->pengunjungMasuk->denda) }}</td>
                                             </tr>
                                         @endif
                                         <tr>
@@ -89,8 +124,13 @@
                                                     ? $pengunjungKeluar->pengunjungMasuk->tarif +
                                                         $pengunjungKeluar->pengunjungMasuk->tarif_extra
                                                     : $pengunjungKeluar->pengunjungMasuk->tarif;
+
                                                 $totalDenganDiskon =
-                                                    $total - $pengunjungKeluar->pengunjungMasuk->diskon ?? 0;
+                                                    $total -
+                                                    $pengunjungKeluar->pengunjungMasuk->nominal_diskon +
+                                                    $pengunjungKeluar->pengunjungMasuk->biaya_mengantar +
+                                                    $pengunjungKeluar->pengunjungMasuk->biaya_kaos_kaki +
+                                                    $pengunjungKeluar->pengunjungMasuk->denda;
                                             @endphp
                                             <td class="text-dark">
                                                 {{ formatRupiah($total) }}

@@ -116,4 +116,23 @@ class MuridController extends Controller
         return $this->successResponse(null, 'Data Murid dihapus.');
     }
 
+    public function checkMurid(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nomor_murid' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
+        }
+
+        $murid = Murid::where('nomor_murid', $request->nomor_murid)->first();
+
+        if ($murid) {
+            return $this->successResponse($murid, 'Data Murid ditemukan.');
+        }
+
+        return $this->errorResponse(null, 'Data Murid tidak ditemukan.', 404);
+    }
+
 }

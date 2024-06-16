@@ -56,15 +56,23 @@ class KeuanganController extends Controller
                         return $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank . ' - ' . $pengunjungMasuk->pembayaran->nama_akun : 'Cash';
                     })
                     ->addColumn('pembayaran', function ($pengunjungMasuk) {
-                        return formatRupiah($pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif);
+                        $total = $pengunjungMasuk->durasi_extra
+                        ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra
+                        : $pengunjungMasuk->tarif;
+                        $totalSemua =
+                        $total +
+                        $pengunjungMasuk->denda +
+                        $pengunjungMasuk->biaya_mengantar +
+                        $pengunjungMasuk->biaya_kaos_kaki;
+                        return formatRupiah($totalSemua);
                     })
                     ->addColumn('diskon', function ($pengunjungMasuk) {
-                        return formatRupiah($pengunjungMasuk->diskon);
+                        return formatRupiah($pengunjungMasuk->nominal_diskon);
                     })
                     ->addColumn('total', function ($pengunjungMasuk) {
                         $total = $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif;
-                        $total = $total - $pengunjungMasuk->diskon ?? 0;
-                        return formatRupiah($total);
+                        $totalAkhir = $total - $pengunjungMasuk->nominal_diskon + $pengunjungMasuk->denda + $pengunjungMasuk->biaya_mengantar + $pengunjungMasuk->biaya_kaos_kaki;
+                        return formatRupiah($totalAkhir);
                     })
                     ->addColumn('durasi', function ($pengunjungMasuk) {
                         return '<span class="badge bg-primary rounded-3 fw-semibold"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain . ' Jam</span>';
@@ -84,7 +92,7 @@ class KeuanganController extends Controller
 
                 $keuanganData = $query->select([
                     DB::raw('DATE(created_at) as date'),
-                    DB::raw('SUM(tarif) + SUM(tarif_extra) as total_tarif'),
+                    DB::raw('SUM(tarif) + SUM(tarif_extra) - SUM(nominal_diskon) + SUM(denda) + SUM(biaya_mengantar) + SUM(biaya_kaos_kaki) as total_tarif'),
                 ])
                     ->groupBy(DB::raw('DATE(created_at)'))
                     ->orderBy('date')
@@ -101,14 +109,29 @@ class KeuanganController extends Controller
                     $dates->addDay();
                 }
 
+                $pembayaranSum = $pengunjungMasuks->sum('tarif') +
+                $pengunjungMasuks->sum('tarif_extra') +
+                $pengunjungMasuks->sum('denda') +
+                $pengunjungMasuks->sum('biaya_mengantar') +
+                $pengunjungMasuks->sum('biaya_kaos_kaki');
+
+                $diskonSum = $pengunjungMasuks->sum('nominal_diskon');
+
+                $totalSum = $pengunjungMasuks->sum('tarif') +
+                $pengunjungMasuks->sum('tarif_extra') -
+                $diskonSum +
+                $pengunjungMasuks->sum('denda') +
+                $pengunjungMasuks->sum('biaya_mengantar') +
+                $pengunjungMasuks->sum('biaya_kaos_kaki');
+
                 return $this->successResponse([
                     'labels' => $labels,
                     'data' => $dataKeuangan,
-                    'pembayaran' => formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra')),
-                    'diskon' => formatRupiah($pengunjungMasuks->sum('diskon')),
-                    'total' => formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra') - $pengunjungMasuks->sum('diskon')),
-
+                    'pembayaran' => formatRupiah($pembayaranSum),
+                    'diskon' => formatRupiah($diskonSum),
+                    'total' => formatRupiah($totalSum),
                 ], 'Data laporan keuangan ditemukan.');
+
             }
         }
 

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->boolean('tambah_pengunjung_masuk');
+            $table->boolean('tambah_pengunjung_murid')->default("1");
             $table->boolean('tambah_pengunjung_keluar');
             $table->boolean('riwayat_pengunjung_masuk');
             $table->boolean('riwayat_pengunjung_keluar');

@@ -76,6 +76,9 @@ const getModal = (targetId, url = null, fields = null) => {
                 $(`#${targetId} #tambah_pengunjung_masuk`)
                     .prop("checked", hakAkses.tambah_pengunjung_masuk == 1)
                     .trigger("change");
+                $(`#${targetId} #tambah_pengunjung_murid`)
+                    .prop("checked", hakAkses.tambah_pengunjung_murid == 1)
+                    .trigger("change");
                 $(`#${targetId} #tambah_pengunjung_keluar`)
                     .prop("checked", hakAkses.tambah_pengunjung_keluar == 1)
                     .trigger("change");
@@ -99,6 +102,9 @@ const getModal = (targetId, url = null, fields = null) => {
                     .trigger("change");
                 $(`#${targetId} #toleransi_waktu`)
                     .prop("checked", hakAkses.toleransi_waktu == 1)
+                    .trigger("change");
+                $(`#${targetId} #murid`)
+                    .prop("checked", hakAkses.murid == 1)
                     .trigger("change");
             }
         };
@@ -268,6 +274,49 @@ const select2ToJsonPengunjungMasuk = () => {
 
     ajaxCall(
         "/riwayat-pengunjung-masuk",
+        "GET",
+        null,
+        successCallback,
+        errorCallback
+    );
+};
+
+const select2ToJsonMurid = () => {
+    const selectElem = $("#murid_id").empty();
+
+    const successCallback = function (response) {
+        selectElem.empty();
+
+        const emptyOption = $("<option></option>");
+        emptyOption.attr("value", "");
+        emptyOption.text("-- Pilih Murid --");
+        selectElem.append(emptyOption);
+
+        const responseList = response.data;
+        responseList.forEach(function (row) {
+            const option = $("<option></option>");
+            option.attr("value", row.id);
+            option.text(
+                "Anak : " +
+                    row.nama_anak +
+                    " - Orang Tua : " +
+                    row.nama_orang_tua
+            );
+            selectElem.append(option);
+        });
+
+        selectElem.select2({
+            theme: "bootstrap-5",
+            width: "100%",
+        });
+    };
+
+    const errorCallback = function (error) {
+        console.log(error);
+    };
+
+    ajaxCall(
+        "/murid",
         "GET",
         null,
         successCallback,

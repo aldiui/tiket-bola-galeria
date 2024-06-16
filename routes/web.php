@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::match(['get', 'post'], 'ubah-tarif', [PengaturanController::class, 'ubahTarif'])->name('ubahTarif');
     Route::match(['get', 'post'], 'toleransi-waktu', [PengaturanController::class, 'toleransiWaktu'])->name('toleransiWaktu');
     Route::match(['get', 'post'], 'pengunjung-masuk', [PengunjungController::class, 'pengunjungMasuk'])->name('pengunjungMasuk');
+    Route::match(['get', 'post'], 'pengunjung-murid', [PengunjungController::class, 'pengunjungMurid'])->name('pengunjungMurid');
     Route::post('konfirmasi-pengunjung/{id}', [PengunjungController::class, 'konfirmasiPengunjung'])->name('konfirmasiPengunjung');
     Route::get('pengunjung-masuk/{id}', [PengunjungController::class, 'getPengunjungMasuk'])->name('getPengunjungMasuk');
     Route::get('extra-time/{uuid}', [PengunjungController::class, 'extraTime'])->name('extraTime');
@@ -43,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('user-management', PengaturanController::class)->names('userManagement');
     Route::resource('daftar-bank', PembayaranController::class)->names('daftarBank');
     Route::resource('murid', MuridController::class)->names('murid');
+    Route::post('cek-murid', [MuridController::class, 'checkMurid'])->name('checkMurid');
 
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });

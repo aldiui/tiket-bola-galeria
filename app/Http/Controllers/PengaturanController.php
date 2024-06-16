@@ -130,6 +130,7 @@ class PengaturanController extends Controller
         HakAkses::create([
             'user_id' => $admin->id,
             'tambah_pengunjung_masuk' => $request->tambah_pengunjung_masuk ?? 0,
+            'tambah_pengunjung_murid' => $request->tambah_pengunjung_murid ?? 0,
             'tambah_pengunjung_keluar' => $request->tambah_pengunjung_keluar ?? 0,
             'riwayat_pengunjung_masuk' => $request->riwayat_pengunjung_masuk ?? 0,
             'riwayat_pengunjung_keluar' => $request->riwayat_pengunjung_keluar ?? 0,
@@ -138,6 +139,7 @@ class PengaturanController extends Controller
             'ubah_tarif' => $request->ubah_tarif ?? 0,
             'daftar_bank' => $request->daftar_bank ?? 0,
             'toleransi_waktu' => $request->toleransi_waktu ?? 0,
+            'murid' => $request->murid ?? 0,
         ]);
 
         return $this->successResponse($admin, 'Data Admin ditambahkan.', 201);
@@ -181,6 +183,7 @@ class PengaturanController extends Controller
 
         $admin->hakAkses()->update([
             'tambah_pengunjung_masuk' => $request->tambah_pengunjung_masuk ?? 0,
+            'tambah_pengunjung_murid' => $request->tambah_pengunjung_murid ?? 0,
             'tambah_pengunjung_keluar' => $request->tambah_pengunjung_keluar ?? 0,
             'riwayat_pengunjung_masuk' => $request->riwayat_pengunjung_masuk ?? 0,
             'riwayat_pengunjung_keluar' => $request->riwayat_pengunjung_keluar ?? 0,
@@ -189,6 +192,7 @@ class PengaturanController extends Controller
             'ubah_tarif' => $request->ubah_tarif ?? 0,
             'daftar_bank' => $request->daftar_bank ?? 0,
             'toleransi_waktu' => $request->toleransi_waktu ?? 0,
+            'murid' => $request->murid ?? 0,
         ]);
 
         return $this->successResponse($admin, 'Data Admin diubah.');

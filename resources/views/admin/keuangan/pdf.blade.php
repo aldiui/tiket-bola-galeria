@@ -29,7 +29,7 @@
                         $total = $pengunjungMasuk->durasi_extra
                             ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra
                             : $pengunjungMasuk->tarif;
-                        $totalDenganDiskon = $total - $pengunjungMasuk->diskon ?? 0;
+                        $totalDenganDiskon = $total - $pengunjungMasuk->nominal_diskon ?? 0;
                     @endphp
                     <tr>
                         <td align ="center">{{ $loop->iteration }}</td>
@@ -43,7 +43,7 @@
                         </td>
                         <td align="right">{{ formatRupiah($total) }}
                         </td>
-                        <td align="right">{{ formatRupiah($pengunjungMasuk->diskon) }}</td>
+                        <td align="right">{{ formatRupiah($pengunjungMasuk->nominal_diskon) }}</td>
                         <td align="right">{{ formatRupiah($totalDenganDiskon) }}</td>
                         <td align="center">{{ formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s') }}</td>
                         <td align="center">{{ $pengunjungMasuk->user->nama }}</td>
@@ -55,7 +55,7 @@
                     <td colspan="5" align="center">Total Pembayaran</td>
                     <td align="right">
                         {{ formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra')) }}</td>
-                    <td align="right">{{ formatRupiah($pengunjungMasuks->sum('diskon')) }}</td>
+                    <td align="right">{{ formatRupiah($pengunjungMasuks->sum('nominal_diskon')) }}</td>
                     <td align="right">
                         {{ formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra') - $pengunjungMasuks->sum('diskon')) }}
                     </td>

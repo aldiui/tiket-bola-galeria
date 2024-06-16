@@ -27,7 +27,8 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->integer('tarif');
             $table->integer('tarif_extra')->default("0");
-            $table->integer('diskon')->nullable();
+            $table->integer('nominal_diskon')->default("0");
+            $table->integer('diskon')->default("0");
             $table->integer('biaya_mengantar')->default("0");
             $table->integer('denda')->default("0");
             $table->integer('biaya_kaos_kaki')->default("0");
@@ -39,6 +40,7 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('pembayaran_id')->references('id')->on('pembayarans')->onDelete('cascade');
+            $table->foreign('murid_id')->references('id')->on('murids')->onDelete('cascade');
         });
     }
 

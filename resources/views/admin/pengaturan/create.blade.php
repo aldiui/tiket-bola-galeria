@@ -41,6 +41,12 @@
                                     Masuk</label>
                             </div>
                             <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" name="tambah_pengunjung_murid"
+                                    id="tambah_pengunjung_murid" autocomplete="off" value="1">
+                                <label class="form-check-label" for="tambah_pengunjung_murid">Tambah Pengunjung
+                                    Murid</label>
+                            </div>
+                            <div class="form-check mb-3">
                                 <input type="checkbox" class="form-check-input" name="tambah_pengunjung_keluar"
                                     id="tambah_pengunjung_keluar" autocomplete="off" value="1">
                                 <label class="form-check-label" for="tambah_pengunjung_keluar">Tambah Pengunjung
@@ -82,6 +88,11 @@
                                 <input type="checkbox" class="form-check-input" name="toleransi_waktu"
                                     id="toleransi_waktu" autocomplete="off" value="1">
                                 <label class="form-check-label" for="toleransi_waktu">Toleransi Waktu</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" name="murid" id="murid"
+                                    autocomplete="off" value="1">
+                                <label class="form-check-label" for="murid">Murid</label>
                             </div>
                         </div>
                     </div>
