@@ -25,6 +25,8 @@ return new class extends Migration
             $table->boolean('daftar_bank');
             $table->boolean('toleransi_waktu');
             $table->boolean('murid')->default("1");
+            $table->boolean('membership')->default("1");
+            $table->boolean('group')->default("1");
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('murid_id')->nullable();
+            $table->unsignedBigInteger('membership_id')->nullable();
             $table->unsignedBigInteger('pembayaran_id')->nullable();
             $table->string('nama_anak');
             $table->string('nama_panggilan');
