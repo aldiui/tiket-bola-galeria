@@ -32,7 +32,7 @@ class MuridController extends Controller
                     ->make(true);
             }
 
-            return $this->successResponse($murids, 'Data Murid ditemukan.');
+            return $this->successResponse($murids, 'Data Murid Champs ditemukan.');
         }
 
         return view('admin.murid.index');
@@ -45,10 +45,10 @@ class MuridController extends Controller
         $murid = Murid::find($id);
 
         if (!$murid) {
-            return $this->errorResponse(null, 'Data Murid tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data Murid Champs tidak ditemukan.', 404);
         }
 
-        return $this->successResponse($murid, 'Data Murid ditemukan.');
+        return $this->successResponse($murid, 'Data Murid Champs ditemukan.');
     }
 
     public function store(Request $request)
@@ -68,9 +68,9 @@ class MuridController extends Controller
             return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
         }
 
-        $murid = Murid::create($request->only(['nomor_murid', 'nama_anak', 'umur', 'kelas', 'nama_orang_tua', 'nomor_telepon']));
+        $murid = Murid::create($request->only('nomor_murid', 'nama_anak', 'umur', 'kelas', 'nama_orang_tua', 'nomor_telepon'));
 
-        return $this->successResponse($murid, 'Data Murid ditambahkan.', 201);
+        return $this->successResponse($murid, 'Data Murid Champs ditambahkan.', 201);
     }
 
     public function update(Request $request, $id)
@@ -93,12 +93,12 @@ class MuridController extends Controller
         $murid = Murid::find($id);
 
         if (!$murid) {
-            return $this->errorResponse(null, 'Data Murid tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data Murid Champs tidak ditemukan.', 404);
         }
 
-        $murid->update($request->only(['nomor_murid', 'nama_anak', 'umur', 'kelas', 'nama_orang_tua', 'nomor_telepon']));
+        $murid->update($request->only('nomor_murid', 'nama_anak', 'umur', 'kelas', 'nama_orang_tua', 'nomor_telepon'));
 
-        return $this->successResponse($murid, 'Data Murid diubah.');
+        return $this->successResponse($murid, 'Data Murid Champs diubah.');
     }
 
     public function destroy($id)
@@ -108,31 +108,11 @@ class MuridController extends Controller
         $murid = Murid::find($id);
 
         if (!$murid) {
-            return $this->errorResponse(null, 'Data Murid tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data Murid Champs tidak ditemukan.', 404);
         }
 
         $murid->delete();
 
-        return $this->successResponse(null, 'Data Murid dihapus.');
+        return $this->successResponse(null, 'Data Murid Champs dihapus.');
     }
-
-    public function checkMurid(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'nomor_murid' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
-        }
-
-        $murid = Murid::where('nomor_murid', $request->nomor_murid)->first();
-
-        if ($murid) {
-            return $this->successResponse($murid, 'Data Murid ditemukan.');
-        }
-
-        return $this->errorResponse(null, 'Data Murid tidak ditemukan.', 404);
-    }
-
 }

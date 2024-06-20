@@ -20,17 +20,15 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
-                @if (getAdmin()->tambah_pengunjung_masuk == 1 || getAdmin()->tambah_pengunjung_keluar == 1)
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Tambah</span>
-                    </li>
-                @endif
-                @if (getAdmin()->tambah_pengunjung_masuk == 1)
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Register</span>
+                </li>
+                @if (getAdmin()->tambah_pengunjung_perorangan == 1)
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="/pengunjung-masuk" aria-expanded="false">
+                        <a class="sidebar-link" href="/pengunjung-perorangan" aria-expanded="false">
                             <i class="ti ti-browser-plus"></i>
-                            <span class="hide-menu">Pengunjung Masuk</span>
+                            <span class="hide-menu">Pengunjung Perorangan</span>
                         </a>
                     </li>
                 @endif
@@ -42,6 +40,14 @@
                         </a>
                     </li>
                 @endif
+                @if (getAdmin()->tambah_pengunjung_membership == 1)
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/pengunjung-membership" aria-expanded="false">
+                            <i class="ti ti-browser-plus"></i>
+                            <span class="hide-menu">Pengunjung Membership</span>
+                        </a>
+                    </li>
+                @endif
                 @if (getAdmin()->tambah_pengunjung_keluar == 1)
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/pengunjung-keluar" aria-expanded="false">
@@ -50,12 +56,10 @@
                         </a>
                     </li>
                 @endif
-                @if (getAdmin()->riwayat_pengunjung_masuk == 1 || getAdmin()->riwayat_pengunjung_keluar == 1)
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Riwayat</span>
-                    </li>
-                @endif
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Riwayat</span>
+                </li>
                 @if (getAdmin()->riwayat_pengunjung_masuk == 1)
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/riwayat-pengunjung-masuk" aria-expanded="false">
@@ -84,12 +88,10 @@
                         </a>
                     </li>
                 @endif
-                @if (getAdmin()->user_management == 1 || getAdmin()->ubah_tarif == 1)
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Pengaturan</span>
-                    </li>
-                @endif
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Pengaturan</span>
+                </li>
                 @if (getAdmin()->user_management == 1)
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/user-management" aria-expanded="false">
@@ -106,6 +108,14 @@
                         </a>
                     </li>
                 @endif
+                @if (getAdmin()->paket_membership == 1)
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/paket-membership" aria-expanded="false">
+                            <i class="ti ti-coin"></i>
+                            <span class="hide-menu">Paket Membership</span>
+                        </a>
+                    </li>
+                @endif
                 @if (getAdmin()->daftar_bank == 1)
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/daftar-bank" aria-expanded="false">
@@ -118,7 +128,15 @@
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/murid" aria-expanded="false">
                             <i class="ti ti-users"></i>
-                            <span class="hide-menu">Murid</span>
+                            <span class="hide-menu">Murid Champs</span>
+                        </a>
+                    </li>
+                @endif
+                @if (getAdmin()->membership == 1)
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/membership" aria-expanded="false">
+                            <i class="ti ti-users"></i>
+                            <span class="hide-menu">Membership</span>
                         </a>
                     </li>
                 @endif

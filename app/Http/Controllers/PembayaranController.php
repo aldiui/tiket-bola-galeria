@@ -65,11 +65,7 @@ class PembayaranController extends Controller
             return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
         }
 
-        $daftarBank = Pembayaran::create([
-            'nama_bank' => $request->nama_bank,
-            'nama_akun' => $request->nama_akun,
-            'nomor_rekening' => $request->nomor_rekening,
-        ]);
+        $daftarBank = Pembayaran::create($request->only('nama_bank', 'nama_akun', 'nomor_rekening'));
 
         return $this->successResponse($daftarBank, 'Data Daftar Bank ditambahkan.', 201);
     }
@@ -94,11 +90,7 @@ class PembayaranController extends Controller
             return $this->errorResponse(null, 'Data Daftar Bank tidak ditemukan.', 404);
         }
 
-        $daftarBank->update([
-            'nama_bank' => $request->nama_bank,
-            'nama_akun' => $request->nama_akun,
-            'nomor_rekening' => $request->nomor_rekening,
-        ]);
+        $daftarBank->update($request->only('nama_bank', 'nama_akun', 'nomor_rekening'));
 
         return $this->successResponse($daftarBank, 'Data Daftar Bank diubah.');
     }

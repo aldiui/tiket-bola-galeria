@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'User Management')
+@section('title', 'Paket Membership')
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('libs/datatables/datatables.min.css') }}" />
@@ -16,12 +16,14 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table id="user-table" class="table table-bordered table-striped" width="100%">
+                <table id="paket-membership-table" class="table table-bordered table-striped" width="100%">
                     <thead>
                         <tr>
                             <th width="5%">#</th>
+                            <th>Kode</th>
                             <th>Nama</th>
-                            <th>Email</th>
+                            <th>Durasi Hari</th>
+                            <th>Tarif</th>
                             <th width="20%">Aksi</th>
                         </tr>
                     </thead>
@@ -31,7 +33,7 @@
             </div>
         </div>
     </div>
-    @include('admin.pengaturan.modal')
+    @include('admin.paket-membership.modal')
 @endsection
 
 @push('scripts')
@@ -39,17 +41,25 @@
 
     <script>
         $(document).ready(function() {
-            datatableCall('user-table', '{{ route('userManagement.index') }}', [{
+            datatableCall('paket-membership-table', '{{ route('paketMembership.index') }}', [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
+                },
+                {
+                    data: 'kode',
+                    name: 'kode'
                 },
                 {
                     data: 'nama',
                     name: 'nama'
                 },
+            {
+                    data: 'durasi_hari',
+                    name: 'durasi_hari'
+                },
                 {
-                    data: 'email',
-                    name: 'email'
+                    data: 'tarif',
+                    name: 'tarif'
                 },
                 {
                     data: 'aksi',
@@ -62,26 +72,24 @@
                 e.preventDefault();
 
                 const kode = $("#saveData #id").val();
-                let url = "{{ route('userManagement.store') }}";
+                let url = "{{ route('paketMembership.store') }}";
                 const data = new FormData(this);
 
                 if (kode !== "") {
                     data.append("_method", "PUT");
-                    url = `/user-management/${kode}`;
+                    url = `/paket-membership/${kode}`;
                 }
 
                 const successCallback = function(response) {
                     setButtonLoadingState("#saveData .btn.btn-primary", false,
                         `<i class="ti ti-plus me-1"></i>Simpan`);
-                    handleSuccess(response, "user-table", "createModal");
+                    handleSuccess(response, "paket-membership-table", "createModal");
                 };
 
                 const errorCallback = function(error) {
                     setButtonLoadingState("#saveData .btn.btn-primary", false,
                         `<i class="ti ti-plus me-1"></i>Simpan`);
-                    handleValidationErrors(error, "saveData", ["nama", "email", "password",
-                        "confirm_password"
-                    ]);
+                    handleValidationErrors(error, "saveData", ["kode", "nama", "durasi_hari", "tarif"]);
                 };
 
                 ajaxCall(url, "POST", data, successCallback, errorCallback);

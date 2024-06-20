@@ -21,15 +21,6 @@ class DatabaseSeeder extends Seeder
 
         DB::table('hak_akses')->insert([
             'user_id' => '1',
-            'tambah_pengunjung_masuk' => '1',
-            'tambah_pengunjung_keluar' => '1',
-            'riwayat_pengunjung_masuk' => '1',
-            'riwayat_pengunjung_keluar' => '1',
-            'laporan_keuangan' => '1',
-            'user_management' => '1',
-            'ubah_tarif' => '1',
-            'daftar_bank' => '1',
-            'toleransi_waktu' => '1',
         ]);
 
         DB::table('pengaturans')->insert([

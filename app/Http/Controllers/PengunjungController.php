@@ -78,7 +78,7 @@ class PengunjungController extends Controller
 
             Storage::put($qrCodePath, $qrCode);
 
-            return $this->successResponse($pengunjungMasuk, 'Pengunjung Masuk Berhasil ditambahkan.', 200);
+            return $this->successResponse($pengunjungMasuk, 'Pengunjung Murid Champs Berhasil ditambahkan.', 200);
         }
 
         $pengaturan = Pengaturan::find(1);
@@ -86,9 +86,9 @@ class PengunjungController extends Controller
         return view('admin.pengunjung.murid', compact('pengaturan', 'pembayaran'));
     }
 
-    public function pengunjungMasuk(Request $request)
+    public function pengunjungPerorangan(Request $request)
     {
-        if (!getPermission('tambah_pengunjung_masuk')) {return redirect()->route('dashboard');}
+        if (!getPermission('tambah_pengunjung_perorangan')) {return redirect()->route('dashboard');}
 
         if ($request->isMethod('post')) {
             $validator = Validator::make($request->all(), [
@@ -142,12 +142,12 @@ class PengunjungController extends Controller
 
             Storage::put($qrCodePath, $qrCode);
 
-            return $this->successResponse($pengunjungMasuk, 'Pengunjung Masuk Berhasil ditambahkan.', 200);
+            return $this->successResponse($pengunjungMasuk, 'Pengunjung Peorangan Berhasil ditambahkan.', 200);
         }
 
         $pengaturan = Pengaturan::find(1);
         $pembayaran = Pembayaran::all();
-        return view('admin.pengunjung.masuk', compact('pengaturan', 'pembayaran'));
+        return view('admin.pengunjung.perorangan', compact('pengaturan', 'pembayaran'));
     }
 
     public function riwayatPengunjungMasuk(Request $request)

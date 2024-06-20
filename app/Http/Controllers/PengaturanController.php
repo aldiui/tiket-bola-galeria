@@ -88,7 +88,7 @@ class PengaturanController extends Controller
                     ->make(true);
             }
 
-            return $this->successResponse($admins, 'Data Admin ditemukan.');
+            return $this->successResponse($admins, 'Data User ditemukan.');
         }
 
         return view('admin.pengaturan.index');
@@ -101,10 +101,10 @@ class PengaturanController extends Controller
         $admin = User::with('hakAkses')->find($id);
 
         if (!$admin) {
-            return $this->errorResponse(null, 'Data Admin tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data User tidak ditemukan.', 404);
         }
 
-        return $this->successResponse($admin, 'Data Admin ditemukan.');
+        return $this->successResponse($admin, 'Data User ditemukan.');
     }
 
     public function store(Request $request)
@@ -142,7 +142,7 @@ class PengaturanController extends Controller
             'murid' => $request->murid ?? 0,
         ]);
 
-        return $this->successResponse($admin, 'Data Admin ditambahkan.', 201);
+        return $this->successResponse($admin, 'Data User ditambahkan.', 201);
     }
 
     public function update(Request $request, $id)
@@ -167,7 +167,7 @@ class PengaturanController extends Controller
         $admin = User::find($id);
 
         if (!$admin) {
-            return $this->errorResponse(null, 'Data Admin tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data User tidak ditemukan.', 404);
         }
 
         $updateAdmin = [
@@ -195,7 +195,7 @@ class PengaturanController extends Controller
             'murid' => $request->murid ?? 0,
         ]);
 
-        return $this->successResponse($admin, 'Data Admin diubah.');
+        return $this->successResponse($admin, 'Data User diubah.');
     }
 
     public function destroy($id)
@@ -205,11 +205,11 @@ class PengaturanController extends Controller
         $admin = User::find($id);
 
         if (!$admin) {
-            return $this->errorResponse(null, 'Data Admin tidak ditemukan.', 404);
+            return $this->errorResponse(null, 'Data User tidak ditemukan.', 404);
         }
 
         $admin->delete();
 
-        return $this->successResponse(null, 'Data Admin dihapus.');
+        return $this->successResponse(null, 'Data User dihapus.');
     }
 }

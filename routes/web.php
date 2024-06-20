@@ -1,26 +1,17 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\MuridController;
+use App\Http\Controllers\TiketController;
+use App\Http\Controllers\KeuanganController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PengunjungController;
-use App\Http\Controllers\TiketController;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
- */
+use App\Http\Controllers\PaketMembershipController;
 
 Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
 Route::get('e-tiket', [TiketController::class, 'index'])->name('eTiket.index');
@@ -31,7 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::match(['get', 'post'], 'ubah-tarif', [PengaturanController::class, 'ubahTarif'])->name('ubahTarif');
     Route::match(['get', 'post'], 'toleransi-waktu', [PengaturanController::class, 'toleransiWaktu'])->name('toleransiWaktu');
-    Route::match(['get', 'post'], 'pengunjung-masuk', [PengunjungController::class, 'pengunjungMasuk'])->name('pengunjungMasuk');
+    Route::match(['get', 'post'], 'pengunjung-perorangan', [PengunjungController::class, 'pengunjungPerorangan'])->name('pengunjungPerorangan');
     Route::match(['get', 'post'], 'pengunjung-murid', [PengunjungController::class, 'pengunjungMurid'])->name('pengunjungMurid');
     Route::post('konfirmasi-pengunjung/{id}', [PengunjungController::class, 'konfirmasiPengunjung'])->name('konfirmasiPengunjung');
     Route::get('pengunjung-masuk/{id}', [PengunjungController::class, 'getPengunjungMasuk'])->name('getPengunjungMasuk');
@@ -44,7 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('user-management', PengaturanController::class)->names('userManagement');
     Route::resource('daftar-bank', PembayaranController::class)->names('daftarBank');
     Route::resource('murid', MuridController::class)->names('murid');
-    Route::post('cek-murid', [MuridController::class, 'checkMurid'])->name('checkMurid');
+    Route::resource('paket-membership', PaketMembershipController::class)->names('paketMembership');
+    Route::resource('membership', MembershipController::class)->names('membership');
 
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });

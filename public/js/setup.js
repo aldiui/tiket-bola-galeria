@@ -186,7 +186,8 @@ const confirmDelete = (url, tableId) => {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Ya, hapus!",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Tidak",
     }).then((result) => {
         if (result.isConfirmed) {
             const data = null;
@@ -315,13 +316,7 @@ const select2ToJsonMurid = () => {
         console.log(error);
     };
 
-    ajaxCall(
-        "/murid",
-        "GET",
-        null,
-        successCallback,
-        errorCallback
-    );
+    ajaxCall("/murid", "GET", null, successCallback, errorCallback);
 };
 
 let chart = null;

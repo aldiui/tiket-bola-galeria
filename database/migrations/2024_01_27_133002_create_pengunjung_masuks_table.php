@@ -18,15 +18,19 @@ return new class extends Migration
             $table->unsignedBigInteger('murid_id')->nullable();
             $table->unsignedBigInteger('membership_id')->nullable();
             $table->unsignedBigInteger('pembayaran_id')->nullable();
-            $table->string('nama_anak');
-            $table->string('nama_panggilan');
-            $table->string('nama_orang_tua');
-            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
+            $table->string('nama_anak')->nullable();
+            $table->string('nama_panggilan')->nullable();
+            $table->string('nama_orang_tua')->nullable();
+            $table->string('nama_group')->nullable();
+            $table->string('penanggung_jawab')->nullable();
+            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan'])->nullable();
             $table->integer('durasi_bermain');
             $table->integer('durasi_extra')->nullable();
             $table->string('nomor_telepon');
             $table->string('email')->nullable();
-            $table->integer('tarif');
+            $table->integer('tarif')->nullable();
+            $table->integer('tarif_per_anak')->nullable();
+            $table->integer('jumlah_anak')->nullable();
             $table->integer('tarif_extra')->default("0");
             $table->integer('nominal_diskon')->default("0");
             $table->integer('diskon')->default("0");
@@ -36,7 +40,7 @@ return new class extends Migration
             $table->text('alasan_diskon')->nullable();
             $table->string('qr_code');
             $table->datetime('start_tiket')->nullable();
-            $table->boolean('status_murid')->default("0");
+            $table->enum('type', ['Perorangan', 'Murid', 'Membership', 'Group']);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

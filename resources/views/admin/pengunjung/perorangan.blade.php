@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pengunjung Masuk')
+@section('title', 'Pengunjung Perorangan')
 
 @push('style')
 @endpush
@@ -144,7 +144,7 @@
             $("#saveData").submit(function(e) {
                 setButtonLoadingState("#saveData .btn.btn-primary", true);
                 e.preventDefault();
-                const url = "{{ route('pengunjungMasuk') }}";
+                const url = "{{ route('pengunjungPerorangan') }}";
                 const data = new FormData(this);
 
                 const successCallback = function(response) {

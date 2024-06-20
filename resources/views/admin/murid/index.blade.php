@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Murid')
+@section('title', 'Murid Champs')
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('libs/datatables/datatables.min.css') }}" />
@@ -35,7 +35,7 @@
             </div>
         </div>
     </div>
-    @include('admin.murid.create')
+    @include('admin.murid.modal')
 @endsection
 
 @push('scripts')

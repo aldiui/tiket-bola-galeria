@@ -32,7 +32,7 @@
             </div>
         </div>
     </div>
-    @include('admin.pembayaran.create')
+    @include('admin.pembayaran.modal')
 @endsection
 
 @push('scripts')

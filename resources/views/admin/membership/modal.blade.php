@@ -3,32 +3,23 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"><span id="label-modal"></span> Data Murid</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><span id="label-modal"></span> Data
+                    @yield('title')</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="saveData" autocomplete="off">
                 <div class="modal-body">
                     <input type="hidden" id="id">
                     <div class="form-group mb-3">
-                        <label for="nomor_murid" class="form-label">Nomor Murid <span
-                                class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nomor_murid" name="nomor_murid">
-                        <small class="invalid-feedback" id="errornomor_murid"></small>
-                    </div>
-                    <div class="form-group mb-3">
                         <label for="nama_anak" class="form-label">Nama Anak <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="nama_anak" id="nama_anak">
                         <small class="invalid-feedback" id="errornama_anak"></small>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="umur" class="form-label">Umur <span class="text-danger">*</span></label>
-                        <input type="number" class="form-control" id="umur" name="umur">
-                        <small class="invalid-feedback" id="errorumur"></small>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="kelas" class="form-label">Kelas <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="kelas" name="kelas">
-                        <small class="invalid-feedback" id="errorkelas"></small>
+                        <label for="nama_panggilan" class="form-label">Nama Panggilan <span
+                                class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="nama_panggilan" id="nama_panggilan">
+                        <small class="invalid-feedback" id="errornama_panggilan"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label for="nama_orang_tua" class="form-label">Nama Orang Tua <span
@@ -37,10 +28,25 @@
                         <small class="invalid-feedback" id="errornama_orang_tua"></small>
                     </div>
                     <div class="form-group mb-3">
+                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin <span
+                                class="text-danger">*</span></label>
+                        <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
+                            <option value="">-- Pilih Jenis Kelamin --</option>
+                            <option value="Laki-Laki">Laki-Laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                        <small class="invalid-feedback" id="errorjenis_kelamin"></small>
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="nomor_telepon" class="form-label">Nomor Telepon <span
                                 class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="nomor_telepon" id="nomor_telepon">
                         <small class="invalid-feedback" id="errornomor_telepon"></small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="email" class="form-label">Email (Opsional)</label>
+                        <input type="email" class="form-control" name="email" id="email">
+                        <small class="invalid-feedback" id="erroremail"></small>
                     </div>
                 </div>
                 <div class="modal-footer">

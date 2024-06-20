@@ -16,10 +16,13 @@ return new class extends Migration
             $table->uuid();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('pengunjung_masuk_id');
-            $table->string('nama_anak');
-            $table->string('nama_panggilan');
-            $table->string('nama_orang_tua');
-            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
+            $table->string('nama_anak')->nullable();
+            $table->string('nama_panggilan')->nullable();
+            $table->string('nama_orang_tua')->nullable();
+            $table->string('nama_group')->nullable();
+            $table->string('penanggung_jawab')->nullable();
+            $table->integer('jumlah_anak')->nullable();
+            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan'])->nullable();
             $table->string('qr_code');
             $table->timestamps();
 

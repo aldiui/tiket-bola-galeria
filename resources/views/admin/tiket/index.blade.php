@@ -37,9 +37,19 @@
         <div class="container">
             <div class="row justify-content-center py-5">
                 <div class="col-12">
+                    <marquee scrollamount="10" hspace="3" style="font-family: impact; font-size:30px; color: #FFFFFF;"
+                        bgcolor="red" direction="left" scrollamount="2" align="center">Anak dibawah umur 6 tahun wajib
+                        didampingi 1 orang penjaga.
+                        Mohon penjemputan anak sesuai dengan ketentuan waktu bermain. Jika melewati waktu bermain
+                        otomatis dianggap melakukan perpanjangan waktu bermain 1 jam berikutnya, terimakasih.
+
+                        Children under 6 years of age must be accompanied by 1 caretaker. Kindly ensure you pick up
+                        your children at the end of the designated play period. If the playtime limit is exceeded,
+                        an additional hour will automatically be added to your session. Thank you.</marquee>
                     <div class="card mb-1">
                         <div class="card-header">
-                            <h1 class="card-title fw-semibold text-center">Riwayat Pengunjung Masuk {{ formatTanggal() }}
+                            <h1 class="card-title fw-semibold text-center">Riwayat Pengunjung Masuk
+                                {{ formatTanggal() }}
                             </h1>
                         </div>
                         <div class="card-body">
