@@ -73,11 +73,17 @@ const getModal = (targetId, url = null, fields = null) => {
 
             if (response.data.hak_akses) {
                 const hakAkses = response.data.hak_akses;
-                $(`#${targetId} #tambah_pengunjung_masuk`)
-                    .prop("checked", hakAkses.tambah_pengunjung_masuk == 1)
+                $(`#${targetId} #tambah_pengunjung_perorangan`)
+                    .prop("checked", hakAkses.tambah_pengunjung_perorangan == 1)
                     .trigger("change");
                 $(`#${targetId} #tambah_pengunjung_murid`)
                     .prop("checked", hakAkses.tambah_pengunjung_murid == 1)
+                    .trigger("change");
+                $(`#${targetId} #tambah_pengunjung_membership`)
+                    .prop("checked", hakAkses.tambah_pengunjung_membership == 1)
+                    .trigger("change");
+                $(`#${targetId} #tambah_pengunjung_group`)
+                    .prop("checked", hakAkses.tambah_pengunjung_group == 1)
                     .trigger("change");
                 $(`#${targetId} #tambah_pengunjung_keluar`)
                     .prop("checked", hakAkses.tambah_pengunjung_keluar == 1)
@@ -105,6 +111,15 @@ const getModal = (targetId, url = null, fields = null) => {
                     .trigger("change");
                 $(`#${targetId} #murid`)
                     .prop("checked", hakAkses.murid == 1)
+                    .trigger("change");
+                $(`#${targetId} #paket_membership`)
+                    .prop("checked", hakAkses.paket_membership == 1)
+                    .trigger("change");
+                $(`#${targetId} #membership`)
+                    .prop("checked", hakAkses.membership == 1)
+                    .trigger("change");
+                $(`#${targetId} #group`)
+                    .prop("checked", hakAkses.group == 1)
                     .trigger("change");
             }
         };

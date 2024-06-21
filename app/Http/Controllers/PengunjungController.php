@@ -73,7 +73,7 @@ class PengunjungController extends Controller
                 'murid_id' => $request->murid_id,
                 'user_id' => Auth::user()->id,
                 'qr_code' => $uuid . '_qrcode.svg',
-                'status_murid' => 1,
+                'type' => 'Murid',
             ]);
 
             Storage::put($qrCodePath, $qrCode);
@@ -138,6 +138,7 @@ class PengunjungController extends Controller
                 'alasan_diskon' => $request->alasan_diskon,
                 'user_id' => Auth::user()->id,
                 'qr_code' => $uuid . '_qrcode.svg',
+                'type' => 'Perorangan',
             ]);
 
             Storage::put($qrCodePath, $qrCode);

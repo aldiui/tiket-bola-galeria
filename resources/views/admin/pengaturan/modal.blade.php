@@ -36,16 +36,28 @@
                         <label class="form-label">Hak Akses</label>
                         <div>
                             <div class="form-check mb-3">
-                                <input type="checkbox" class="form-check-input" name="tambah_pengunjung_masuk"
-                                    id="tambah_pengunjung_masuk" autocomplete="off" value="1">
-                                <label class="form-check-label" for="tambah_pengunjung_masuk">Tambah Pengunjung
-                                    Masuk</label>
+                                <input type="checkbox" class="form-check-input" name="tambah_pengunjung_perorangan"
+                                    id="tambah_pengunjung_perorangan" autocomplete="off" value="1">
+                                <label class="form-check-label" for="tambah_pengunjung_perorangan">Tambah Pengunjung
+                                    Perorangan</label>
                             </div>
                             <div class="form-check mb-3">
                                 <input type="checkbox" class="form-check-input" name="tambah_pengunjung_murid"
                                     id="tambah_pengunjung_murid" autocomplete="off" value="1">
                                 <label class="form-check-label" for="tambah_pengunjung_murid">Tambah Pengunjung
                                     Murid</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" name="tambah_pengunjung_membership"
+                                    id="tambah_pengunjung_membership" autocomplete="off" value="1">
+                                <label class="form-check-label" for="tambah_pengunjung_membership">Tambah Pengunjung
+                                    Membership</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" name="tambah_pengunjung_group"
+                                    id="tambah_pengunjung_group" autocomplete="off" value="1">
+                                <label class="form-check-label" for="tambah_pengunjung_group">Tambah Pengunjung
+                                    Group</label>
                             </div>
                             <div class="form-check mb-3">
                                 <input type="checkbox" class="form-check-input" name="tambah_pengunjung_keluar"
@@ -94,6 +106,21 @@
                                 <input type="checkbox" class="form-check-input" name="murid" id="murid"
                                     autocomplete="off" value="1">
                                 <label class="form-check-label" for="murid">Murid</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" name="paket_membership"
+                                    id="paket_membership" autocomplete="off" value="1">
+                                <label class="form-check-label" for="paket_membership">Paket Membership</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" name="membership" id="membership"
+                                    autocomplete="off" value="1">
+                                <label class="form-check-label" for="membership">Membership</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" name="group" id="group"
+                                    autocomplete="off" value="1">
+                                <label class="form-check-label" for="group">group</label>
                             </div>
                         </div>
                     </div>
