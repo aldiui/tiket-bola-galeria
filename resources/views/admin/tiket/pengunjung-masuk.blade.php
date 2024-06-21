@@ -77,77 +77,83 @@
                                                 <td class="text-dark">{{ $pengunjungMasuk->email }}</td>
                                             </tr>
                                         @endif
-                                        <tr>
-                                            <td class="text-dark fw-semibold">Metode Pembayaran</td>
-                                            <td class="text-dark">
-                                                {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank . ' - ' . $pengunjungMasuk->pembayaran->nama_akun . ' ( ' . $pengunjungMasuk->pembayaran->nomor_rekening . ' ) ' : 'Cash' }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-dark fw-semibold">Durasi Bermain</td>
-                                            <td class="text-dark">
-                                                {{ $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain }}
-                                                Jam
-                                            </td>
-                                        </tr>
-                                        @if ($pengunjungMasuk->diskon)
+                                        @if ($pengunjungMasuk->type == 'Murid' || $pengunjungMasuk->type == 'Perorangan')
                                             <tr>
-                                                <td class="text-dark fw-semibold">Diskon ({{ $pengunjungMasuk->diskon }} %)
-                                                </td>
-                                                <td class="text-dark">{{ formatRupiah($pengunjungMasuk->nominal_diskon) }}
+                                                <td class="text-dark fw-semibold">Metode Pembayaran</td>
+                                                <td class="text-dark">
+                                                    {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank : 'Cash' }}
                                                 </td>
                                             </tr>
-                                        @endif
-                                        @if ($pengunjungMasuk->alasan_diskon)
                                             <tr>
-                                                <td class="text-dark fw-semibold">Alasan Diskon</td>
-                                                <td class="text-dark">{{ $pengunjungMasuk->alasan_diskon }}</td>
-                                            </tr>
-                                        @endif
-                                        @if ($pengunjungMasuk->biaya_mengantar)
-                                            <tr>
-                                                <td class="text-dark fw-semibold">Biaya Mengantar</td>
-                                                <td class="text-dark">{{ formatRupiah($pengunjungMasuk->biaya_mengantar) }}
+                                                <td class="text-dark fw-semibold">Durasi Bermain</td>
+                                                <td class="text-dark">
+                                                    {{ $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain }}
+                                                    Jam
                                                 </td>
                                             </tr>
-                                        @endif
-                                        @if ($pengunjungMasuk->biaya_kaos_kaki)
-                                            <tr>
-                                                <td class="text-dark fw-semibold">Biaya Kaos Kaki</td>
-                                                <td class="text-dark">{{ formatRupiah($pengunjungMasuk->biaya_kaos_kaki) }}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                        @if ($pengunjungMasuk->denda)
-                                            <tr>
-                                                <td class="text-dark fw-semibold">Denda</td>
-                                                <td class="text-dark">{{ formatRupiah($pengunjungMasuk->denda) }}</td>
-                                            </tr>
-                                        @endif
+                                            @if ($pengunjungMasuk->diskon)
+                                                <tr>
+                                                    <td class="text-dark fw-semibold">Diskon
+                                                        ({{ $pengunjungMasuk->diskon }} %)
+                                                    </td>
+                                                    <td class="text-dark">
+                                                        {{ formatRupiah($pengunjungMasuk->nominal_diskon) }}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            @if ($pengunjungMasuk->alasan_diskon)
+                                                <tr>
+                                                    <td class="text-dark fw-semibold">Alasan Diskon</td>
+                                                    <td class="text-dark">{{ $pengunjungMasuk->alasan_diskon }}</td>
+                                                </tr>
+                                            @endif
+                                            @if ($pengunjungMasuk->biaya_mengantar)
+                                                <tr>
+                                                    <td class="text-dark fw-semibold">Biaya Mengantar</td>
+                                                    <td class="text-dark">
+                                                        {{ formatRupiah($pengunjungMasuk->biaya_mengantar) }}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            @if ($pengunjungMasuk->biaya_kaos_kaki)
+                                                <tr>
+                                                    <td class="text-dark fw-semibold">Biaya Kaos Kaki</td>
+                                                    <td class="text-dark">
+                                                        {{ formatRupiah($pengunjungMasuk->biaya_kaos_kaki) }}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            @if ($pengunjungMasuk->denda)
+                                                <tr>
+                                                    <td class="text-dark fw-semibold">Denda</td>
+                                                    <td class="text-dark">{{ formatRupiah($pengunjungMasuk->denda) }}</td>
+                                                </tr>
+                                            @endif
 
-                                        <tr>
-                                            <td class="text-dark fw-semibold">Pembayaran</td>
-                                            @php
-                                                $total = $pengunjungMasuk->durasi_extra
-                                                    ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra
-                                                    : $pengunjungMasuk->tarif;
-                                                $totalDenganDiskon =
-                                                    $total -
-                                                    $pengunjungMasuk->nominal_diskon +
-                                                    $pengunjungMasuk->biaya_mengantar +
-                                                    $pengunjungMasuk->biaya_kaos_kaki +
-                                                    $pengunjungMasuk->denda;
-                                            @endphp
-                                            <td class="text-dark">
-                                                {{ formatRupiah($total) }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-dark fw-semibold">Total Pembayaran</td>
-                                            <td class="text-dark">
-                                                {{ formatRupiah($totalDenganDiskon) }}
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Pembayaran</td>
+                                                @php
+                                                    $total = $pengunjungMasuk->durasi_extra
+                                                        ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra
+                                                        : $pengunjungMasuk->tarif;
+                                                    $totalDenganDiskon =
+                                                        $total -
+                                                        $pengunjungMasuk->nominal_diskon +
+                                                        $pengunjungMasuk->biaya_mengantar +
+                                                        $pengunjungMasuk->biaya_kaos_kaki +
+                                                        $pengunjungMasuk->denda;
+                                                @endphp
+                                                <td class="text-dark">
+                                                    {{ formatRupiah($total) }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Total Pembayaran</td>
+                                                <td class="text-dark">
+                                                    {{ formatRupiah($totalDenganDiskon) }}
+                                                </td>
+                                            </tr>
+                                        @endif
                                         <tr>
                                             <td class="text-dark fw-semibold">Tanggal</td>
                                             <td class="text-dark">

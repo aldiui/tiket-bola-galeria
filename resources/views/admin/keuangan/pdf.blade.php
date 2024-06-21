@@ -20,6 +20,7 @@
                     <th>Diskon</th>
                     <th>Total</th>
                     <th>Tanggal dan Waktu</th>
+                    <th>Ket</th>
                     <th>Admin</th>
                 </tr>
             </thead>
@@ -39,13 +40,14 @@
                             Jam </td>
                         <td align="center">{{ $pengunjungMasuk->nama_orang_tua }}</td>
                         <td align="center">
-                            {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank . ' - ' . $pengunjungMasuk->pembayaran->nama_akun : 'Cash' }}
+                            {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank : 'Cash' }}
                         </td>
                         <td align="right">{{ formatRupiah($total) }}
                         </td>
                         <td align="right">{{ formatRupiah($pengunjungMasuk->nominal_diskon) }}</td>
                         <td align="right">{{ formatRupiah($totalDenganDiskon) }}</td>
                         <td align="center">{{ formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s') }}</td>
+                        <td align="center">{{ $pengunjungMasuk->type }}</td>
                         <td align="center">{{ $pengunjungMasuk->user->nama }}</td>
                     </tr>
                 @endforeach
@@ -59,6 +61,7 @@
                     <td align="right">
                         {{ formatRupiah($pengunjungMasuks->sum('tarif') + $pengunjungMasuks->sum('tarif_extra') - $pengunjungMasuks->sum('diskon')) }}
                     </td>
+                    <td></td>
                     <td></td>
                     <td></td>
                 </tr>

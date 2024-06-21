@@ -25,9 +25,9 @@
                                 class="text-danger">*</span></label>
                         <select name="durasi_hari" id="durasi_hari" class="form-control">
                             <option value="">-- Pilih Durasi Hari --</option>
-                            <option value="30">1 Bulan</option>
-                            <option value="60">3 Bulan</option>
-                            <option value="120">6 Bulan</option>
+                            <option value="1">1 Hari</option>
+                            <option value="30">30 Hari</option>
+                            <option value="365">1 Tahun</option>
                         </select>
                         <small class="invalid-feedback" id="errordurasi_hari"></small>
                     </div>

@@ -24,6 +24,20 @@
                         placeholder="Masukkan nominal denda" value="{{ $pengaturan->denda ?? '' }}">
                     <small class="invalid-feedback" id="errordenda"></small>
                 </div>
+                <div class="form-group mb-3">
+                    <label for="tarif_kaos_kaki" class="form-label">Tarif Kaos Kaki <span
+                            class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="tarif_kaos_kaki" id="tarif_kaos_kaki"
+                        placeholder="Masukkan nominal Tarif Kaos Kaki" value="{{ $pengaturan->tarif_kaos_kaki ?? '' }}">
+                    <small class="invalid-feedback" id="errortarif_kaos_kaki"></small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="tarif_mengantar" class="form-label">Tarif Mengantar <span
+                            class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="tarif_mengantar" id="tarif_mengantar"
+                        placeholder="Masukkan nominal Tarif Mengantar" value="{{ $pengaturan->tarif_mengantar ?? '' }}">
+                    <small class="invalid-feedback" id="errortarif_mengantar"></small>
+                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><i class="ti ti-pencil me-1"></i>Ubah Tarif</button>
                 </div>
@@ -63,7 +77,7 @@
                         const errorCallback = function(error) {
                             setButtonLoadingState("#updateData .btn.btn-primary", false,
                                 `<i class="ti ti-pencil me-1"></i>Ubah Tarif`);
-                            handleValidationErrors(error, "updateData", ["tarif", "denda"]);
+                            handleValidationErrors(error, "updateData", ["tarif", "denda", "tarif_kaos_kaki", "tarif_mengantar"]);
                         };
 
                         ajaxCall(url, "POST", data, successCallback, errorCallback);

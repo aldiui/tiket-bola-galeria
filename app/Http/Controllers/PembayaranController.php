@@ -24,7 +24,7 @@ class PembayaranController extends Controller
                     ->addColumn('aksi', function ($daftarBank) {
                         $editButton = '<button class="btn btn-sm btn-warning me-1" onclick="getModal(`createModal`, `/daftar-bank/' . $daftarBank->id . '`, [`id`, `nama_bank`, `nama_akun`, `nomor_rekening`])">
                         <i class="ti ti-edit me-1"></i>Edit</button>';
-                        $deleteButton = '<button class="btn btn-sm btn-danger" onclick="confirmDelete(`/daftar-bank/' . $daftarBank->id . '`, `user-table`)"><i class="ti ti-trash me-1"></i>Hapus</button>';
+                        $deleteButton = '<button class="btn btn-sm btn-danger" onclick="confirmDelete(`/daftar-bank/' . $daftarBank->id . '`, `pembayaran-table`)"><i class="ti ti-trash me-1"></i>Hapus</button>';
                         return $editButton . $deleteButton;
                     })
                     ->addIndexColumn()

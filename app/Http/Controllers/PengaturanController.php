@@ -24,6 +24,8 @@ class PengaturanController extends Controller
             $validator = Validator::make($request->all(), [
                 'tarif' => 'required|numeric',
                 'denda' => 'required|numeric',
+                'tarif_mengantar' => 'required|numeric',
+                'tarif_kaos_kaki' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -37,6 +39,8 @@ class PengaturanController extends Controller
             $pengaturan->update([
                 'tarif' => $request->tarif,
                 'denda' => $request->denda,
+                'tarif_mengantar' => $request->tarif_mengantar,
+                'tarif_kaos_kaki' => $request->tarif_kaos_kaki,
             ]);
 
             return $this->successResponse($pengaturan, 'Ubah Tarif berhasil diubah.', 200);

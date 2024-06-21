@@ -37,6 +37,11 @@
                     <small class="invalid-feedback" id="errornama_orang_tua"></small>
                 </div>
                 <div class="form-group mb-3">
+                    <label for="nomor_telepon" class="form-label">Nomor Telepon <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="nomor_telepon" id="nomor_telepon">
+                    <small class="invalid-feedback" id="errornomor_telepon"></small>
+                </div>
+                <div class="form-group mb-3">
                     <label for="jenis_kelamin" class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
                     <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
                         <option value="">-- Pilih Jenis Kelamin --</option>
@@ -44,22 +49,6 @@
                         <option value="Perempuan">Perempuan</option>
                     </select>
                     <small class="invalid-feedback" id="errorjenis_kelamin"></small>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="lama_denda" class="form-label">Lama Denda (Opsional)</label>
-                    <select class="form-control" name="lama_denda" id="lama_denda">
-                        <option value="">-- Pilih Lama Denda --</option>
-                        <option value="1">15 Menit</option>
-                        <option value="2">30 Menit</option>
-                        <option value="3">45 Menit</option>
-                        <option value="4">1 Jam</option>
-                    </select>
-                    <small class="invalid-feedback" id="errorlama_denda"></small>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="denda" class="form-label">Denda (Opsional)</label>
-                    <input type="number" class="form-control" name="denda" id="denda">
-                    <small class="invalid-feedback" id="errordenda"></small>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><i class="ti ti-plus me-1"></i>Simpan</button>
@@ -75,12 +64,6 @@
     <script>
         $(document).ready(function() {
             select2ToJsonPengunjungMasuk();
-
-            $("#lama_denda").on("change", function() {
-                const lama_denda = $("#lama_denda").val();
-                const calculateDenda = lama_denda * {{ $pengaturan->denda ?? 0 }};
-                $("#denda").val(calculateDenda);
-            });
 
             $("#saveData").submit(function(e) {
                 setButtonLoadingState("#saveData .btn.btn-primary", true);
@@ -102,7 +85,6 @@
                     handleValidationErrors(error, "saveData", ["pengunjung_masuk_id", "nama_anak",
                         'nama_panggilan',
                         'nama_orang_tua', 'jenis_kelamin', 'nomor_telepon', 'durasi_bermain',
-                        'denda'
                     ]);
                 };
 
@@ -111,7 +93,7 @@
 
             $("#pengunjung_masuk_id").on("change", function() {
                 let cekPengunjungMasukId = $("#pengunjung_masuk_id").val();
-                const fields = ["nama_anak", "nama_panggilan", "nama_orang_tua", "jenis_kelamin"];
+                const fields = ["nama_anak", "nama_panggilan", "nama_orang_tua", "jenis_kelamin", "nomor_telepon"];
 
                 const successCallback = function(response) {
                     fields.forEach((field) => {

@@ -59,16 +59,9 @@
                     <label for="durasi_bermain" class="form-label">Durasi Bermain <span class="text-danger">*</span></label>
                     <select class="form-control" name="durasi_bermain" id="durasi_bermain">
                         <option value="">-- Pilih Durasi Bermain --</option>
-                        <option value="1">1 Jam</option>
-                        <option value="2">2 Jam</option>
-                        <option value="3">3 Jam</option>
-                        <option value="4">4 Jam</option>
-                        <option value="5">5 Jam</option>
-                        <option value="6">6 Jam</option>
-                        <option value="7">7 Jam</option>
-                        <option value="8">8 Jam</option>
-                        <option value="9">9 Jam</option>
-                        <option value="10">10 Jam</option>
+                        @for ($i = 1; $i <= 10; $i++)
+                            <option value="{{ $i }}">{{ $i }} Jam</option>
+                        @endfor
                     </select>
                     <small class="invalid-feedback" id="errordurasi_bermain"></small>
                 </div>
@@ -76,10 +69,9 @@
                     <label for="pembayaran_id" class="form-label">Metode Pembayaran <span
                             class="text-danger">*</span></label>
                     <select class="form-control" name="pembayaran_id" id="pembayaran_id">
-                        <option value="">Cash</option>
+                        <option value="">-- Pilih Pembayaran --</option>
                         @foreach ($pembayaran as $row)
-                            <option value="{{ $row->id }}">{{ $row->nama_bank }} - {{ $row->nama_akun }} (
-                                {{ $row->nomor_rekening }} )</option>
+                            <option value="{{ $row->id }}">{{ $row->nama_bank }}</option>
                         @endforeach
                     </select>
                     <small class="invalid-feedback" id="errorpembayaran_id"></small>
@@ -97,18 +89,42 @@
                     <small class="invalid-feedback" id="errornominal_diskon"></small>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="biaya_mengantar" class="form-label">Biaya Mengantar (Opsional)</label>
-                    <input type="number" value="0" class="form-control" name="biaya_mengantar"
-                        id="biaya_mengantar">
-                    <small class="invalid-feedback" id="errorbiaya_mengantar"></small>
-                    <small class="d-block pt-2">Diisi jika ada yang mengantar bermain bola</small>
+                    <label for="tarif_mengantar" class="form-label">Biaya Pendamping (Opsional)</label>
+                    <select class="form-control" name="tarif_mengantar" id="tarif_mengantar">
+                        <option value="">-- Pilih Jumlah Pendamping --</option>
+                        <option value="0">Tanpa Pendamping</option>
+                        <option value="1">1 Pendamping</option>
+                        <option value="2">2 Pendamping</option>
+                    </select>
+                    <small class="invalid-feedback" id="errortarif_mengantar"></small>
+                    <small class="d-block pt-2">Anak di bawah umur 6 tahun wajib pendamping</small>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="biaya_kaos_kaki" class="form-label">Biaya Kaos Kaki (Opsional)</label>
+                    <label for="biaya_mengantar" class="form-label">Tarif Pendamping <span
+                            class="text-danger">*</span></label>
+                    <input type="number" value="0" class="form-control" name="biaya_mengantar"
+                        id="biaya_mengantar" readonly>
+                    <small class="invalid-feedback" id="errorbiaya_mengantar"></small>
+                    <small class="d-block pt-2">Tarif otomatis berdasarkan jumlah pendamping</small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="tarif_kaos_kaki" class="form-label">Biaya Kaos Kaki (Opsional)</label>
+                    <select class="form-control" name="tarif_kaos_kaki" id="tarif_kaos_kaki">
+                        <option value="">-- Pilih Jumlah Kaos Kaki --</option>
+                        <option value="0">Tanpa Kaos Kaki</option>
+                        <option value="1">1 Pasang Kaos Kaki</option>
+                        <option value="2">2 Pasang Kaos Kaki</option>
+                    </select>
+                    <small class="invalid-feedback" id="errortarif_kaos_kaki"></small>
+                    <small class="d-block pt-2">Diisi jika ada yang membutuhkan kaos kaki</small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="biaya_kaos_kaki" class="form-label">Tarif Kaos Kaki <span
+                            class="text-danger">*</span></label>
                     <input type="number" value="0" class="form-control" name="biaya_kaos_kaki"
-                        id="biaya_kaos_kaki">
+                        id="biaya_kaos_kaki" readonly>
                     <small class="invalid-feedback" id="errorbiaya_kaos_kaki"></small>
-                    <small class="d-block pt-2">Diisi jika ada yang mau menggunakan kaos kaki</small>
+                    <small class="d-block pt-2">Tarif otomatis berdasarkan jumlah pembelian</small>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary"><i class="ti ti-plus me-1"></i>Simpan</button>
@@ -130,6 +146,24 @@
                 $("#tarif").val(calculateTarif);
                 $("#nominal_diskon").val(calculateTarif);
             });
+
+            $("#tarif_mengantar").on("change", function() {
+                const tarif_mengantar = $("#tarif_mengantar").val();
+                const durasi_bermain = $("#durasi_bermain").val();
+                let calculateTarif_mengantar = 0;
+                if(tarif_mengantar > 1){
+                    calculateTarif_mengantar = tarif_mengantar * durasi_bermain *
+                        {{ $pengaturan->tarif_mengantar ?? 0 }};
+                }
+                $("#biaya_mengantar").val(calculateTarif_mengantar);
+            });
+
+            $("#tarif_kaos_kaki").on("change", function() {
+                const tarif_kaos_kaki = $("#tarif_kaos_kaki").val();
+                const calculateTarif_kaos_kaki = tarif_kaos_kaki * {{ $pengaturan->tarif_kaos_kaki ?? 0 }};
+                $("#biaya_kaos_kaki").val(calculateTarif_kaos_kaki);
+            });
+
 
             $("#saveData").submit(function(e) {
                 setButtonLoadingState("#saveData .btn.btn-primary", true);

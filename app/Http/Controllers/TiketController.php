@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\PengunjungKeluar;
-use App\Models\PengunjungMasuk;
-use App\Traits\ApiResponder;
-use Carbon\Carbon;
 use DataTables;
+use Carbon\Carbon;
+use App\Models\Pengaturan;
+use App\Traits\ApiResponder;
 use Illuminate\Http\Request;
+use App\Models\PengunjungMasuk;
+use App\Models\PengunjungKeluar;
+use App\Http\Controllers\Controller;
 
 class TiketController extends Controller
 {
@@ -18,16 +19,22 @@ class TiketController extends Controller
     {
         if ($request->ajax()) {
             $tanggal = date('Y-m-d');
-            $pengunjungMasuks = PengunjungMasuk::whereDate('start_tiket', $tanggal)->latest()->get();
+            $pengunjungMasuks = PengunjungMasuk::leftJoin('pengunjung_keluars', 'pengunjung_masuks.id', '=', 'pengunjung_keluars.pengunjung_masuk_id')
+                ->whereDate('pengunjung_masuks.start_tiket', $tanggal)
+                ->whereNull('pengunjung_keluars.pengunjung_masuk_id')
+                ->latest('pengunjung_masuks.created_at')
+                ->select('pengunjung_masuks.*')
+                ->get();
+            $pengaturan = Pengaturan::find(1);
 
             if ($request->input("mode") == "datatable") {
                 return DataTables::of($pengunjungMasuks)
-                    ->addColumn('durasi', function ($pengunjungMasuk) {
+                    ->addColumn('durasi', function ($pengunjungMasuk) use ($pengaturan) {
                         if ($pengunjungMasuk->start_tiket) {
                             if ($pengunjungMasuk->pengunjungKeluar) {
                                 return '<span style="font-size: 20px" class="badge bg-danger"><i class="ti ti-clock me-1"></i> Sudah Selesai</span>';
                             } else {
-                                $startTicket = Carbon::parse($pengunjungMasuk->start_tiket);
+                                $startTicket = Carbon::parse($pengunjungMasuk->start_tiket)->addMinutes($pengaturan->toleransi_waktu);
                                 $today = Carbon::now()->format('Y-m-d');
                                 $ticketDate = $startTicket->format('Y-m-d');
 
@@ -45,29 +52,27 @@ class TiketController extends Controller
                                 $durationDiff = $now->diff($endTime);
                                 $remainingSeconds = $now->diffInSeconds($endTime, false);
 
-                                $pengunjungMasuk->duration_difference = $durationDiff->format('%H:%I:%S');
-                                $pengunjungMasuk->duration_difference = $pengunjungMasuk->duration_difference < '00:00:00' ? '00:00:00' : $pengunjungMasuk->duration_difference;
+                                $duration_difference = $durationDiff->format('%H:%I:%S');
+                                $duration_difference = $duration_difference < '00:00:00' ? '00:00:00' : $duration_difference;
 
                                 $spanId = 'countdown_' . $pengunjungMasuk->uuid;
 
                                 if ($remainingSeconds < 5 * 60) {
-                                    $badgeColor = 'bg-danger blink';
-                                } elseif ($remainingSeconds < 10 * 60) {
                                     $badgeColor = 'bg-warning blink';
+                                } elseif ($remainingSeconds < 10 * 60) {
+                                    $badgeColor = 'bg-success blink';
                                 } else {
                                     $badgeColor = 'bg-primary';
                                 }
 
-                                return '<span style="font-size: 20px" id="' . $spanId . '" class="badge ' . $badgeColor . ' rounded-3 fw-semibold" data-sisa="' . $pengunjungMasuk->duration_difference . '"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->duration_difference . '</span>';
+                                return '<span style="font-size: 20px" id="' . $spanId . '" class="badge ' . $badgeColor . ' rounded-3 fw-semibold" data-sisa="' . $duration_difference . '"><i class="ti ti-clock me-1"></i>' . $duration_difference . '</span>';
                             }
                         } else {
                             return '<span style="font-size: 20px" class="badge bg-danger"><i class="ti ti-clock me-1"></i> Belum Mulai</span>';
                         }
                     })
                     ->addColumn('nama_anak', function ($pengunjungMasuk) {
-                        return '<span style="font-size: 20px" class="fw-bolder">
-                        ' . $pengunjungMasuk->nama_anak . '
-                        </span>';
+                        return '<span style="font-size: 20px" class="fw-bolder">' . $pengunjungMasuk->nama_anak . '</span>';
                     })
                     ->rawColumns(['durasi', 'nama_anak'])
                     ->addIndexColumn()

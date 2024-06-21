@@ -24,7 +24,7 @@ class MuridController extends Controller
                     ->addColumn('aksi', function ($murid) {
                         $editButton = '<button class="btn btn-sm btn-warning me-1" onclick="getModal(`createModal`, `/murid/' . $murid->id . '`, [`id`, `nomor_murid`, `nama_anak`,`umur`, `kelas`, `nama_orang_tua`, `nomor_telepon`])">
                         <i class="ti ti-edit me-1"></i>Edit</button>';
-                        $deleteButton = '<button class="btn btn-sm btn-danger" onclick="confirmDelete(`/murid/' . $murid->id . '`, `user-table`)"><i class="ti ti-trash me-1"></i>Hapus</button>';
+                        $deleteButton = '<button class="btn btn-sm btn-danger" onclick="confirmDelete(`/murid/' . $murid->id . '`, `murid-table`)"><i class="ti ti-trash me-1"></i>Hapus</button>';
                         return $editButton . $deleteButton;
                     })
                     ->addIndexColumn()

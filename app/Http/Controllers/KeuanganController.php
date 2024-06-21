@@ -29,12 +29,6 @@ class KeuanganController extends Controller
                 ->whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
                 ->latest()
                 ->get();
-        } else if ($pembayaranId == "Cash") {
-            $pengunjungMasuks = PengunjungMasuk::with('user', 'pembayaran')
-                ->whereNull('pembayaran_id')
-                ->whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
-                ->latest()
-                ->get();
         } else {
             $pengunjungMasuks = PengunjungMasuk::with('user', 'pembayaran')
                 ->where('pembayaran_id', $pembayaranId)
@@ -53,7 +47,7 @@ class KeuanganController extends Controller
                         return formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s');
                     })
                     ->addColumn('metode_pembayaran', function ($pengunjungMasuk) {
-                        return $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank . ' - ' . $pengunjungMasuk->pembayaran->nama_akun : 'Cash';
+                        return $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank : 'Cash';
                     })
                     ->addColumn('pembayaran', function ($pengunjungMasuk) {
                         $total = $pengunjungMasuk->durasi_extra

@@ -35,9 +35,8 @@
                         <label for="pembayaran_id" class="form-label">Metode Pembayaran </label>
                         <select class="form-control" name="pembayaran_id" id="pembayaran_id">
                             <option value="Semua">Semua</option>
-                            <option value="Cash">Cash</option>
-                            @foreach ($pembayaran as $row)
-                                <option value="{{ $row->id }}">{{ $row->nama }} - {{ $row->nomor_rekening }}
+							        @foreach ($pembayaran as $row)
+                                <option value="{{ $row->id }}">{{ $row->nama_akun }}
                                 </option>
                             @endforeach
                         </select>
@@ -60,6 +59,7 @@
                             <th>Diskon</th>
                             <th>Total</th>
                             <th>Tanggal dan Waktu</th>
+                            <th>Ket</th>
                             <th>Admin</th>
                         </tr>
                     </thead>
@@ -121,6 +121,10 @@
                 {
                     data: 'tanggal',
                     name: 'tanggal'
+                },
+                {
+                    data: 'type',
+                    name: 'type'
                 },
                 {
                     data: 'admin',

@@ -334,6 +334,43 @@ const select2ToJsonMurid = () => {
     ajaxCall("/murid", "GET", null, successCallback, errorCallback);
 };
 
+const select2ToJsonMembership = () => {
+    const selectElem = $("#membership_id").empty();
+
+    const successCallback = function (response) {
+        selectElem.empty();
+
+        const emptyOption = $("<option></option>");
+        emptyOption.attr("value", "");
+        emptyOption.text("-- Pilih Membership --");
+        selectElem.append(emptyOption);
+
+        const responseList = response.data;
+        responseList.forEach(function (row) {
+            const option = $("<option></option>");
+            option.attr("value", row.membership_id);
+            option.text(
+                "Anak : " +
+                    row.membership.nama_anak +
+                    " - Orang Tua : " +
+                    row.membership.nama_orang_tua
+            );
+            selectElem.append(option);
+        });
+
+        selectElem.select2({
+            theme: "bootstrap-5",
+            width: "100%",
+        });
+    };
+
+    const errorCallback = function (error) {
+        console.log(error);
+    };
+
+    ajaxCall("/transaksi-membership", "GET", null, successCallback, errorCallback);
+};
+
 let chart = null;
 
 const renderSingleChart = (data, labels, chartType = "Laporan Keuangan") => {

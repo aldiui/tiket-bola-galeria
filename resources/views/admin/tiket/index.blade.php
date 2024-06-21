@@ -29,40 +29,30 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
             <a class="navbar-brand mx-auto" href="#">
-                <img src="{{ asset('images/logos/logo.png') }}" width="150" alt="Logo">
+                <img src="{{ asset('images/logos/logo.png') }}" width="250" alt="Logo">
             </a>
         </div>
     </nav>
-    <div class="bg-white pt-5">
+    <div class="bg-white pt-5 mt-5">
         <div class="container">
             <div class="row justify-content-center py-5">
                 <div class="col-12">
-                    <marquee scrollamount="10" hspace="3" style="font-family: impact; font-size:30px; color: #FFFFFF;"
-                        bgcolor="red" direction="left" scrollamount="2" align="center">Anak dibawah umur 6 tahun wajib
-                        didampingi 1 orang penjaga.
-                        Mohon penjemputan anak sesuai dengan ketentuan waktu bermain. Jika melewati waktu bermain
-                        otomatis dianggap melakukan perpanjangan waktu bermain 1 jam berikutnya, terimakasih.
-
-                        Children under 6 years of age must be accompanied by 1 caretaker. Kindly ensure you pick up
-                        your children at the end of the designated play period. If the playtime limit is exceeded,
-                        an additional hour will automatically be added to your session. Thank you.</marquee>
-                    <div class="card mb-1">
-                        <div class="card-header">
-                            <h1 class="card-title fw-semibold text-center">Riwayat Pengunjung Masuk
-                                {{ formatTanggal() }}
-                            </h1>
-                        </div>
+                    <div class="card mb-1 border">
                         <div class="card-body">
-                            <div class="text-center mb-2">Data Pengujung : <span id="data-show">0</span></div>
+                            <div class="d-flex mb-3 justify-content-between fw-semibold">
+                                <div>Riwayat Pengunjung Masuk {{ formatTanggal() }}</div>
+                                <div>Data Pengujung : <span id="data-show">0</span></div>
+                            </div>
                             <div class="table-responsive">
                                 <table id="pengunjung-masuk-table" class="table table-bordered table-striped" width="100%"
                                     style="font-size: 22px">
                                     <thead>
                                         <tr>
                                             <th width="5%">#</th>
-                                            <th>Nama Anak</th>
+                                            <th>Nama Anak/Group/Member</th>
                                             <th>Sisa Waktu</th>
                                         </tr>
+                                    </thead>
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -71,6 +61,17 @@
                         </div>
                     </div>
                 </div>
+                <marquee scrollamount="10" hspace="3" width="80%"
+                    style="font-family: impact; font-size:30px; color: #FFFFFF;" bgcolor="red" direction="left"
+                    scrollamount="2" align="center">Anak dibawah umur 6 tahun wajib didampingi 1 orang penjaga. Mohon
+                    penjemputan anak sesuai dengan ketentuan waktu bermain. Jika melewati waktu bermain otomatis dianggap
+                    melakukan perpanjangan waktu bermain 1 jam berikutnya, terimakasih.
+
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    Children under 6 years of age must be accompanied by 1 caretaker. Kindly ensure you pick up your
+                    children at the end of the designated play period. If the playtime limit is exceeded, an additional hour
+                    will automatically be added to your session. Thank you.</marquee>
             </div>
         </div>
     </div>
@@ -85,8 +86,8 @@
                     name: 'DT_RowIndex'
                 },
                 {
-                    data: 'nama_anak',
-                    name: 'nama_anak'
+                    data: 'nama_panggilan',
+                    name: 'nama_panggilan'
                 },
                 {
                     data: 'durasi',

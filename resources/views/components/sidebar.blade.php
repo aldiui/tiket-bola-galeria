@@ -76,15 +76,23 @@
                         </a>
                     </li>
                 @endif
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Keuangan</span>
+                </li>
                 @if (getAdmin()->laporan_keuangan == 1)
-                    <li class="nav-small-cap">
-                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Keuangan</span>
-                    </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/laporan-keuangan" aria-expanded="false">
                             <i class="ti ti-file-invoice"></i>
                             <span class="hide-menu">Laporan Keuangan</span>
+                        </a>
+                    </li>
+                @endif
+                @if (getAdmin()->membership == 1)
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/transaksi-membership" aria-expanded="false">
+                            <i class="ti ti-activity"></i>
+                            <span class="hide-menu">Transaksi Membership</span>
                         </a>
                     </li>
                 @endif
