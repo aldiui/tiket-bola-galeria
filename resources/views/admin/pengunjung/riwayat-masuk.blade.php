@@ -57,6 +57,7 @@
                             <th>Nama Panggilan</th>
                             <th>Sisa Waktu</th>
                             <th>Nama Orang Tua</th>
+                            <th>Keterangan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -96,6 +97,10 @@
                 {
                     data: 'nama_orang_tua',
                     name: 'nama_orang_tua'
+                },
+                {
+                    data: 'type',
+                    name: 'type'
                 },
                 {
                     data: 'tiket',

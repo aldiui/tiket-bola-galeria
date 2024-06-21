@@ -51,6 +51,7 @@
                                             <th width="5%">#</th>
                                             <th>Nama Anak/Group/Member</th>
                                             <th>Sisa Waktu</th>
+                                            <th>Keterangan</th>
                                         </tr>
                                     </thead>
                                     </thead>
@@ -92,6 +93,10 @@
                 {
                     data: 'durasi',
                     name: 'durasi'
+                },
+                {
+                    data: 'type',
+                    name: 'type'
                 },
             ]);
 

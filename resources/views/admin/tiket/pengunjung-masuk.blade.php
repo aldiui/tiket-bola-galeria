@@ -77,6 +77,11 @@
                                                 <td class="text-dark">{{ $pengunjungMasuk->email }}</td>
                                             </tr>
                                         @endif
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Keterangan</td>
+                                            <td class="text-dark">{{ $pengunjungMasuk->type }}
+                                            </td>
+                                        </tr>
                                         @if ($pengunjungMasuk->type == 'Murid' || $pengunjungMasuk->type == 'Perorangan')
                                             <tr>
                                                 <td class="text-dark fw-semibold">Metode Pembayaran</td>

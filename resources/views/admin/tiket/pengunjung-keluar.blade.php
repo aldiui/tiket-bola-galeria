@@ -40,12 +40,6 @@
                                             <td class="text-dark"> {{ $pengunjungKeluar->nama_anak }}
                                                 (Panggilan : {{ $pengunjungKeluar->nama_panggilan }})</td>
                                         </tr>
-                                        @if ($pengunjungKeluar->pengunjungMasuk->murid_id)
-                                            <tr>
-                                                <td class="text-dark fw-semibold">Status Murid</td>
-                                                <td class="text-dark"> Murid</td>
-                                            </tr>
-                                        @endif
                                         <tr>
                                             <td class="text-dark fw-semibold">Orang Tua</td>
                                             <td class="text-dark">{{ $pengunjungKeluar->nama_orang_tua }}</td>
@@ -65,6 +59,11 @@
                                                 <td class="text-dark">{{ $pengunjungKeluar->pengunjungMasuk->email }}</td>
                                             </tr>
                                         @endif
+                                        <tr>
+                                            <td class="text-dark fw-semibold">Keterangan</td>
+                                            <td class="text-dark">{{ $pengunjungKeluar->pengunjungMasuk->type }}
+                                            </td>
+                                        </tr>
                                         @if ($pengunjungKeluar->pengunjungMasuk->type == 'Murid' || $pengunjungKeluar->pengunjungMasuk->type == 'Perorangan')
                                             <tr>
                                                 <td class="text-dark fw-semibold">Metode Pembayaran</td>
