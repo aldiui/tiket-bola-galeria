@@ -83,9 +83,11 @@
                     <label for="tarif_mengantar" class="form-label">Biaya Pendamping (Opsional)</label>
                     <select class="form-control" name="tarif_mengantar" id="tarif_mengantar">
                         <option value="">-- Pilih Jumlah Pendamping --</option>
-                        <option value="0">Tanpa Pendamping</option>
+                        <option value="0">Tanpa Pendamping tambahan</option>
                         <option value="1">1 Pendamping</option>
                         <option value="2">2 Pendamping</option>
+                        <option value="3">3 Pendamping</option>
+                        <option value="4">4 Pendamping</option>
                     </select>
                     <small class="invalid-feedback" id="errortarif_mengantar"></small>
                     <small class="d-block pt-2">Anak di bawah umur 6 tahun wajib pendamping</small>

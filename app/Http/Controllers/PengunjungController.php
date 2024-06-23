@@ -107,6 +107,10 @@ class PengunjungController extends Controller
                 'biaya_mengantar' => 'required|numeric',
                 'biaya_kaos_kaki' => 'required|numeric',
                 'membership_id' => 'required|exists:memberships,id',
+                'pembayaran_id' => 'required|exists:pembayarans,id',
+            ], [
+                'pembayaran_id.exists' => 'Pembayaran tidak valid.',
+                'pembayaran_id.required' => 'Pembayaran harus diisi.',
             ]);
 
             if ($validator->fails()) {
@@ -129,6 +133,7 @@ class PengunjungController extends Controller
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nomor_telepon' => $request->nomor_telepon,
                 'durasi_bermain' => $request->durasi_bermain,
+                'pembayaran_id' => $request->pembayaran_id,
                 'tarif' => 0,
                 'email' => $request->email,
                 'diskon' => 100,

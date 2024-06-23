@@ -22,9 +22,20 @@
 </head>
 
 <body>
-    <div align="center">
-        <h3>@yield('title') </h3>
-    </div>
+    <table width="100%" border="0" cellpadding="2.5" cellspacing="0">
+        <tbody>
+            <tr>
+                <td width='20%'>
+                    <img width='120px' src="{{ generateBase64Image(public_path('images/logos/logo.png')) }}"
+                        alt="">
+                </td>
+                <td align="center">
+                    <h3>@yield('title')</h3>
+                </td>
+                <td width='20%' align="right"></td>
+            </tr>
+        </tbody>
+    </table>
     <hr style="height:1px;background-color:black;">
     <br>
     @yield('main')

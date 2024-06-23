@@ -66,12 +66,25 @@
                     <small class="invalid-feedback" id="errordurasi_bermain"></small>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="tarif_mengantar" class="form-label">Biaya Pendamping (Opsional)</label>
+                    <label for="pembayaran_id" class="form-label">Metode Pembayaran <span
+                            class="text-danger">*</span></label>
+                    <select class="form-control" name="pembayaran_id" id="pembayaran_id">
+                        <option value="">-- Pilih Pembayaran --</option>
+                        @foreach ($pembayaran as $row)
+                            <option value="{{ $row->id }}">{{ $row->nama_bank }}</option>
+                        @endforeach
+                    </select>
+                    <small class="invalid-feedback" id="errorpembayaran_id"></small>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="tarif_mengantar" class="form-label">Biaya Pendamping Tambahan Optional</label>
                     <select class="form-control" name="tarif_mengantar" id="tarif_mengantar">
                         <option value="">-- Pilih Jumlah Pendamping --</option>
-                        <option value="0">Tanpa Pendamping</option>
+                        <option value="0">Tanpa Pendamping tambahan</option>
                         <option value="1">1 Pendamping</option>
                         <option value="2">2 Pendamping</option>
+                        <option value="3">3 Pendamping</option>
+                        <option value="4">4 Pendamping</option>
                     </select>
                     <small class="invalid-feedback" id="errortarif_mengantar"></small>
                     <small class="d-block pt-2">Anak di bawah umur 6 tahun wajib pendamping</small>
@@ -122,19 +135,15 @@
                 const tarif_mengantar = $("#tarif_mengantar").val();
                 const durasi_bermain = $("#durasi_bermain").val();
                 let calculateTarif_mengantar = 0;
-                if (tarif_mengantar > 1) {
-                    calculateTarif_mengantar = tarif_mengantar * durasi_bermain *
-                        {{ $pengaturan->tarif_mengantar ?? 0 }};
-                }
+                calculateTarif_mengantar = tarif_mengantar * durasi_bermain *
+                    {{ $pengaturan->tarif_mengantar ?? 0 }};
                 $("#biaya_mengantar").val(calculateTarif_mengantar);
             });
 
             $("#tarif_kaos_kaki").on("change", function() {
                 const tarif_kaos_kaki = $("#tarif_kaos_kaki").val();
                 let calculateTarif_kaos_kaki = 0;
-                if (tarif_kaos_kaki > 1) {
-                    calculateTarif_kaos_kaki = tarif_kaos_kaki * {{ $pengaturan->tarif_kaos_kaki ?? 0 }};
-                }
+                calculateTarif_kaos_kaki = tarif_kaos_kaki * {{ $pengaturan->tarif_kaos_kaki ?? 0 }};
                 $("#biaya_kaos_kaki").val(calculateTarif_kaos_kaki);
             });
 
@@ -159,7 +168,7 @@
                     handleValidationErrors(error, "saveData", ["nama_anak", 'nama_panggilan',
                         'nama_orang_tua', 'jenis_kelamin', 'nomor_telepon', 'durasi_bermain',
                         'tarif', 'email',
-                        'biaya_mengantar', 'biaya_kaos_kaki'
+                        'biaya_mengantar', 'biaya_kaos_kaki', 'pembayaran_id'
                     ]);
                 };
 
@@ -168,7 +177,9 @@
 
             $("#membership_id").on("change", function() {
                 let cekMuridId = $("#membership_id").val();
-                const fields = ["nama_anak", "nama_panggilan", "nama_orang_tua", "nomor_telepon", "email", "jenis_kelamin",];
+                const fields = ["nama_anak", "nama_panggilan", "nama_orang_tua", "nomor_telepon", "email",
+                    "jenis_kelamin",
+                ];
 
                 const successCallback = function(response) {
                     fields.forEach((field) => {

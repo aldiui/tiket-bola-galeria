@@ -126,7 +126,6 @@ class KeuanganController extends Controller
                     ->addIndexColumn()
                     ->make(true);
             } elseif ($request->mode == "single") {
-                // Query for PengunjungMasuk data
                 $pengunjungMasuks = PengunjungMasuk::whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
                     ->when($pembayaranId == "Cash", function ($query) {
                         return $query->whereNull('pembayaran_id');
@@ -136,7 +135,7 @@ class KeuanganController extends Controller
                     })
                     ->select([
                         DB::raw('DATE(created_at) as date'),
-                        DB::raw('SUM(tarif) + SUM(tarif_extra) - SUM(nominal_diskon) + SUM(denda) + SUM(biaya_mengantar) + SUM(biaya_kaos_kaki) as total_tarif'),
+                        DB::raw('SUM(tarif) + SUM(tarif_extra) + SUM(denda) + SUM(biaya_mengantar) + SUM(biaya_kaos_kaki) as total_tarif'),
                         DB::raw('SUM(nominal_diskon) as total_diskon'),
                     ])
                     ->groupBy(DB::raw('DATE(created_at)'))

@@ -8,10 +8,9 @@
     <title>@yield('title') </title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="shortcut icon" type="image/png" href="{{ asset('images/logos/favicon.png') }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/logos/logo.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/styles.min.css') }}" />
     @stack('style')
-    @laravelPWA
 </head>
 
 <body>
