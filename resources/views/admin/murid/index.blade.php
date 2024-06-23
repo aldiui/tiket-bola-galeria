@@ -101,7 +101,7 @@
                         `<i class="ti ti-plus me-1"></i>Simpan`);
                     handleValidationErrors(error, "saveData", ['nomor_murid', 'nama_anak', 'umur',
                         'kelas',
-                        'nama_orang_tua', 'nomor_telepon'
+                        'nama_orang_tua', 'nomor_telepon', 'nama_panggilan', 'jenis_kelamin',
                     ]);
                 };
 

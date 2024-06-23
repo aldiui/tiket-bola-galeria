@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Pembayaran;
 use App\Models\PengunjungMasuk;
+use App\Models\TransaksiMembership;
 use App\Traits\ApiResponder;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -23,17 +24,25 @@ class KeuanganController extends Controller
         $pembayaranId = $request->pembayaran_id;
 
         $pengunjungMasuks = [];
+        $transaksiMember = [];
 
         if ($pembayaranId == "Semua") {
             $pengunjungMasuks = PengunjungMasuk::with('user', 'pembayaran')
                 ->whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
                 ->latest()
                 ->get();
+            $transaksiMember = TransaksiMembership::with('membership', 'pembayaran', 'paketMembership', 'user')
+                ->whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
+                ->get();
         } else {
             $pengunjungMasuks = PengunjungMasuk::with('user', 'pembayaran')
                 ->where('pembayaran_id', $pembayaranId)
                 ->whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
                 ->latest()
+                ->get();
+            $transaksiMember = TransaksiMembership::with('membership', 'pembayaran', 'paketMembership', 'user')
+                ->where('pembayaran_id', $pembayaranId)
+                ->whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
                 ->get();
         }
 
@@ -47,7 +56,11 @@ class KeuanganController extends Controller
                         return formatTanggal($pengunjungMasuk->created_at, 'j M Y H:i:s');
                     })
                     ->addColumn('metode_pembayaran', function ($pengunjungMasuk) {
-                        return $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank : 'Cash';
+                        if ($pengunjungMasuk->pembayaran_id) {
+                            return $pengunjungMasuk->pembayaran->nama_bank;
+                        } else {
+                            return $pengunjungMasuk->type;
+                        }
                     })
                     ->addColumn('pembayaran', function ($pengunjungMasuk) {
                         $total = $pengunjungMasuk->durasi_extra

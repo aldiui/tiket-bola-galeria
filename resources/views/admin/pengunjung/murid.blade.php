@@ -151,7 +151,7 @@
                 const tarif_mengantar = $("#tarif_mengantar").val();
                 const durasi_bermain = $("#durasi_bermain").val();
                 let calculateTarif_mengantar = 0;
-                if(tarif_mengantar > 1){
+                if (tarif_mengantar > 1) {
                     calculateTarif_mengantar = tarif_mengantar * durasi_bermain *
                         {{ $pengaturan->tarif_mengantar ?? 0 }};
                 }
@@ -194,7 +194,9 @@
 
             $("#murid_id").on("change", function() {
                 let cekMuridId = $("#murid_id").val();
-                const fields = ["nama_anak", "nama_orang_tua", "nomor_telepon"];
+                const fields = ["nama_anak", "nama_orang_tua", "nomor_telepon", "jenis_kelamin",
+                    "nama_panggilan"
+                ];
 
                 const successCallback = function(response) {
                     fields.forEach((field) => {

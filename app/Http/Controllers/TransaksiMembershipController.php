@@ -21,6 +21,7 @@ class TransaksiMembershipController extends Controller
         if (!getPermission('membership')) {return redirect()->route('dashboard');}
 
         if ($request->ajax()) {
+            TransaksiMembership::where('end_membership', now())->where('status', '1')->update(['status' => '0']);
             $transaksiMembership = TransaksiMembership::with('membership', 'pembayaran', 'paketMembership')->get();
             if ($request->mode == "datatable") {
                 return DataTables::of($transaksiMembership)
@@ -89,6 +90,13 @@ class TransaksiMembershipController extends Controller
             'paket_membership_id' => 'required|exists:paket_memberships,id',
             'pembayaran_id' => 'required|exists:pembayarans,id',
             'nominal' => 'required|numeric',
+        ], [
+            'membership_id.exists' => 'Membership tidak ditemukan.',
+            'membership_id.required' => 'Membership harus diisi.',
+            'paket_membership_id.exists' => 'Paket Membership tidak ditemukan.',
+            'paket_membership_id.required' => 'Paket Membership harus diisi.',
+            'pembayaran_id.exists' => 'Pembayaran tidak ditemukan.',
+            'pembayaran_id.required' => 'Pembayaran harus diisi.',
         ]);
 
         if ($validator->fails()) {
@@ -116,7 +124,7 @@ class TransaksiMembershipController extends Controller
             'pembayaran_id' => $request->pembayaran_id,
             'nominal' => $request->nominal,
             'start_membership' => date('Y-m-d'),
-            'end_membership' => date('Y-m-d', strtotime("+" . $cekPaket->durasi_hari . " days")),
+            'end_membership' => date('Y-m-d', strtotime("+" . $cekPaket->durasi_hari + 1 . " days")),
         ]);
 
         return $this->successResponse($transaksiMembership, 'Data Transaksi Membership ditambahkan.', 201);

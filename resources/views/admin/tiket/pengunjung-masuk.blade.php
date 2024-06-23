@@ -48,25 +48,35 @@
                                             <td class="text-dark fw-semibold">Nomor Tiket</td>
                                             <td class="text-dark">{{ $pengunjungMasuk->uuid }}</td>
                                         </tr>
-                                        <tr>
-                                            <td class="text-dark fw-semibold">Nama Anak</td>
-                                            <td class="text-dark"> {{ $pengunjungMasuk->nama_anak }}
-                                                (Panggilan : {{ $pengunjungMasuk->nama_panggilan }})</td>
-                                        </tr>
-                                        @if ($pengunjungMasuk->murid_id)
+                                        @if ($pengunjungMasuk->type == 'Group')
                                             <tr>
-                                                <td class="text-dark fw-semibold">Status Murid</td>
-                                                <td class="text-dark"> Murid</td>
+                                                <td class="text-dark fw-semibold">Nama Group</td>
+                                                <td class="text-dark"> {{ $pengunjungMasuk->nama_anak }}
+                                                    (Panggilan : {{ $pengunjungMasuk->nama_panggilan }})</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Penanggung Jawab</td>
+                                                <td class="text-dark">{{ $pengunjungMasuk->nama_orang_tua }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Jumlah Anak</td>
+                                                <td class="text-dark">{{ $pengunjungMasuk->jumlah_anak }} Orang</td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Nama Anak</td>
+                                                <td class="text-dark"> {{ $pengunjungMasuk->nama_anak }}
+                                                    (Panggilan : {{ $pengunjungMasuk->nama_panggilan }})</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Orang Tua</td>
+                                                <td class="text-dark">{{ $pengunjungMasuk->nama_orang_tua }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-dark fw-semibold">Jenis Kelamin</td>
+                                                <td class="text-dark">{{ $pengunjungMasuk->jenis_kelamin }}</td>
                                             </tr>
                                         @endif
-                                        <tr>
-                                            <td class="text-dark fw-semibold">Orang Tua</td>
-                                            <td class="text-dark">{{ $pengunjungMasuk->nama_orang_tua }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-dark fw-semibold">Jenis Kelamin</td>
-                                            <td class="text-dark">{{ $pengunjungMasuk->jenis_kelamin }}</td>
-                                        </tr>
                                         <tr>
                                             <td class="text-dark fw-semibold">Nomor Telepon</td>
                                             <td class="text-dark">{{ $pengunjungMasuk->nomor_telepon }}</td>
@@ -82,11 +92,11 @@
                                             <td class="text-dark">{{ $pengunjungMasuk->type }}
                                             </td>
                                         </tr>
-                                        @if ($pengunjungMasuk->type == 'Murid' || $pengunjungMasuk->type == 'Perorangan')
+                                        @if ($pengunjungMasuk->type == 'Murid' || $pengunjungMasuk->type == 'Perorangan' || $pengunjungMasuk->type == 'Group')
                                             <tr>
                                                 <td class="text-dark fw-semibold">Metode Pembayaran</td>
                                                 <td class="text-dark">
-                                                    {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank : 'Cash' }}
+                                                    {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank : $pengunjungMasuk->type }}
                                                 </td>
                                             </tr>
                                             <tr>

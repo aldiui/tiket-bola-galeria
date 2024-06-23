@@ -63,7 +63,7 @@
 
     <script>
         $(document).ready(function() {
-            select2ToJsonPengunjungMasuk();
+            select2ToJsonPengunjungMasuk(false);
 
             $("#saveData").submit(function(e) {
                 setButtonLoadingState("#saveData .btn.btn-primary", true);

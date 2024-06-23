@@ -120,7 +120,7 @@
                             <div class="form-check mb-3">
                                 <input type="checkbox" class="form-check-input" name="group" id="group"
                                     autocomplete="off" value="1">
-                                <label class="form-check-label" for="group">group</label>
+                                <label class="form-check-label" for="group">Group</label>
                             </div>
                         </div>
                     </div>

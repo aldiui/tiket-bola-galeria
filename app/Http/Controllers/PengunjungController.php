@@ -33,13 +33,18 @@ class PengunjungController extends Controller
                 'jenis_kelamin' => 'required',
                 'nomor_telepon' => 'required',
                 'durasi_bermain' => 'required|numeric',
-                'pembayaran_id' => 'nullable|exists:pembayarans,id',
+                'pembayaran_id' => 'required|exists:pembayarans,id',
                 'tarif' => 'required',
                 'email' => 'nullable|email',
                 'nominal_diskon' => 'required|numeric',
                 'biaya_mengantar' => 'required|numeric',
                 'biaya_kaos_kaki' => 'required|numeric',
                 'murid_id' => 'required|exists:murids,id',
+            ], [
+                'pembayaran_id.exists' => 'Pembayaran tidak valid.',
+                'pembayaran_id.required' => 'Pembayaran harus diisi.',
+                'murid_id.exists' => 'Murid tidak valid.',
+                'murid_id.required' => 'Murid harus diisi.',
             ]);
 
             if ($validator->fails()) {
@@ -159,7 +164,7 @@ class PengunjungController extends Controller
                 'jenis_kelamin' => 'required',
                 'nomor_telepon' => 'required',
                 'durasi_bermain' => 'required|numeric',
-                'pembayaran_id' => 'nullable|exists:pembayarans,id',
+                'pembayaran_id' => 'required|exists:pembayarans,id',
                 'tarif' => 'required',
                 'email' => 'nullable|email',
                 'diskon' => 'required|numeric|min:0|max:100',
@@ -167,6 +172,9 @@ class PengunjungController extends Controller
                 'biaya_mengantar' => 'required|numeric',
                 'biaya_kaos_kaki' => 'required|numeric',
                 'alasan_diskon' => "required_if:diskon,>0",
+            ], [
+                'pembayaran_id.exists' => 'Pembayaran tidak valid.',
+                'pembayaran_id.required' => 'Pembayaran harus diisi.',
             ]);
 
             if ($validator->fails()) {
@@ -210,6 +218,72 @@ class PengunjungController extends Controller
         $pengaturan = Pengaturan::find(1);
         $pembayaran = Pembayaran::all();
         return view('admin.pengunjung.perorangan', compact('pengaturan', 'pembayaran'));
+    }
+
+    public function pengunjungGroup(Request $request)
+    {
+        if (!getPermission('tambah_pengunjung_group')) {return redirect()->route('dashboard');}
+
+        if ($request->isMethod('post')) {
+            $validator = Validator::make($request->all(), [
+                'nama_group' => 'required',
+                'nama_panggilan' => 'required',
+                'penanggung_jawab' => 'required',
+                'durasi_bermain' => 'required|numeric',
+                'jumlah_anak' => 'required|numeric|min:10',
+                'nomor_telepon' => 'required',
+                'pembayaran_id' => 'required|exists:pembayarans,id',
+                'tarif' => 'required',
+                'diskon' => 'required|numeric|min:0|max:100',
+                'nominal_diskon' => 'required|numeric',
+                'biaya_mengantar' => 'required|numeric',
+                'biaya_kaos_kaki' => 'required|numeric',
+                'alasan_diskon' => "required_if:diskon,>0",
+            ], [
+                'pembayaran_id.exists' => 'Pembayaran tidak valid.',
+                'pembayaran_id.required' => 'Pembayaran harus diisi.',
+            ]);
+
+            if ($validator->fails()) {
+                return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
+            }
+
+            $uuid = Uuid::uuid4()->toString();
+
+            $baseUrl = config('app.url');
+            $redirectUrl = $baseUrl . '/e-tiket/' . $uuid;
+
+            $qrCode = QrCode::format('svg')->size(300)->generate($redirectUrl);
+            $qrCodePath = 'public/pengunjung_masuk/' . $uuid . '_qrcode.svg';
+
+            $pengunjungMasuk = PengunjungMasuk::create([
+                'uuid' => $uuid,
+                'nama_anak' => $request->nama_group,
+                'nama_panggilan' => $request->nama_panggilan,
+                'nama_orang_tua' => $request->penanggung_jawab,
+                'nomor_telepon' => $request->nomor_telepon,
+                'durasi_bermain' => $request->durasi_bermain,
+                'pembayaran_id' => $request->pembayaran_id,
+                'tarif' => $request->tarif,
+                'jumlah_anak' => $request->jumlah_anak,
+                'diskon' => $request->diskon ?? 0,
+                'nominal_diskon' => $request->nominal_diskon ?? 0,
+                'biaya_mengantar' => $request->biaya_mengantar ?? 0,
+                'biaya_kaos_kaki' => $request->biaya_kaos_kaki ?? 0,
+                'alasan_diskon' => $request->alasan_diskon,
+                'user_id' => Auth::user()->id,
+                'qr_code' => $uuid . '_qrcode.svg',
+                'type' => 'Group',
+            ]);
+
+            Storage::put($qrCodePath, $qrCode);
+
+            return $this->successResponse($pengunjungMasuk, 'Pengunjung Group Berhasil ditambahkan.', 200);
+        }
+
+        $pengaturan = Pengaturan::find(1);
+        $pembayaran = Pembayaran::all();
+        return view('admin.pengunjung.group', compact('pengaturan', 'pembayaran'));
     }
 
     public function riwayatPengunjungMasuk(Request $request)
@@ -322,8 +396,11 @@ class PengunjungController extends Controller
                 'nama_panggilan' => 'required',
                 'nama_orang_tua' => 'required',
                 'jenis_kelamin' => 'required',
-                'denda' => 'nullable|numeric',
                 'nomor_telepon' => 'required',
+            ], [
+                'pengunjung_masuk_id.unique' => 'Data Pengunjung Masuk Telah Di Konfirmasi.',
+                'pengunjung_masuk_id.exists' => 'Data Pengunjung Masuk Tidak Ditemukan.',
+                'pengunjung_masuk_id.required' => 'Data Pengunjung Masuk Harus Diisi.',
             ]);
 
             if ($validator->fails()) {
@@ -381,6 +458,76 @@ class PengunjungController extends Controller
         return view('admin.pengunjung.keluar', compact('pengaturan'));
     }
 
+    public function pengunjungKeluarGroup(Request $request)
+    {
+        if (!getPermission('tambah_pengunjung_keluar')) {return redirect()->route('dashboard');}
+
+        if ($request->isMethod('post')) {
+            $validator = Validator::make($request->all(), [
+                'pengunjung_masuk_id' => 'required|exists:pengunjung_masuks,id|unique:pengunjung_keluars,pengunjung_masuk_id',
+                'nama_group' => 'required',
+                'nama_panggilan' => 'required',
+                'penanggung_jawab' => 'required',
+                'nomor_telepon' => 'required',
+            ], [
+                'pengunjung_masuk_id.unique' => 'Data Pengunjung Masuk Telah Di Konfirmasi.',
+                'pengunjung_masuk_id.exists' => 'Data Pengunjung Masuk Tidak Ditemukan.',
+                'pengunjung_masuk_id.required' => 'Data Pengunjung Masuk Harus Diisi.',
+            ]);
+
+            if ($validator->fails()) {
+                return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
+            }
+
+            $pengunjungMasuk = PengunjungMasuk::find($request->pengunjung_masuk_id);
+            if (!$pengunjungMasuk) {
+                return $this->errorResponse(null, 'Data Pengunjung Masuk tidak ditemukan.', 404);
+            }
+
+            $validasiPengunjungMasuk = [
+                'nama_group' => $pengunjungMasuk->nama_anak === $request->nama_group ? null : ['Maaf Data Group Tidak Sesuai'],
+                'nama_panggilan' => $pengunjungMasuk->nama_panggilan === $request->nama_panggilan ? null : ['Maaf Data Panggilan Tidak Sesuai'],
+                'penannggung_jawab' => $pengunjungMasuk->penannggung_jawab === $request->nama_orang_tua ? null : ['Maaf Data Penanggung Jawab Tidak Sesuai'],
+                'nomor_telepon' => $pengunjungMasuk->nomor_telepon === $request->nomor_telepon ? null : ['Maaf Data Nomor Telepon Tidak Sesuai'],
+            ];
+
+            $validasiPengunjungMasuk = array_filter($validasiPengunjungMasuk);
+
+            if ($validasiPengunjungMasuk) {
+                return $this->errorResponse($validasiPengunjungMasuk, 'Data tidak valid.', 422);
+            }
+
+            $ceKPengunjungKeluar = PengunjungKeluar::where('pengunjung_masuk_id', $request->pengunjung_masuk_id)->first();
+            if ($ceKPengunjungKeluar) {
+                return $this->errorResponse(null, 'Data Pengunjung Keluar sudah ada.', 409);
+            }
+
+            $uuid = Uuid::uuid4()->toString();
+            $baseUrl = config('app.url');
+            $redirectUrl = $baseUrl . '/e-tiket/' . $uuid;
+
+            $qrCode = QrCode::format('svg')->size(300)->generate($redirectUrl);
+            $qrCodePath = 'public/pengunjung_keluar/' . $uuid . '_qrcode.svg';
+
+            $pengunjungKeluar = PengunjungKeluar::create([
+                'uuid' => $uuid,
+                'pengunjung_masuk_id' => $request->pengunjung_masuk_id,
+                'nama_anak' => $request->nama_group,
+                'nama_panggilan' => $request->nama_panggilan,
+                'nama_orang_tua' => $request->penanggung_jawab,
+                'user_id' => Auth::user()->id,
+                'qr_code' => $uuid . '_qrcode.svg',
+            ]);
+
+            Storage::put($qrCodePath, $qrCode);
+
+            return $this->successResponse($pengunjungKeluar, 'Pengunjung Keluar Group Berhasil ditambahkan.', 200);
+        }
+
+        $pengaturan = Pengaturan::find(1);
+        return view('admin.pengunjung.keluar-group', compact('pengaturan'));
+    }
+
     public function riwayatPengunjungKeluar(Request $request)
     {
         if ($request->ajax()) {
@@ -390,6 +537,9 @@ class PengunjungController extends Controller
                 return DataTables::of($pengunjungKeluars)
                     ->addColumn('tiket', function ($pengunjungKeluar) {
                         return '<a target="_blank" class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungKeluar->uuid . '"><i class="ti ti-ticket me-1"></i>Tiket </a>';
+                    })
+                    ->addColumn('type', function ($pengunjungKeluar) {
+                        return $pengunjungKeluar->pengunjungMasuk->type;
                     })
                     ->addColumn('qrcode', function ($pengunjungKeluar) {
                         return '<img src="' . asset('/storage/pengunjung_keluar/' . $pengunjungKeluar->qr_code) . '" alt="qrcode" width="100px" height="100px">';

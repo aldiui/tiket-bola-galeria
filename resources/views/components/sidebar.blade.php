@@ -48,11 +48,25 @@
                         </a>
                     </li>
                 @endif
+                @if (getAdmin()->tambah_pengunjung_group == 1)
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/pengunjung-group" aria-expanded="false">
+                            <i class="ti ti-browser-plus"></i>
+                            <span class="hide-menu">Pengunjung Group</span>
+                        </a>
+                    </li>
+                @endif
                 @if (getAdmin()->tambah_pengunjung_keluar == 1)
                     <li class="sidebar-item">
                         <a class="sidebar-link" href="/pengunjung-keluar" aria-expanded="false">
                             <i class="ti ti-transfer-out"></i>
                             <span class="hide-menu">Pengunjung Keluar</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="/pengunjung-keluar-group" aria-expanded="false">
+                            <i class="ti ti-transfer-out"></i>
+                            <span class="hide-menu">Pengunjung Keluar Group</span>
                         </a>
                     </li>
                 @endif

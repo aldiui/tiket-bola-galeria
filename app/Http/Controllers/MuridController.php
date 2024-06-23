@@ -22,7 +22,7 @@ class MuridController extends Controller
             if ($request->mode == "datatable") {
                 return DataTables::of($murids)
                     ->addColumn('aksi', function ($murid) {
-                        $editButton = '<button class="btn btn-sm btn-warning me-1" onclick="getModal(`createModal`, `/murid/' . $murid->id . '`, [`id`, `nomor_murid`, `nama_anak`,`umur`, `kelas`, `nama_orang_tua`, `nomor_telepon`])">
+                        $editButton = '<button class="btn btn-sm btn-warning me-1" onclick="getModal(`createModal`, `/murid/' . $murid->id . '`, [`id`, `nomor_murid`, `nama_anak`,`umur`, `kelas`, `nama_orang_tua`, `nomor_telepon`, `jenis_kelamin`, `nama_panggilan`, `email`])">
                         <i class="ti ti-edit me-1"></i>Edit</button>';
                         $deleteButton = '<button class="btn btn-sm btn-danger" onclick="confirmDelete(`/murid/' . $murid->id . '`, `murid-table`)"><i class="ti ti-trash me-1"></i>Hapus</button>';
                         return $editButton . $deleteButton;
@@ -58,9 +58,11 @@ class MuridController extends Controller
         $validator = Validator::make($request->all(), [
             'nomor_murid' => 'required|unique:murids',
             'nama_anak' => 'required',
+            'nama_panggilan' => 'required',
             'umur' => 'required|numeric',
             'kelas' => 'required',
             'nama_orang_tua' => 'required',
+            'jenis_kelamin' => 'required',
             'nomor_telepon' => 'required',
         ]);
 
@@ -68,7 +70,7 @@ class MuridController extends Controller
             return $this->errorResponse($validator->errors(), 'Data tidak valid.', 422);
         }
 
-        $murid = Murid::create($request->only('nomor_murid', 'nama_anak', 'umur', 'kelas', 'nama_orang_tua', 'nomor_telepon'));
+        $murid = Murid::create($request->only('nomor_murid', 'nama_anak', 'umur', 'kelas', 'nama_orang_tua', 'nomor_telepon', 'jenis_kelamin', 'nama_panggilan'));
 
         return $this->successResponse($murid, 'Data Murid Champs ditambahkan.', 201);
     }
@@ -80,10 +82,12 @@ class MuridController extends Controller
         $validator = Validator::make($request->all(), [
             'nomor_murid' => 'required|unique:murids,nomor_murid,' . $id,
             'nama_anak' => 'required',
+            'nama_panggilan' => 'required',
             'umur' => 'required|numeric',
             'kelas' => 'required',
             'nama_orang_tua' => 'required',
             'nomor_telepon' => 'required',
+            'jenis_kelamin' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -96,7 +100,7 @@ class MuridController extends Controller
             return $this->errorResponse(null, 'Data Murid Champs tidak ditemukan.', 404);
         }
 
-        $murid->update($request->only('nomor_murid', 'nama_anak', 'umur', 'kelas', 'nama_orang_tua', 'nomor_telepon'));
+        $murid->update($request->only('nomor_murid', 'nama_anak', 'umur', 'kelas', 'nama_orang_tua', 'nomor_telepon', 'jenis_kelamin', 'nama_panggilan'));
 
         return $this->successResponse($murid, 'Data Murid Champs diubah.');
     }

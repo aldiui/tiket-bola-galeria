@@ -254,7 +254,7 @@ const setButtonLoadingState = (buttonSelector, isLoading, title = "Simpan") => {
     $(buttonSelector).prop("disabled", isLoading).html(buttonText);
 };
 
-const select2ToJsonPengunjungMasuk = () => {
+const select2ToJsonPengunjungMasuk = (type) => {
     const selectElem = $("#pengunjung_masuk_id").empty();
 
     const successCallback = function (response) {
@@ -265,7 +265,14 @@ const select2ToJsonPengunjungMasuk = () => {
         emptyOption.text("-- Pilih Pengunjung Masuk --");
         selectElem.append(emptyOption);
 
-        const responseList = response.data;
+        let responseList = response.data;
+
+        if (type === true) {
+            responseList = responseList.filter((row) => row.type === "Group");
+        } else if (type === false) {
+            responseList = responseList.filter((row) => row.type !== "Group");
+        }
+
         responseList.forEach(function (row) {
             const option = $("<option></option>");
             option.attr("value", row.id);
@@ -368,7 +375,13 @@ const select2ToJsonMembership = () => {
         console.log(error);
     };
 
-    ajaxCall("/transaksi-membership", "GET", null, successCallback, errorCallback);
+    ajaxCall(
+        "/transaksi-membership",
+        "GET",
+        null,
+        successCallback,
+        errorCallback
+    );
 };
 
 let chart = null;

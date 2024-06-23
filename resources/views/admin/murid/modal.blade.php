@@ -17,9 +17,25 @@
                         <small class="invalid-feedback" id="errornomor_murid"></small>
                     </div>
                     <div class="form-group mb-3">
+                        <label for="nama_panggilan" class="form-label">Nama Panggilan <span
+                                class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="nama_panggilan" id="nama_panggilan">
+                        <small class="invalid-feedback" id="errornama_panggilan"></small>
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="nama_anak" class="form-label">Nama Anak <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="nama_anak" id="nama_anak">
                         <small class="invalid-feedback" id="errornama_anak"></small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin <span
+                                class="text-danger">*</span></label>
+                        <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
+                            <option value="">-- Pilih Jenis Kelamin --</option>
+                            <option value="Laki-Laki">Laki-Laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                        <small class="invalid-feedback" id="errorjenis_kelamin"></small>
                     </div>
                     <div class="form-group mb-3">
                         <label for="umur" class="form-label">Umur <span class="text-danger">*</span></label>

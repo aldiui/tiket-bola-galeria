@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Bank')
+@section('title', 'Transaksi Membership')
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('libs/datatables/datatables.min.css') }}" />

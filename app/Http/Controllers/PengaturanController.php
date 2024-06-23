@@ -26,6 +26,8 @@ class PengaturanController extends Controller
                 'denda' => 'required|numeric',
                 'tarif_mengantar' => 'required|numeric',
                 'tarif_kaos_kaki' => 'required|numeric',
+                'tarif_group_10' => 'required|numeric',
+                'tarif_group_25' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -36,12 +38,9 @@ class PengaturanController extends Controller
                 $pengaturan = Pengaturan::create(['tarif' => $request->tarif]);
             }
 
-            $pengaturan->update([
-                'tarif' => $request->tarif,
-                'denda' => $request->denda,
-                'tarif_mengantar' => $request->tarif_mengantar,
-                'tarif_kaos_kaki' => $request->tarif_kaos_kaki,
-            ]);
+            $pengaturan->update($request->only(
+                'tarif', 'denda', 'tarif_mengantar', 'tarif_kaos_kaki', 'tarif_group_10', 'tarif_group_25'
+            ));
 
             return $this->successResponse($pengaturan, 'Ubah Tarif berhasil diubah.', 200);
         }

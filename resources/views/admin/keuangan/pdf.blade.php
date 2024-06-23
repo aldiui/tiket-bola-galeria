@@ -40,7 +40,11 @@
                             Jam </td>
                         <td align="center">{{ $pengunjungMasuk->nama_orang_tua }}</td>
                         <td align="center">
-                            {{ $pengunjungMasuk->pembayaran_id ? $pengunjungMasuk->pembayaran->nama_bank : 'Cash' }}
+                            @if($pengunjungMasuk->pembayaran_id)
+                                {{ $pengunjungMasuk->pembayaran->nama_bank }}
+                            @else
+                                {{ $pengunjungMasuk->type }}
+                            @endif
                         </td>
                         <td align="right">{{ formatRupiah($total) }}
                         </td>

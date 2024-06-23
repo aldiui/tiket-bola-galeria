@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::match(['get', 'post'], 'pengunjung-perorangan', [PengunjungController::class, 'pengunjungPerorangan'])->name('pengunjungPerorangan');
     Route::match(['get', 'post'], 'pengunjung-murid', [PengunjungController::class, 'pengunjungMurid'])->name('pengunjungMurid');
     Route::match(['get', 'post'], 'pengunjung-membership', [PengunjungController::class, 'pengunjungMembership'])->name('pengunjungMembership');
+    Route::match(['get', 'post'], 'pengunjung-group', [PengunjungController::class, 'pengunjungGroup'])->name('pengunjungGroup');
+    Route::match(['get', 'post'], 'pengunjung-keluar', [PengunjungController::class, 'pengunjungKeluar'])->name('pengunjungKeluar');
+    Route::match(['get', 'post'], 'pengunjung-keluar-group', [PengunjungController::class, 'pengunjungKeluarGroup'])->name('pengunjungKeluarGroup');
     Route::post('konfirmasi-pengunjung/{id}', [PengunjungController::class, 'konfirmasiPengunjung'])->name('konfirmasiPengunjung');
     Route::get('pengunjung-masuk/{id}', [PengunjungController::class, 'getPengunjungMasuk'])->name('getPengunjungMasuk');
     Route::get('extra-time/{uuid}', [PengunjungController::class, 'extraTime'])->name('extraTime');
