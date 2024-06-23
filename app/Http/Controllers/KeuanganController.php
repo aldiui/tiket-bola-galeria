@@ -46,9 +46,27 @@ class KeuanganController extends Controller
                 ->get();
         }
 
+        $mergedResults = $pengunjungMasuks->merge($transaksiMember);
+        $sortedResults = $mergedResults->sortByDesc('created_at');
+        $finalResults = $sortedResults->values()->all();
+
         if ($request->ajax()) {
             if ($request->mode == "datatable") {
-                return DataTables::of($pengunjungMasuks)
+                return DataTables::of($finalResults)
+                    ->addColumn('nama_anak', function ($pengunjungMasuk) {
+                        if ($pengunjungMasuk->type) {
+                            return $pengunjungMasuk->nama_anak;
+                        } else {
+                            return $pengunjungMasuk->membership->nama_anak;
+                        }
+                    })
+                    ->addColumn('nama_orang_tua', function ($pengunjungMasuk) {
+                        if ($pengunjungMasuk->type) {
+                            return $pengunjungMasuk->nama_orang_tua;
+                        } else {
+                            return $pengunjungMasuk->membership->nama_orang_tua;
+                        }
+                    })
                     ->addColumn('admin', function ($pengunjungMasuk) {
                         return $pengunjungMasuk->user->nama;
                     })
@@ -63,47 +81,85 @@ class KeuanganController extends Controller
                         }
                     })
                     ->addColumn('pembayaran', function ($pengunjungMasuk) {
-                        $total = $pengunjungMasuk->durasi_extra
-                        ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra
-                        : $pengunjungMasuk->tarif;
-                        $totalSemua =
-                        $total +
-                        $pengunjungMasuk->denda +
-                        $pengunjungMasuk->biaya_mengantar +
-                        $pengunjungMasuk->biaya_kaos_kaki;
-                        return formatRupiah($totalSemua);
+                        if ($pengunjungMasuk->type) {
+                            $total = $pengunjungMasuk->durasi_extra
+                            ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra
+                            : $pengunjungMasuk->tarif;
+                            $totalSemua = $total + $pengunjungMasuk->denda + $pengunjungMasuk->biaya_mengantar + $pengunjungMasuk->biaya_kaos_kaki;
+                            return formatRupiah($totalSemua);
+                        } else {
+                            return formatRupiah($pengunjungMasuk->nominal);
+                        }
                     })
                     ->addColumn('diskon', function ($pengunjungMasuk) {
-                        return formatRupiah($pengunjungMasuk->nominal_diskon);
+                        if ($pengunjungMasuk->type) {
+                            return formatRupiah($pengunjungMasuk->nominal_diskon);
+                        } else {
+                            return formatRupiah(0);
+                        }
                     })
                     ->addColumn('total', function ($pengunjungMasuk) {
-                        $total = $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif;
-                        $totalAkhir = $total - $pengunjungMasuk->nominal_diskon + $pengunjungMasuk->denda + $pengunjungMasuk->biaya_mengantar + $pengunjungMasuk->biaya_kaos_kaki;
-                        return formatRupiah($totalAkhir);
+                        if ($pengunjungMasuk->type) {
+                            $total = $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif;
+                            $totalAkhir = $total - $pengunjungMasuk->nominal_diskon + $pengunjungMasuk->denda + $pengunjungMasuk->biaya_mengantar + $pengunjungMasuk->biaya_kaos_kaki;
+                            return formatRupiah($totalAkhir);
+                        } else {
+                            return formatRupiah($pengunjungMasuk->nominal);
+                        }
                     })
                     ->addColumn('durasi', function ($pengunjungMasuk) {
-                        return '<span class="badge bg-primary rounded-3 fw-semibold"><i class="ti ti-clock me-1"></i>' . $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain . ' Jam</span>';
+                        if ($pengunjungMasuk->type) {
+                            $durasi = $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->durasi_bermain + $pengunjungMasuk->durasi_extra : $pengunjungMasuk->durasi_bermain;
+                            return '<span class="badge bg-primary rounded-3 fw-semibold"><i class="ti ti-clock me-1"></i>' . $durasi . ' Jam</span>';
+                        } else {
+                            return $pengunjungMasuk->paketMembership->nama;
+                        }
+                    })
+                    ->addColumn('type', function ($pengunjungMasuk) {
+                        if ($pengunjungMasuk->type) {
+                            return $pengunjungMasuk->type;
+                        } else {
+                            return "Membership";
+                        }
                     })
                     ->rawColumns(['admin', 'tanggal', 'pembayaran', 'durasi', 'metode_pembayaran', 'diskon', 'total'])
                     ->addIndexColumn()
                     ->make(true);
             } elseif ($request->mode == "single") {
-
-                $query = PengunjungMasuk::whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai]);
-
-                if ($pembayaranId == "Cash") {
-                    $query->whereNull('pembayaran_id');
-                } elseif ($pembayaranId != "Semua") {
-                    $query->where('pembayaran_id', $pembayaranId);
-                }
-
-                $keuanganData = $query->select([
-                    DB::raw('DATE(created_at) as date'),
-                    DB::raw('SUM(tarif) + SUM(tarif_extra) - SUM(nominal_diskon) + SUM(denda) + SUM(biaya_mengantar) + SUM(biaya_kaos_kaki) as total_tarif'),
-                ])
+                // Query for PengunjungMasuk data
+                $pengunjungMasuks = PengunjungMasuk::whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
+                    ->when($pembayaranId == "Cash", function ($query) {
+                        return $query->whereNull('pembayaran_id');
+                    })
+                    ->when($pembayaranId != "Semua" && $pembayaranId != "Cash", function ($query) use ($pembayaranId) {
+                        return $query->where('pembayaran_id', $pembayaranId);
+                    })
+                    ->select([
+                        DB::raw('DATE(created_at) as date'),
+                        DB::raw('SUM(tarif) + SUM(tarif_extra) - SUM(nominal_diskon) + SUM(denda) + SUM(biaya_mengantar) + SUM(biaya_kaos_kaki) as total_tarif'),
+                        DB::raw('SUM(nominal_diskon) as total_diskon'),
+                    ])
                     ->groupBy(DB::raw('DATE(created_at)'))
                     ->orderBy('date')
-                    ->pluck('total_tarif', 'date');
+                    ->get();
+
+                $transaksiMember = TransaksiMembership::whereBetween(DB::raw('DATE(created_at)'), [$tanggalMulai, $tanggalSelesai])
+                    ->when($pembayaranId != "Semua", function ($query) use ($pembayaranId) {
+                        return $query->where('pembayaran_id', $pembayaranId);
+                    })
+                    ->select([
+                        DB::raw('DATE(created_at) as date'),
+                        DB::raw('SUM(nominal) as total_nominal'),
+                    ])
+                    ->groupBy(DB::raw('DATE(created_at)'))
+                    ->orderBy('date')
+                    ->get();
+
+                $mergedResults = $pengunjungMasuks->map(function ($item) use ($transaksiMember) {
+                    $membershipData = $transaksiMember->firstWhere('date', $item->date);
+                    $item->total_nominal = $membershipData ? $membershipData->total_nominal : 0;
+                    return $item;
+                });
 
                 $labels = [];
                 $dataKeuangan = [];
@@ -112,24 +168,17 @@ class KeuanganController extends Controller
                 while ($dates <= Carbon::parse($tanggalSelesai)) {
                     $dateString = $dates->toDateString();
                     $labels[] = formatTanggal($dateString, 'd');
-                    $dataKeuangan[] = $keuanganData[$dateString] ?? 0;
+
+                    $dailyData = $mergedResults->firstWhere('date', $dateString);
+                    $totalTarif = $dailyData ? $dailyData->total_tarif + $dailyData->total_nominal - $dailyData->total_diskon : 0;
+                    $dataKeuangan[] = $totalTarif;
+
                     $dates->addDay();
                 }
 
-                $pembayaranSum = $pengunjungMasuks->sum('tarif') +
-                $pengunjungMasuks->sum('tarif_extra') +
-                $pengunjungMasuks->sum('denda') +
-                $pengunjungMasuks->sum('biaya_mengantar') +
-                $pengunjungMasuks->sum('biaya_kaos_kaki');
-
-                $diskonSum = $pengunjungMasuks->sum('nominal_diskon');
-
-                $totalSum = $pengunjungMasuks->sum('tarif') +
-                $pengunjungMasuks->sum('tarif_extra') -
-                $diskonSum +
-                $pengunjungMasuks->sum('denda') +
-                $pengunjungMasuks->sum('biaya_mengantar') +
-                $pengunjungMasuks->sum('biaya_kaos_kaki');
+                $pembayaranSum = $mergedResults->sum('total_tarif') + $mergedResults->sum('total_nominal');
+                $diskonSum = $mergedResults->sum('total_diskon');
+                $totalSum = $pembayaranSum - $diskonSum;
 
                 return $this->successResponse([
                     'labels' => $labels,
@@ -138,12 +187,11 @@ class KeuanganController extends Controller
                     'diskon' => formatRupiah($diskonSum),
                     'total' => formatRupiah($totalSum),
                 ], 'Data laporan keuangan ditemukan.');
-
             }
         }
 
         if ($request->mode == "pdf") {
-            $pdf = PDF::loadView('admin.keuangan.pdf', compact('pengunjungMasuks', 'tanggalMulai', 'tanggalSelesai'));
+            $pdf = PDF::loadView('admin.keuangan.pdf', compact('finalResults', 'tanggalMulai', 'tanggalSelesai'));
 
             $options = [
                 'margin_top' => 20,
@@ -162,7 +210,9 @@ class KeuanganController extends Controller
             return $pdf->stream($namaFile);
         }
 
-        if (!getPermission('laporan_keuangan')) {return redirect()->route('dashboard');}
+        if (!getPermission('laporan_keuangan')) {
+            return redirect()->route('dashboard');
+        }
 
         $pembayaran = Pembayaran::all();
         return view('admin.keuangan.index', compact('pembayaran'));

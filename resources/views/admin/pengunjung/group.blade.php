@@ -103,8 +103,9 @@
                     <select class="form-control" name="tarif_kaos_kaki" id="tarif_kaos_kaki">
                         <option value="">-- Pilih Jumlah Kaos Kaki --</option>
                         <option value="0">Tanpa Kaos Kaki</option>
-                        <option value="1">1 Pasang Kaos Kaki</option>
-                        <option value="2">2 Pasang Kaos Kaki</option>
+                        @for ($i = 1; $i <= 30; $i++)
+                            <option value="{{ $i }}">{{ $i }} Pasang Kaos Kaki</option>
+                        @endfor
                     </select>
                     <small class="invalid-feedback" id="errortarif_kaos_kaki"></small>
                     <small class="d-block pt-2">Diisi jika ada yang membutuhkan kaos kaki</small>

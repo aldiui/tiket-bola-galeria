@@ -348,12 +348,12 @@ class PengunjungController extends Controller
                     ->addColumn('tiket', function ($pengunjungMasuk) {
                         $tiket = '<a target="_blank" class="btn btn-warning btn-sm" href="/e-tiket/' . $pengunjungMasuk->uuid . '"><i class="ti ti-ticket me-1"></i>Tiket </a>';
                         $extra = '<a class="btn btn-success btn-sm" href="/extra-time/' . $pengunjungMasuk->uuid . '"> <i class="ti ti-clock me-1"></i>Extra Time </a>';
-
+                        $deleteButton = '<button class="btn btn-sm btn-danger" onclick="confirmDelete(`/pengunjung-masuk/' . $pengunjungMasuk->id . '`, `pengunjung-masuk-table`)"><i class="ti ti-trash me-1"></i>Cancel</button>';
                         if ($pengunjungMasuk->start_tiket) {
                             return $pengunjungMasuk->durasi_extra ? $tiket : $tiket . $extra;
                         } else {
                             $konfirmasi = '<button class="btn btn-sm btn-success" onclick="confirmStart(`/konfirmasi-pengunjung/' . $pengunjungMasuk->id . '`, `pengunjung-masuk-table`)"><i class="ti ti-check me-1"></i>Konfirmasi</button>';
-                            return $tiket . $konfirmasi;
+                            return $tiket . $konfirmasi . $deleteButton;
                         }
                     })
                     ->addColumn('qrcode', function ($pengunjungMasuk) {
@@ -581,7 +581,6 @@ class PengunjungController extends Controller
 
     public function extraTime($uuid)
     {
-        if (!getPermission('tambah_pengunjung_masuk')) {return redirect()->route('dashboard');}
 
         $pengunjung = PengunjungMasuk::where('uuid', $uuid)->whereNull('durasi_extra')->first();
 
@@ -595,8 +594,6 @@ class PengunjungController extends Controller
 
     public function extraTimeUpdate(Request $request, $uuid)
     {
-        if (!getPermission('tambah_pengunjung_masuk')) {return redirect()->route('dashboard');}
-
         $validator = Validator::make($request->all(), [
             'durasi_extra' => 'required',
             'tarif_extra' => 'required',
@@ -631,5 +628,18 @@ class PengunjungController extends Controller
         $pengunjung->durasi_bermain = $pengunjung->durasi_extra ? $pengunjung->durasi_bermain + $pengunjung->durasi_extra : $pengunjung->durasi_bermain;
 
         return $this->successResponse($pengunjung, 'Data pengunjung ditemukan.', 200);
+    }
+
+    public function deletePengunjungMasuk($id)
+    {
+        $pengunjung = PengunjungMasuk::find($id);
+
+        if (!$pengunjung) {
+            return $this->errorResponse(null, 'Data pengunjung tidak ditemukan.', 404);
+        }
+
+        $pengunjung->delete();
+
+        return $this->successResponse(null, 'Data pengunjung dihapus.', 200);
     }
 }

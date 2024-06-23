@@ -269,21 +269,31 @@ const select2ToJsonPengunjungMasuk = (type) => {
 
         if (type === true) {
             responseList = responseList.filter((row) => row.type === "Group");
+            responseList.forEach(function (row) {
+                const option = $("<option></option>");
+                option.attr("value", row.id);
+                option.text(
+                    "Group : " +
+                        row.nama_anak +
+                        " - Penanggung Jawab : " +
+                        row.nama_orang_tua
+                );
+                selectElem.append(option);
+            });
         } else if (type === false) {
             responseList = responseList.filter((row) => row.type !== "Group");
+            responseList.forEach(function (row) {
+                const option = $("<option></option>");
+                option.attr("value", row.id);
+                option.text(
+                    "Anak : " +
+                        row.nama_anak +
+                        " - Orang Tua : " +
+                        row.nama_orang_tua
+                );
+                selectElem.append(option);
+            });
         }
-
-        responseList.forEach(function (row) {
-            const option = $("<option></option>");
-            option.attr("value", row.id);
-            option.text(
-                "Anak : " +
-                    row.nama_anak +
-                    " - Orang Tua : " +
-                    row.nama_orang_tua
-            );
-            selectElem.append(option);
-        });
 
         selectElem.select2({
             theme: "bootstrap-5",
