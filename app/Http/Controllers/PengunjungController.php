@@ -61,6 +61,7 @@ class PengunjungController extends Controller
 
             $pengunjungMasuk = PengunjungMasuk::create([
                 'uuid' => $uuid,
+                'status' => '0',
                 'nama_anak' => $request->nama_anak,
                 'nama_panggilan' => $request->nama_panggilan,
                 'nama_orang_tua' => $request->nama_orang_tua,
@@ -127,6 +128,7 @@ class PengunjungController extends Controller
 
             $pengunjungMasuk = PengunjungMasuk::create([
                 'uuid' => $uuid,
+                'status' => '0',
                 'nama_anak' => $request->nama_anak,
                 'nama_panggilan' => $request->nama_panggilan,
                 'nama_orang_tua' => $request->nama_orang_tua,
@@ -196,6 +198,7 @@ class PengunjungController extends Controller
 
             $pengunjungMasuk = PengunjungMasuk::create([
                 'uuid' => $uuid,
+                'status' => '0',
                 'nama_anak' => $request->nama_anak,
                 'nama_panggilan' => $request->nama_panggilan,
                 'nama_orang_tua' => $request->nama_orang_tua,
@@ -263,6 +266,7 @@ class PengunjungController extends Controller
 
             $pengunjungMasuk = PengunjungMasuk::create([
                 'uuid' => $uuid,
+                'status' => '0',
                 'nama_anak' => $request->nama_group,
                 'nama_panggilan' => $request->nama_panggilan,
                 'nama_orang_tua' => $request->penanggung_jawab,
@@ -355,7 +359,11 @@ class PengunjungController extends Controller
                         $extra = '<a class="btn btn-success btn-sm" href="/extra-time/' . $pengunjungMasuk->uuid . '"> <i class="ti ti-clock me-1"></i>Extra Time </a>';
                         $deleteButton = '<button class="btn btn-sm btn-danger" onclick="confirmDelete(`/pengunjung-masuk/' . $pengunjungMasuk->id . '`, `pengunjung-masuk-table`)"><i class="ti ti-trash me-1"></i>Cancel</button>';
                         if ($pengunjungMasuk->start_tiket) {
-                            return $pengunjungMasuk->durasi_extra ? $tiket : $tiket . $extra;
+                            if ($pengunjungMasuk->status == 1) {
+                                return $tiket;
+                            } else {
+                                return $pengunjungMasuk->durasi_extra ? $tiket : $tiket . $extra;
+                            }
                         } else {
                             $konfirmasi = '<button class="btn btn-sm btn-success" onclick="confirmStart(`/konfirmasi-pengunjung/' . $pengunjungMasuk->id . '`, `pengunjung-masuk-table`)"><i class="ti ti-check me-1"></i>Konfirmasi</button>';
                             return $tiket . $konfirmasi . $deleteButton;
@@ -436,6 +444,8 @@ class PengunjungController extends Controller
                 return $this->errorResponse(null, 'Data Pengunjung Keluar sudah ada.', 409);
             }
 
+            $pengunjungMasuk = PengunjungMasuk::find($request->pengunjung_masuk_id);
+
             $uuid = Uuid::uuid4()->toString();
             $baseUrl = config('app.url');
             $redirectUrl = $baseUrl . '/e-tiket/' . $uuid;
@@ -452,6 +462,10 @@ class PengunjungController extends Controller
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'user_id' => Auth::user()->id,
                 'qr_code' => $uuid . '_qrcode.svg',
+            ]);
+
+            $pengunjungMasuk->update([
+                'status' => '1',
             ]);
 
             Storage::put($qrCodePath, $qrCode);
@@ -507,6 +521,8 @@ class PengunjungController extends Controller
                 return $this->errorResponse(null, 'Data Pengunjung Keluar sudah ada.', 409);
             }
 
+            $pengunjungMasuk = PengunjungMasuk::find($request->pengunjung_masuk_id);
+
             $uuid = Uuid::uuid4()->toString();
             $baseUrl = config('app.url');
             $redirectUrl = $baseUrl . '/e-tiket/' . $uuid;
@@ -522,6 +538,10 @@ class PengunjungController extends Controller
                 'nama_orang_tua' => $request->penanggung_jawab,
                 'user_id' => Auth::user()->id,
                 'qr_code' => $uuid . '_qrcode.svg',
+            ]);
+
+            $pengunjungMasuk->update([
+                'status' => '1',
             ]);
 
             Storage::put($qrCodePath, $qrCode);
@@ -643,8 +663,14 @@ class PengunjungController extends Controller
             return $this->errorResponse(null, 'Data pengunjung tidak ditemukan.', 404);
         }
 
-        $pengunjung->delete();
+        $pengunjung->update([
+            'status' => '2',
+            'tarif' => 0,
+            'biaya_mengantar' => 0,
+            'biaya_kaos_kaki' => 0,
+            'type' => 'Cancel',
+        ]);
 
-        return $this->successResponse(null, 'Data pengunjung dihapus.', 200);
+        return $this->successResponse(null, 'Data pengunjung dicancel.', 200);
     }
 }

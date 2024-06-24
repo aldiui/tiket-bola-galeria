@@ -124,7 +124,7 @@ class TransaksiMembershipController extends Controller
             'pembayaran_id' => $request->pembayaran_id,
             'nominal' => $request->nominal,
             'start_membership' => date('Y-m-d'),
-            'end_membership' => date('Y-m-d', strtotime("+" . $cekPaket->durasi_hari + 1 . " days")),
+            'end_membership' => date('Y-m-d', strtotime("+" . $cekPaket->durasi_hari . " days")),
         ]);
 
         return $this->successResponse($transaksiMembership, 'Data Transaksi Membership ditambahkan.', 201);
