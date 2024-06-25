@@ -40,7 +40,8 @@
                                 $totalDurasi +
                                 $pengunjungMasuk->denda +
                                 $pengunjungMasuk->biaya_mengantar +
-                                $pengunjungMasuk->biaya_kaos_kaki;
+                                $pengunjungMasuk->biaya_kaos_kaki +
+                                $pengunjungMasuk->biaya_mengantar_extra;
                             $totalDenganDiskon = $total - ($pengunjungMasuk->nominal_diskon ?? 0);
                         @endphp
                         <tr>

@@ -85,7 +85,7 @@ class KeuanganController extends Controller
                             $total = $pengunjungMasuk->durasi_extra
                             ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra
                             : $pengunjungMasuk->tarif;
-                            $totalSemua = $total + $pengunjungMasuk->denda + $pengunjungMasuk->biaya_mengantar + $pengunjungMasuk->biaya_kaos_kaki;
+                            $totalSemua = $total + $pengunjungMasuk->denda + $pengunjungMasuk->biaya_mengantar + $pengunjungMasuk->biaya_kaos_kaki + $pengunjungMasuk->biaya_mengantar_extra;
                             return formatRupiah($totalSemua);
                         } else {
                             return formatRupiah($pengunjungMasuk->nominal);
@@ -101,7 +101,7 @@ class KeuanganController extends Controller
                     ->addColumn('total', function ($pengunjungMasuk) {
                         if ($pengunjungMasuk->type) {
                             $total = $pengunjungMasuk->durasi_extra ? $pengunjungMasuk->tarif + $pengunjungMasuk->tarif_extra : $pengunjungMasuk->tarif;
-                            $totalAkhir = $total - $pengunjungMasuk->nominal_diskon + $pengunjungMasuk->denda + $pengunjungMasuk->biaya_mengantar + $pengunjungMasuk->biaya_kaos_kaki;
+                            $totalAkhir = $total - $pengunjungMasuk->nominal_diskon + $pengunjungMasuk->denda + $pengunjungMasuk->biaya_mengantar + $pengunjungMasuk->biaya_mengantar_extra + $pengunjungMasuk->biaya_kaos_kaki;
                             return formatRupiah($totalAkhir);
                         } else {
                             return formatRupiah($pengunjungMasuk->nominal);
@@ -135,7 +135,7 @@ class KeuanganController extends Controller
                     })
                     ->select([
                         DB::raw('DATE(created_at) as date'),
-                        DB::raw('SUM(tarif) + SUM(tarif_extra) + SUM(denda) + SUM(biaya_mengantar) + SUM(biaya_kaos_kaki) as total_tarif'),
+                        DB::raw('SUM(tarif) + SUM(tarif_extra)  + SUM(denda) + SUM(biaya_mengantar) + SUM(biaya_mengantar_extra) + SUM(biaya_kaos_kaki) as total_tarif'),
                         DB::raw('SUM(nominal_diskon) as total_diskon'),
                     ])
                     ->groupBy(DB::raw('DATE(created_at)'))

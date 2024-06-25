@@ -359,12 +359,15 @@ class PengunjungController extends Controller
                         $extra = '<a class="btn btn-success btn-sm" href="/extra-time/' . $pengunjungMasuk->uuid . '"> <i class="ti ti-clock me-1"></i>Extra Time </a>';
                         $deleteButton = '<button class="btn btn-sm btn-danger" onclick="confirmDelete(`/pengunjung-masuk/' . $pengunjungMasuk->id . '`, `pengunjung-masuk-table`)"><i class="ti ti-trash me-1"></i>Cancel</button>';
                         if ($pengunjungMasuk->start_tiket) {
-                            if ($pengunjungMasuk->status == 1) {
+                            if ($pengunjungMasuk->status == 2 || $pengunjungMasuk->status == 1) {
                                 return $tiket;
                             } else {
                                 return $pengunjungMasuk->durasi_extra ? $tiket : $tiket . $extra;
                             }
                         } else {
+                            if ($pengunjungMasuk->status == 2) {
+                                return $tiket;
+                            }
                             $konfirmasi = '<button class="btn btn-sm btn-success" onclick="confirmStart(`/konfirmasi-pengunjung/' . $pengunjungMasuk->id . '`, `pengunjung-masuk-table`)"><i class="ti ti-check me-1"></i>Konfirmasi</button>';
                             return $tiket . $konfirmasi . $deleteButton;
                         }
@@ -637,6 +640,7 @@ class PengunjungController extends Controller
         $pengunjung->update([
             "durasi_extra" => $request->durasi_extra,
             "tarif_extra" => $request->tarif_extra,
+            "biaya_mengantar_extra" => $pengunjung->biaya_mengantar > 0 ? $request->tarif_mengantar_extra : 0,
         ]);
 
         return $this->successResponse($pengunjung, 'Pengunjung Masuk Berhasil tambah extra waktu.', 200);

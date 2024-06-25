@@ -125,7 +125,7 @@
                                             <tr>
                                                 <td class="text-dark fw-semibold">Biaya Mengantar</td>
                                                 <td class="text-dark">
-                                                    {{ formatRupiah($pengunjungMasuk->biaya_mengantar) }}
+                                                    {{ formatRupiah($pengunjungMasuk->biaya_mengantar + $pengunjungMasuk->biaya_mengantar_extra) }}
                                                 </td>
                                             </tr>
                                         @endif
@@ -155,7 +155,8 @@
                                                     $pengunjungMasuk->nominal_diskon +
                                                     $pengunjungMasuk->biaya_mengantar +
                                                     $pengunjungMasuk->biaya_kaos_kaki +
-                                                    $pengunjungMasuk->denda;
+                                                    $pengunjungMasuk->denda +
+                                                    $pengunjungMasuk->biaya_mengantar_extra;
                                             @endphp
                                             <td class="text-dark">
                                                 {{ formatRupiah($total) }}
